@@ -4,6 +4,7 @@
  */
 
 import { useState, useMemo } from "react";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
   Search,
@@ -18,8 +19,8 @@ import {
   Presentation,
   Filter,
   Sparkles,
+  ArrowRight,
 } from "lucide-react";
-import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
@@ -76,7 +77,7 @@ const resources: Resource[] = [
       "Learn to identify phishing emails by recognizing urgent language, suspicious links, and unexpected requests for personal information or credentials.",
     category: "scam-awareness",
     type: "link",
-    url: "#",
+    url: "/guides/email-basics",
     icon: AlertTriangle,
   },
   {
@@ -86,7 +87,7 @@ const resources: Resource[] = [
       "Step-by-step guide to creating unique, complex passwords for each account and using password managers to keep them organized and secure.",
     category: "guides",
     type: "link",
-    url: "#",
+    url: "/guides/passwords",
     icon: Lock,
   },
   {
@@ -96,7 +97,7 @@ const resources: Resource[] = [
       "Detailed breakdown of the grandparent scam, financial service scam, fake tech support, government impersonation, and romance scams — with real examples and warning signs.",
     category: "scam-awareness",
     type: "link",
-    url: "#",
+    url: "/guides/spotting-scams",
     icon: Shield,
   },
   {
@@ -106,7 +107,7 @@ const resources: Resource[] = [
       "Learn how to browse the web safely, recognize trustworthy websites, and avoid malicious downloads that could compromise your device.",
     category: "guides",
     type: "link",
-    url: "#",
+    url: "/guides/safe-browsing",
     icon: BookOpen,
   },
   {
@@ -116,7 +117,7 @@ const resources: Resource[] = [
       "Add an extra layer of security to your sensitive accounts with two-factor authentication. This guide walks you through the setup process step by step.",
     category: "tools",
     type: "link",
-    url: "#",
+    url: "/guides/passwords#two-factor-auth",
     icon: Lock,
   },
   {
@@ -126,7 +127,7 @@ const resources: Resource[] = [
       "Why regular software updates matter and how to ensure your devices always have the latest security patches to protect against known vulnerabilities.",
     category: "tools",
     type: "link",
-    url: "#",
+    url: "/guides/safe-browsing#downloads-updates",
     icon: FileText,
   },
   {
@@ -136,7 +137,7 @@ const resources: Resource[] = [
       "Learn what ransomware is, how it encrypts your files, and the practical steps you can take to prevent falling victim to ransomware attacks.",
     category: "scam-awareness",
     type: "link",
-    url: "#",
+    url: "/guides/spotting-scams",
     icon: AlertTriangle,
   },
   {
@@ -146,7 +147,7 @@ const resources: Resource[] = [
       "Understand how scammers use phone calls (vishing) to trick you into revealing sensitive information, and learn how to protect yourself from voice-based scams.",
     category: "scam-awareness",
     type: "link",
-    url: "#",
+    url: "/guides/spotting-scams",
     icon: Shield,
   },
 ];
@@ -321,19 +322,16 @@ function ResourceCard({ resource }: { resource: Resource }) {
             </Button>
           </a>
         ) : (
-          <Button
-            size="sm"
-            variant="outline"
-            className="gap-2 rounded-lg font-semibold border-border/60 hover:bg-white/5 hover:border-primary/30"
-            onClick={() => {
-              toast("Coming soon", {
-                description: "This resource guide is being prepared.",
-              });
-            }}
-          >
-            <Eye className="w-3.5 h-3.5" />
-            View Guide
-          </Button>
+          <Link href={resource.url}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="gap-2 rounded-lg font-semibold border-border/60 hover:bg-white/5 hover:border-primary/30"
+            >
+              <ArrowRight className="w-3.5 h-3.5" />
+              Read Guide
+            </Button>
+          </Link>
         )}
       </div>
     </div>

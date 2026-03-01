@@ -6,12 +6,20 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
+import EmailBasics from "./pages/guides/EmailBasics";
+import Passwords from "./pages/guides/Passwords";
+import SpottingScams from "./pages/guides/SpottingScams";
+import SafeBrowsing from "./pages/guides/SafeBrowsing";
+
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/resources" component={Resources} />
+      <Route path="/guides/email-basics" component={EmailBasics} />
+      <Route path="/guides/passwords" component={Passwords} />
+      <Route path="/guides/spotting-scams" component={SpottingScams} />
+      <Route path="/guides/safe-browsing" component={SafeBrowsing} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

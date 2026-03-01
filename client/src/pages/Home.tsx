@@ -478,10 +478,10 @@ function HowItWorksSection() {
 /* ─── Learning Section ─── */
 function LearningSection() {
   const topics = [
-    { icon: Mail, label: "Email Basics", count: "2 tutorials" },
-    { icon: KeyRound, label: "Passwords", count: "3 tutorials" },
-    { icon: ShieldAlert, label: "Spotting Scams", count: "4 tutorials" },
-    { icon: Globe, label: "Safe Browsing", count: "2 tutorials" },
+    { icon: Mail, label: "Email Basics", count: "8 min read", href: "/guides/email-basics" },
+    { icon: KeyRound, label: "Passwords", count: "10 min read", href: "/guides/passwords" },
+    { icon: ShieldAlert, label: "Spotting Scams", count: "12 min read", href: "/guides/spotting-scams" },
+    { icon: Globe, label: "Safe Browsing", count: "11 min read", href: "/guides/safe-browsing" },
   ];
 
   return (
@@ -516,20 +516,22 @@ function LearningSection() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {topics.map((topic) => (
-                <div
+                <Link
                   key={topic.label}
-                  className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card hover:border-primary/30 transition-all glow-card"
+                  href={topic.href}
+                  className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card hover:border-primary/30 transition-all glow-card group cursor-pointer"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 border border-primary/15">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 border border-primary/15 group-hover:bg-primary/15 transition-colors">
                     <topic.icon className="w-5 h-5 text-primary" />
                   </div>
-                  <div>
-                    <p className="font-display font-semibold text-sm text-foreground">
+                  <div className="flex-1">
+                    <p className="font-display font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
                       {topic.label}
                     </p>
                     <p className="text-xs text-muted-foreground">{topic.count}</p>
                   </div>
-                </div>
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                </Link>
               ))}
             </div>
 

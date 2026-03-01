@@ -24,3 +24,13 @@
 - [x] Update typography and spacing to match Yeldra
 - [x] Generate anime-style hero and section images
 - [x] Ensure dark theme consistency across all sections
+- [x] Create reusable ArticleLayout component for guide pages
+- [x] Build Email Basics guide article page with detailed content
+- [x] Build Passwords guide article page with detailed content
+- [x] Build Spotting Scams guide article page with detailed content
+- [x] Build Safe Browsing guide article page with detailed content
+- [x] Add routes for all guide article pages in App.tsx
+- [x] Update Learning Center section links to point to article pages
+- [x] Update Resources page "View Guide" buttons to link to articles
+- [x] Add breadcrumb navigation and back links on article pages
+- [x] Write vitest tests for article routing
