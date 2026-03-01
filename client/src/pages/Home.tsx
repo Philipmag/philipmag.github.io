@@ -34,6 +34,8 @@ import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionLabel from "@/components/SectionLabel";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/hero-banner-Prnk8pyYx6jNa4RYtyz5Sf.webp";
 const LEARNING_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/learning-section-8bzcLchTvteHyKyJnmnv5E.webp";
@@ -41,6 +43,10 @@ const ANALYZER_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSr
 const EMERGENCY_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/emergency-section-ZYJQBkeLaiZXFmmPEquqf5.webp";
 
 export default function Home() {
+  // The userAuth hooks provides authentication state
+  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
+  let { user, loading, error, isAuthenticated, logout } = useAuth();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -124,37 +130,63 @@ function HeroSection() {
 }
 
 /* ─── Scam Analyzer Section ─── */
+type AnalysisResult = {
+  riskLevel: "safe" | "suspicious" | "dangerous";
+  confidence: number;
+  summary: string;
+  redFlags: string[];
+  advice: string;
+  scamType: string;
+};
+
 function AnalyzerSection() {
   const [message, setMessage] = useState("");
-  const [analyzing, setAnalyzing] = useState(false);
-  const [result, setResult] = useState<null | { safe: boolean; summary: string }>(null);
+  const [result, setResult] = useState<AnalysisResult | null>(null);
+
+  const analyzeMutation = trpc.scamAnalyzer.analyze.useMutation({
+    onSuccess: (data) => {
+      setResult(data as AnalysisResult);
+    },
+  });
 
   const handleAnalyze = (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
-    setAnalyzing(true);
     setResult(null);
+    analyzeMutation.mutate({ message: message.trim() });
+  };
 
-    // Simulated analysis
-    setTimeout(() => {
-      const isSuspicious =
-        message.toLowerCase().includes("urgent") ||
-        message.toLowerCase().includes("click here") ||
-        message.toLowerCase().includes("password") ||
-        message.toLowerCase().includes("verify") ||
-        message.toLowerCase().includes("won") ||
-        message.toLowerCase().includes("prize") ||
-        message.toLowerCase().includes("bank") ||
-        message.toLowerCase().includes("suspended");
-
-      setResult({
-        safe: !isSuspicious,
-        summary: isSuspicious
-          ? "This message contains patterns commonly found in scam messages. Be cautious — do not click any links or share personal information."
-          : "This message appears to be safe. However, always be cautious with unexpected messages and verify the sender if unsure.",
-      });
-      setAnalyzing(false);
-    }, 2000);
+  const riskConfig = {
+    safe: {
+      bg: "bg-emerald-50",
+      border: "border-emerald-200",
+      icon: CheckCircle,
+      iconColor: "text-emerald-600",
+      titleColor: "text-emerald-800",
+      textColor: "text-emerald-700",
+      badgeBg: "bg-emerald-100 text-emerald-800",
+      title: "Likely Safe",
+    },
+    suspicious: {
+      bg: "bg-amber-50",
+      border: "border-amber-200",
+      icon: AlertTriangle,
+      iconColor: "text-amber-600",
+      titleColor: "text-amber-800",
+      textColor: "text-amber-700",
+      badgeBg: "bg-amber-100 text-amber-800",
+      title: "Suspicious — Be Careful",
+    },
+    dangerous: {
+      bg: "bg-red-50",
+      border: "border-red-200",
+      icon: ShieldAlert,
+      iconColor: "text-red-600",
+      titleColor: "text-red-800",
+      textColor: "text-red-700",
+      badgeBg: "bg-red-100 text-red-800",
+      title: "Likely a Scam — Do Not Engage",
+    },
   };
 
   return (
@@ -166,13 +198,13 @@ function AnalyzerSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left: Form */}
           <AnimatedSection>
-            <SectionLabel number="01" label="Scam Analyzer" />
+            <SectionLabel number="01" label="AI Scam Analyzer" />
             <h2 className="font-display font-extrabold text-3xl md:text-4xl tracking-tight mb-4">
               Check a Message for Scams
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6 max-w-lg">
-              Copy and paste an email, text, or message below. We'll help you
-              understand if it's safe.
+              Copy and paste an email, text, or message below. Our AI will
+              analyze it and explain if it's safe.
             </p>
 
             {/* Privacy notice */}
@@ -180,7 +212,7 @@ function AnalyzerSection() {
               <Lock className="w-4 h-4 text-primary mt-0.5 shrink-0" />
               <p className="text-sm text-muted-foreground">
                 <strong className="text-foreground">Your privacy matters:</strong>{" "}
-                Messages you paste are analyzed but not stored. We never share your data.
+                Messages you paste are analyzed by AI but never stored. We never share your data.
               </p>
             </div>
 
@@ -199,12 +231,12 @@ function AnalyzerSection() {
                 type="submit"
                 size="lg"
                 className="gap-2 rounded-xl h-12 px-8"
-                disabled={analyzing || !message.trim()}
+                disabled={analyzeMutation.isPending || !message.trim()}
               >
-                {analyzing ? (
+                {analyzeMutation.isPending ? (
                   <>
                     <Scan className="w-4 h-4 animate-spin" />
-                    Analyzing...
+                    AI is Analyzing...
                   </>
                 ) : (
                   <>
@@ -215,29 +247,108 @@ function AnalyzerSection() {
               </Button>
             </form>
 
-            {/* Results */}
+            {/* Error state */}
+            {analyzeMutation.isError && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-8 p-6 rounded-xl border bg-red-50 border-red-200"
+              >
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="font-display font-semibold text-sm mb-1 text-red-800">
+                      Analysis Error
+                    </h4>
+                    <p className="text-sm leading-relaxed text-red-700">
+                      We couldn't analyze this message right now. Please try again in a moment.
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* AI Results */}
             {result && (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`mt-8 p-6 rounded-xl border ${
-                  result.safe
-                    ? "bg-emerald-50 border-emerald-200"
-                    : "bg-amber-50 border-amber-200"
-                }`}
+                className={`mt-8 rounded-xl border overflow-hidden ${riskConfig[result.riskLevel].bg} ${riskConfig[result.riskLevel].border}`}
               >
-                <div className="flex items-start gap-3">
-                  {result.safe ? (
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
-                  ) : (
-                    <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" />
+                {/* Header */}
+                <div className="p-6">
+                  <div className="flex items-start gap-3 mb-4">
+                    {(() => {
+                      const IconComp = riskConfig[result.riskLevel].icon;
+                      return <IconComp className={`w-5 h-5 mt-0.5 shrink-0 ${riskConfig[result.riskLevel].iconColor}`} />;
+                    })()}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-1 flex-wrap">
+                        <h4 className={`font-display font-semibold text-base ${riskConfig[result.riskLevel].titleColor}`}>
+                          {riskConfig[result.riskLevel].title}
+                        </h4>
+                        {result.scamType && result.scamType !== "none" && (
+                          <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${riskConfig[result.riskLevel].badgeBg}`}>
+                            {result.scamType}
+                          </span>
+                        )}
+                      </div>
+                      <p className={`text-sm leading-relaxed ${riskConfig[result.riskLevel].textColor}`}>
+                        {result.summary}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Confidence bar */}
+                  {result.confidence > 0 && (
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between text-xs mb-1.5">
+                        <span className={riskConfig[result.riskLevel].textColor}>Confidence</span>
+                        <span className={`font-mono font-bold ${riskConfig[result.riskLevel].textColor}`}>
+                          {result.confidence}%
+                        </span>
+                      </div>
+                      <div className="h-1.5 rounded-full bg-black/10 overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${result.confidence}%` }}
+                          transition={{ duration: 0.8, ease: "easeOut" }}
+                          className={`h-full rounded-full ${
+                            result.riskLevel === "safe"
+                              ? "bg-emerald-500"
+                              : result.riskLevel === "suspicious"
+                                ? "bg-amber-500"
+                                : "bg-red-500"
+                          }`}
+                        />
+                      </div>
+                    </div>
                   )}
-                  <div>
-                    <h4 className={`font-display font-semibold text-sm mb-1 ${result.safe ? "text-emerald-800" : "text-amber-800"}`}>
-                      {result.safe ? "Likely Safe" : "Potential Scam Detected"}
-                    </h4>
-                    <p className={`text-sm leading-relaxed ${result.safe ? "text-emerald-700" : "text-amber-700"}`}>
-                      {result.summary}
+
+                  {/* Red flags */}
+                  {result.redFlags.length > 0 && (
+                    <div className="mb-4">
+                      <h5 className={`font-display font-semibold text-xs uppercase tracking-wider mb-2 ${riskConfig[result.riskLevel].titleColor}`}>
+                        Warning Signs Found
+                      </h5>
+                      <ul className="space-y-1.5">
+                        {result.redFlags.map((flag, i) => (
+                          <li key={i} className={`flex items-start gap-2 text-sm ${riskConfig[result.riskLevel].textColor}`}>
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-current shrink-0" />
+                            {flag}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Advice */}
+                  <div className={`p-4 rounded-lg bg-white/50 border ${riskConfig[result.riskLevel].border}`}>
+                    <h5 className={`font-display font-semibold text-xs uppercase tracking-wider mb-1.5 ${riskConfig[result.riskLevel].titleColor}`}>
+                      What You Should Do
+                    </h5>
+                    <p className={`text-sm leading-relaxed ${riskConfig[result.riskLevel].textColor}`}>
+                      {result.advice}
                     </p>
                   </div>
                 </div>
