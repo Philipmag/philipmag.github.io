@@ -40,46 +40,46 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
   --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
 :root {
-  --radius: 0.5rem;
-  /* Nordic Clarity palette */
-  --background: oklch(0.988 0.003 90);
-  --foreground: oklch(0.2 0.02 260);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.02 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.02 260);
-  --primary: oklch(0.55 0.12 175);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.005 260);
-  --secondary-foreground: oklch(0.35 0.02 260);
-  --muted: oklch(0.955 0.005 260);
-  --muted-foreground: oklch(0.5 0.02 260);
-  --accent: oklch(0.955 0.005 260);
-  --accent-foreground: oklch(0.2 0.02 260);
+  --radius: 0.625rem;
+  /* Yeldra-inspired deep blue/black palette */
+  --background: oklch(0.13 0.03 270);
+  --foreground: oklch(0.95 0.01 270);
+  --card: oklch(0.17 0.03 270);
+  --card-foreground: oklch(0.95 0.01 270);
+  --popover: oklch(0.17 0.03 270);
+  --popover-foreground: oklch(0.95 0.01 270);
+  --primary: oklch(0.72 0.19 160);
+  --primary-foreground: oklch(0.13 0.03 270);
+  --secondary: oklch(0.22 0.04 270);
+  --secondary-foreground: oklch(0.85 0.02 270);
+  --muted: oklch(0.2 0.03 270);
+  --muted-foreground: oklch(0.6 0.02 270);
+  --accent: oklch(0.22 0.04 270);
+  --accent-foreground: oklch(0.95 0.01 270);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.915 0.005 260);
-  --input: oklch(0.915 0.005 260);
-  --ring: oklch(0.55 0.12 175);
-  --chart-1: oklch(0.55 0.12 175);
-  --chart-2: oklch(0.45 0.1 175);
-  --chart-3: oklch(0.65 0.14 175);
-  --chart-4: oklch(0.35 0.08 260);
-  --chart-5: oklch(0.75 0.08 85);
-  --sidebar: oklch(0.988 0.003 90);
-  --sidebar-foreground: oklch(0.2 0.02 260);
-  --sidebar-accent: oklch(0.955 0.005 260);
-  --sidebar-accent-foreground: oklch(0.2 0.02 260);
-  --sidebar-border: oklch(0.915 0.005 260);
-  --sidebar-ring: oklch(0.55 0.12 175);
-  --sidebar-primary: oklch(0.55 0.12 175);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --border: oklch(0.25 0.04 270);
+  --input: oklch(0.22 0.04 270);
+  --ring: oklch(0.72 0.19 160);
+  --chart-1: oklch(0.72 0.19 160);
+  --chart-2: oklch(0.6 0.2 290);
+  --chart-3: oklch(0.75 0.15 85);
+  --chart-4: oklch(0.65 0.2 330);
+  --chart-5: oklch(0.7 0.15 200);
+  --sidebar: oklch(0.15 0.03 270);
+  --sidebar-foreground: oklch(0.95 0.01 270);
+  --sidebar-accent: oklch(0.22 0.04 270);
+  --sidebar-accent-foreground: oklch(0.95 0.01 270);
+  --sidebar-border: oklch(0.25 0.04 270);
+  --sidebar-ring: oklch(0.72 0.19 160);
+  --sidebar-primary: oklch(0.72 0.19 160);
+  --sidebar-primary-foreground: oklch(0.13 0.03 270);
 }
 
 html {
@@ -138,4 +138,54 @@ html {
       max-width: 1280px;
     }
   }
+}
+
+/* Yeldra-style glow effects */
+.glow-green {
+  box-shadow: 0 0 20px oklch(0.72 0.19 160 / 0.15), 0 0 60px oklch(0.72 0.19 160 / 0.05);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px oklch(0.6 0.2 290 / 0.15), 0 0 60px oklch(0.6 0.2 290 / 0.05);
+}
+
+.glow-card {
+  box-shadow: 0 0 0 1px oklch(0.3 0.04 270), 0 4px 24px oklch(0 0 0 / 0.3);
+}
+
+.glow-card:hover {
+  box-shadow: 0 0 0 1px oklch(0.72 0.19 160 / 0.3), 0 4px 32px oklch(0.72 0.19 160 / 0.08);
+}
+
+/* Gradient text utility */
+.text-gradient-green {
+  background: linear-gradient(135deg, oklch(0.72 0.19 160), oklch(0.8 0.15 140));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, oklch(0.6 0.2 290), oklch(0.7 0.18 310));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle grid background */
+.bg-grid {
+  background-image:
+    linear-gradient(oklch(0.25 0.04 270 / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.25 0.04 270 / 0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Animated gradient border */
+@keyframes border-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.animate-border-glow {
+  animation: border-glow 3s ease-in-out infinite;
 }

@@ -17,3 +17,10 @@
 - [x] Build AI-powered scam analysis backend API endpoint
 - [x] Update frontend Scam Analyzer to call real AI backend
 - [x] Write vitest tests for the AI scam analysis endpoint
+- [x] Redesign UI to match Yeldra.com deep blue/black aesthetic
+- [x] Add anime-style visual elements and illustrations
+- [x] Add Digital Security for Seniors PPTX to Resources page
+- [x] Update color scheme to deep blue/black with Yeldra-inspired gradients
+- [x] Update typography and spacing to match Yeldra
+- [x] Generate anime-style hero and section images
+- [x] Ensure dark theme consistency across all sections
