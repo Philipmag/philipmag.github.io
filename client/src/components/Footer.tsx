@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Shield } from "lucide-react";
 
-const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo(2)_4ab11ef1.png";
+const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo5_479e26ca.png";
 
 export default function Footer() {
   return (
@@ -11,7 +11,9 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <img src={LOGO_URL} alt="Digital Guardians" className="w-10 h-10 object-contain" />
+              <div className="logo-neon-wrapper w-10 h-10 shrink-0">
+                <img src={LOGO_URL} alt="Digital Guardians" className="logo-neon-img w-10 h-10 object-contain" />
+              </div>
               <span className="font-display font-bold text-lg tracking-tight text-foreground">
                 Digital Guardians
               </span>
@@ -41,8 +43,8 @@ export default function Footer() {
                 { label: "AI Assistant", href: "/#analyzer" },
                 { label: "Learn & Practice", href: "/#learn" },
                 { label: "Resources", href: "/resources" },
-                { label: "About Us", href: "/#about" },
-                { label: "Contact Us", href: "/contact" },
+                { label: "About Us", href: "/about" },
+                { label: "Contact Us", href: "/about#contact" },
               ].map((link) => (
                 <li key={link.href}>
                   {link.href.startsWith("/#") ? (

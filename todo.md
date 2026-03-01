@@ -52,3 +52,6 @@
 - [x] Add Contact Us to navigation
 - [x] Write vitest tests for Contact Us endpoint
 - [x] Push all changes to GitHub
+- [x] Upload new sharp logo (DigitalGuardianslogo5) to CDN and replace site-wide
+- [x] Add neon white light animation around the logo in the navbar
+- [x] Move Contact form into About page and remove Contact from nav

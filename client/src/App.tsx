@@ -11,6 +11,7 @@ import Passwords from "./pages/guides/Passwords";
 import SpottingScams from "./pages/guides/SpottingScams";
 import SafeBrowsing from "./pages/guides/SafeBrowsing";
 import Contact from "./pages/Contact";
+import About from "./pages/About";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/guides/passwords" component={Passwords} />
       <Route path="/guides/spotting-scams" component={SpottingScams} />
       <Route path="/guides/safe-browsing" component={SafeBrowsing} />
+      <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
