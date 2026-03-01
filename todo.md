@@ -34,3 +34,14 @@
 - [x] Update Resources page "View Guide" buttons to link to articles
 - [x] Add breadcrumb navigation and back links on article pages
 - [x] Write vitest tests for article routing
+- [x] Update logo to DigitalGuardianslogo.png across the site
+- [x] Upload training photos to CDN and add slideshow component
+- [x] Add training photo slideshow to Home page (past trainings section)
+- [x] Add Digital Security for Seniors PPTX to Resources
+- [x] Add Seniors Cybersecurity and Video Skills PDF to Resources
+- [x] Add DigitalGuardiansCybersecurityTraining PPTX to Resources (if not already)
+- [x] Upgrade AI analyzer to dual-mode: Scam Analyzer + Ask AI for Help
+- [x] Build AI tech help backend endpoint for step-by-step guides
+- [x] Update frontend with tab-based UI for both AI modes
+- [x] Write vitest tests for new AI tech help endpoint
+- [ ] Push changes to GitHub

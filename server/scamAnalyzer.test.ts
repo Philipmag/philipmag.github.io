@@ -26,6 +26,9 @@ function getCaller() {
   });
 }
 
+/* ═══════════════════════════════════════════════════════════
+   Scam Analyzer Tests
+   ═══════════════════════════════════════════════════════════ */
 describe("scamAnalyzer.analyze", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -207,5 +210,252 @@ describe("scamAnalyzer.analyze", () => {
     });
 
     expect(result.confidence).toBe(100);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   Tech Help Tests
+   ═══════════════════════════════════════════════════════════ */
+describe("scamAnalyzer.techHelp", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should return a step-by-step guide for a Zoom question", async () => {
+    mockedInvokeLLM.mockResolvedValueOnce({
+      id: "tech-1",
+      created: Date.now(),
+      model: "test",
+      choices: [
+        {
+          index: 0,
+          message: {
+            role: "assistant",
+            content: JSON.stringify({
+              title: "How to Mute Yourself in a Zoom Meeting",
+              difficulty: "beginner",
+              estimatedTime: "1-2 minutes",
+              overview:
+                "We'll show you how to mute and unmute your microphone during a Zoom meeting so others can't hear background noise.",
+              steps: [
+                {
+                  stepNumber: 1,
+                  title: "Find the Mute Button",
+                  instruction:
+                    "Look at the bottom-left corner of your Zoom window. You'll see a microphone icon.",
+                  tip: "If the microphone has a red line through it, you're already muted.",
+                },
+                {
+                  stepNumber: 2,
+                  title: "Click to Mute",
+                  instruction:
+                    "Click the microphone icon once. A red line will appear over it, meaning you are now muted.",
+                  tip: "You can also press the space bar to temporarily unmute while holding it down.",
+                },
+              ],
+              troubleshooting: [
+                {
+                  problem: "I can't find the mute button",
+                  solution:
+                    "Move your mouse to the bottom of the Zoom window. The toolbar may be hidden and will appear when you hover.",
+                },
+              ],
+              safetyNote:
+                "Always be careful about what you share on screen during Zoom meetings.",
+            }),
+          },
+          finish_reason: "stop",
+        },
+      ],
+    });
+
+    const caller = getCaller();
+    const result = await caller.scamAnalyzer.techHelp({
+      question: "How do I mute myself in a Zoom meeting?",
+    });
+
+    expect(result.title).toBe("How to Mute Yourself in a Zoom Meeting");
+    expect(result.difficulty).toBe("beginner");
+    expect(result.estimatedTime).toBe("1-2 minutes");
+    expect(result.overview).toBeTruthy();
+    expect(result.steps.length).toBeGreaterThan(0);
+    expect(result.steps[0].stepNumber).toBe(1);
+    expect(result.steps[0].title).toBeTruthy();
+    expect(result.steps[0].instruction).toBeTruthy();
+    expect(result.troubleshooting.length).toBeGreaterThan(0);
+    expect(result.safetyNote).toBeTruthy();
+    expect(mockedInvokeLLM).toHaveBeenCalledOnce();
+  });
+
+  it("should return a guide for a web browsing question", async () => {
+    mockedInvokeLLM.mockResolvedValueOnce({
+      id: "tech-2",
+      created: Date.now(),
+      model: "test",
+      choices: [
+        {
+          index: 0,
+          message: {
+            role: "assistant",
+            content: JSON.stringify({
+              title: "How to Search for Something on Google",
+              difficulty: "beginner",
+              estimatedTime: "2-3 minutes",
+              overview:
+                "We'll walk you through how to use Google to find information on the internet.",
+              steps: [
+                {
+                  stepNumber: 1,
+                  title: "Open Your Web Browser",
+                  instruction:
+                    "Find the browser icon on your desktop or taskbar. It might look like a blue 'e' (Edge), a colorful circle (Chrome), or an orange fox (Firefox). Double-click it.",
+                  tip: null,
+                },
+                {
+                  stepNumber: 2,
+                  title: "Go to Google",
+                  instruction:
+                    "Click the long white bar at the top of the browser window (called the address bar). Type 'google.com' and press the Enter key on your keyboard.",
+                  tip: "The address bar is usually at the very top of the window.",
+                },
+              ],
+              troubleshooting: [
+                {
+                  problem: "The page won't load",
+                  solution:
+                    "Check that your internet is working. Try clicking the refresh button (a circular arrow) near the address bar.",
+                },
+              ],
+              safetyNote:
+                "Be cautious of search results marked as 'Ad' — these are paid advertisements and may not always be the most relevant or trustworthy results.",
+            }),
+          },
+          finish_reason: "stop",
+        },
+      ],
+    });
+
+    const caller = getCaller();
+    const result = await caller.scamAnalyzer.techHelp({
+      question: "How do I search for something on Google?",
+    });
+
+    expect(result.title).toBe("How to Search for Something on Google");
+    expect(result.difficulty).toBe("beginner");
+    expect(result.steps.length).toBe(2);
+    expect(result.steps[1].tip).toBe("The address bar is usually at the very top of the window.");
+    expect(result.troubleshooting.length).toBeGreaterThan(0);
+  });
+
+  it("should handle LLM errors gracefully with a fallback guide", async () => {
+    mockedInvokeLLM.mockRejectedValueOnce(new Error("LLM service unavailable"));
+
+    const caller = getCaller();
+    const result = await caller.scamAnalyzer.techHelp({
+      question: "How do I send an email?",
+    });
+
+    expect(result.title).toBe("We're Having Trouble");
+    expect(result.difficulty).toBe("beginner");
+    expect(result.steps.length).toBeGreaterThan(0);
+    expect(result.steps[0].title).toBe("Try Again");
+    expect(result.overview).toContain("couldn't generate");
+  });
+
+  it("should reject empty questions", async () => {
+    const caller = getCaller();
+
+    await expect(
+      caller.scamAnalyzer.techHelp({ question: "" })
+    ).rejects.toThrow();
+  });
+
+  it("should reject questions that are too long", async () => {
+    const caller = getCaller();
+    const longQuestion = "a".repeat(5001);
+
+    await expect(
+      caller.scamAnalyzer.techHelp({ question: longQuestion })
+    ).rejects.toThrow();
+  });
+
+  it("should normalize invalid difficulty levels to beginner", async () => {
+    mockedInvokeLLM.mockResolvedValueOnce({
+      id: "tech-3",
+      created: Date.now(),
+      model: "test",
+      choices: [
+        {
+          index: 0,
+          message: {
+            role: "assistant",
+            content: JSON.stringify({
+              title: "Test Guide",
+              difficulty: "expert",
+              estimatedTime: "5 minutes",
+              overview: "Test overview",
+              steps: [
+                {
+                  stepNumber: 1,
+                  title: "Step 1",
+                  instruction: "Do something",
+                  tip: null,
+                },
+              ],
+              troubleshooting: [],
+              safetyNote: "Be safe.",
+            }),
+          },
+          finish_reason: "stop",
+        },
+      ],
+    });
+
+    const caller = getCaller();
+    const result = await caller.scamAnalyzer.techHelp({
+      question: "Test question for difficulty normalization",
+    });
+
+    expect(result.difficulty).toBe("beginner");
+  });
+
+  it("should handle missing optional fields gracefully", async () => {
+    mockedInvokeLLM.mockResolvedValueOnce({
+      id: "tech-4",
+      created: Date.now(),
+      model: "test",
+      choices: [
+        {
+          index: 0,
+          message: {
+            role: "assistant",
+            content: JSON.stringify({
+              title: "Minimal Guide",
+              steps: [
+                {
+                  stepNumber: 1,
+                  instruction: "Do the thing",
+                },
+              ],
+            }),
+          },
+          finish_reason: "stop",
+        },
+      ],
+    });
+
+    const caller = getCaller();
+    const result = await caller.scamAnalyzer.techHelp({
+      question: "Test question with minimal response",
+    });
+
+    expect(result.title).toBe("Minimal Guide");
+    expect(result.difficulty).toBe("beginner");
+    expect(result.estimatedTime).toBeTruthy();
+    expect(result.overview).toBeTruthy();
+    expect(result.steps.length).toBe(1);
+    expect(result.steps[0].title).toBe("Step 1");
+    expect(result.troubleshooting).toEqual([]);
+    expect(result.safetyNote).toBeTruthy();
   });
 });

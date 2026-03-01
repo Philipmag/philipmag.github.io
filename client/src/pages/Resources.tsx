@@ -28,8 +28,9 @@ import SectionLabel from "@/components/SectionLabel";
 import { Button } from "@/components/ui/button";
 
 const RESOURCES_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/resources-anime_a3a0c68c.png";
-const PPTX_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardiansCybersecurityTraining_4c8b571f.pptx";
-const PPTX_URL_2 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/Digital_Security_for_Seniors__f2a062b8.pptx";
+const PPTX_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardiansCybersecurityTraining_4c8b571f(1)_c5be9772.pptx";
+const PPTX_URL_2 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/Digital_Security_for_Seniors__ba76adc0.pptx";
+const PDF_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/Seniors_Cybersecurity_and_Video_Skills_46fd59cb(1)_f64f0fe7.pdf";
 
 type ResourceCategory = "all" | "training" | "guides" | "scam-awareness" | "tools";
 
@@ -69,6 +70,18 @@ const resources: Resource[] = [
     icon: Presentation,
     badge: "New",
     fileType: "PPTX",
+  },
+  {
+    id: "cybersecurity-video-skills",
+    title: "Seniors Cybersecurity & Video Skills",
+    description:
+      "A comprehensive PDF guide combining cybersecurity awareness with practical video conferencing skills. Learn how to stay safe online while mastering tools like Zoom for staying connected with family and community.",
+    category: "training",
+    type: "download",
+    url: PDF_URL_1,
+    icon: FileText,
+    badge: "New",
+    fileType: "PDF",
   },
   {
     id: "phishing-guide",

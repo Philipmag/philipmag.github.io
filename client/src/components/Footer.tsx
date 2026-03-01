@@ -1,6 +1,8 @@
 import { Link } from "wouter";
 import { Shield } from "lucide-react";
 
+const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo_d3ab57ff.png";
+
 export default function Footer() {
   return (
     <footer className="border-t border-border/50 bg-background">
@@ -9,9 +11,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-primary/15 flex items-center justify-center border border-primary/20">
-                <Shield className="w-5 h-5 text-primary" />
-              </div>
+              <img src={LOGO_URL} alt="Digital Guardians" className="w-10 h-10 object-contain" />
               <span className="font-display font-bold text-lg tracking-tight text-foreground">
                 Digital Guardians
               </span>

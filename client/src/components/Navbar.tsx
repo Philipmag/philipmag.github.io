@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Shield, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+
+const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo_d3ab57ff.png";
 
 const navLinks = [
   { href: "/", label: "Home", isHash: false },
@@ -40,9 +42,7 @@ export default function Navbar() {
       <div className="container flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-lg bg-primary/15 flex items-center justify-center group-hover:bg-primary/25 transition-colors border border-primary/20">
-            <Shield className="w-5 h-5 text-primary" />
-          </div>
+          <img src={LOGO_URL} alt="Digital Guardians" className="w-10 h-10 object-contain" />
           <span className="font-display font-bold text-lg tracking-tight text-foreground">
             Digital Guardians
           </span>
