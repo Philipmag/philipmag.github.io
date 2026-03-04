@@ -55,3 +55,9 @@
 - [x] Upload new sharp logo (DigitalGuardianslogo5) to CDN and replace site-wide
 - [x] Add neon white light animation around the logo in the navbar
 - [x] Move Contact form into About page and remove Contact from nav
+- [x] Configure Vite for GitHub Pages deployment
+- [x] Add build:gh-pages npm script
+- [x] Add deploy:gh-pages npm script
+- [x] Create GitHub Pages setup documentation
+- [x] Test GitHub Pages build locally
+- [x] Verify build output in repository root

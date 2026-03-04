@@ -5,12 +5,16 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
+    "dev:gh-pages": "GITHUB_PAGES=true vite",
     "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build:gh-pages": "GITHUB_PAGES=true vite build",
+    "deploy:gh-pages": "pnpm run build:gh-pages && git add . && git commit -m 'Deploy to GitHub Pages' && git push origin main",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
-    "db:push": "drizzle-kit generate && drizzle-kit migrate"
+    "db:push": "drizzle-kit generate && drizzle-kit migrate",
+    "clean:gh-pages": "rm -rf dist/ && rm -f index.html assets/"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",

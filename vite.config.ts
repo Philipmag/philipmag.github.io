@@ -150,7 +150,63 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+// ============================================================================
+// GitHub Pages Configuration
+// ============================================================================
+
+const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const outDir = isGitHubPages
+  ? path.resolve(import.meta.dirname, "dist")
+  : path.resolve(import.meta.dirname, "dist/public");
+
+/**
+ * Post-build plugin to copy dist files to repository root for GitHub Pages
+ */
+function vitePluginGitHubPagesCopy(): Plugin {
+  return {
+    name: "github-pages-copy",
+    apply: "build",
+    async closeBundle() {
+      if (!isGitHubPages) return;
+
+      const distDir = path.resolve(import.meta.dirname, "dist");
+      const rootDir = import.meta.dirname;
+
+      // Copy index.html and assets to root
+      try {
+        const files = fs.readdirSync(distDir);
+        for (const file of files) {
+          if (file === "node_modules" || file === ".git") continue;
+          const src = path.join(distDir, file);
+          const dest = path.join(rootDir, file);
+
+          if (fs.statSync(src).isDirectory()) {
+            // Copy directory recursively
+            if (fs.existsSync(dest)) {
+              fs.rmSync(dest, { recursive: true });
+            }
+            fs.cpSync(src, dest, { recursive: true });
+          } else {
+            // Copy file
+            fs.copyFileSync(src, dest);
+          }
+        }
+        console.log("✓ GitHub Pages: Copied build output to repository root");
+      } catch (error) {
+        console.error("✗ GitHub Pages copy failed:", error);
+      }
+    },
+  };
+}
+
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+  vitePluginManusDebugCollector(),
+  ...(isGitHubPages ? [vitePluginGitHubPagesCopy()] : []),
+];
 
 export default defineConfig({
   plugins,
@@ -164,8 +220,9 @@ export default defineConfig({
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
   publicDir: path.resolve(import.meta.dirname, "client", "public"),
+  base: "/",
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir,
     emptyOutDir: true,
   },
   server: {
