@@ -61,3 +61,9 @@
 - [x] Create GitHub Pages setup documentation
 - [x] Test GitHub Pages build locally
 - [x] Verify build output in repository root
+- [x] Flatten repository structure: move client/ to root
+- [x] Update vite.config.ts to use root as project root
+- [x] Update server/_core/vite.ts to reference root index.html
+- [x] Create index.html at project root
+- [x] Verify build works with flattened structure
+- [x] All tests pass (22 tests)
