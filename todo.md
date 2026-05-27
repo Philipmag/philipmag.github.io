@@ -73,3 +73,7 @@
 - [x] Add accessibility CSS variables and high-contrast styles
 - [x] Integrate accessibility toggle into Navbar
 - [x] Write tests for accessibility features
+- [x] Update contact form email to info@digitalguards.ca
+- [x] Remove old support@digitalguardians.org email
+- [x] Create animated cybersecurity network background component
+- [x] Add "Cybersecurity4 Seniors" animated mantra to Learn section

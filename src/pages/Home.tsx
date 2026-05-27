@@ -708,6 +708,14 @@ function LearningSection() {
   return (
     <section id="learn" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[oklch(0.15_0.03_270)] to-background" />
+      {/* Animated Mantra Background */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+        <div className="text-center">
+          <h3 className="font-display font-extrabold text-6xl md:text-8xl tracking-tight text-primary/40 animate-pulse">
+            Cybersecurity4 Seniors
+          </h3>
+        </div>
+      </div>
       <div className="container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Image */}

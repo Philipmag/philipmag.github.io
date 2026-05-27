@@ -24,6 +24,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
+const CONTACT_EMAIL = "info@digitalguards.ca";
+
 const categories = [
   { value: "general", label: "General Inquiry", icon: MessageSquare, description: "Ask us anything" },
   { value: "scam-report", label: "Report a Scam", icon: ShieldAlert, description: "Report suspicious activity" },
@@ -123,8 +125,8 @@ export default function Contact() {
                   <p className="text-sm text-muted-foreground mb-3">
                     Send us an email and we'll respond within 24-48 hours.
                   </p>
-                  <a href="mailto:support@digitalguardians.org" className="text-sm text-primary hover:underline">
-                    support@digitalguardians.org
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm text-primary hover:underline">
+                    {CONTACT_EMAIL}
                   </a>
                 </div>
 
