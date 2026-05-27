@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
+import { AccessibilityToggle } from "./AccessibilityToggle";
 
 const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo5_479e26ca.png";
 
@@ -55,7 +56,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
           {navLinks.map((link) => {
             const isActive = link.isHash
               ? location === "/"
@@ -103,10 +104,13 @@ export default function Navbar() {
             Try AI Assistant
           </a>
         </nav>
+        {/* Accessibility Toggle */}
+        <div className="hidden md:flex items-center gap-2">
+          <AccessibilityToggle />
+        </div>
 
-        {/* Mobile Toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
+        {/* Mobile menu button */}
+        <button       onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors text-foreground"
           aria-label="Toggle navigation"
         >

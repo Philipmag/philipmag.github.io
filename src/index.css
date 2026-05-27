@@ -275,3 +275,136 @@ html {
   border-radius: 10px;
   animation: neon-glow-pulse 3s ease-in-out infinite;
 }
+
+
+/* ===== Accessibility Styles ===== */
+
+/* Text size adjustments */
+html[data-text-size="normal"] {
+  font-size: 16px;
+}
+
+html[data-text-size="normal"] h1 {
+  font-size: 2.25rem;
+}
+
+html[data-text-size="normal"] h2 {
+  font-size: 1.875rem;
+}
+
+html[data-text-size="normal"] h3 {
+  font-size: 1.5rem;
+}
+
+html[data-text-size="normal"] h4 {
+  font-size: 1.25rem;
+}
+
+html[data-text-size="normal"] p,
+html[data-text-size="normal"] body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+html[data-text-size="large"] {
+  font-size: 18px;
+}
+
+html[data-text-size="large"] h1 {
+  font-size: 2.5rem;
+}
+
+html[data-text-size="large"] h2 {
+  font-size: 2.1rem;
+}
+
+html[data-text-size="large"] h3 {
+  font-size: 1.75rem;
+}
+
+html[data-text-size="large"] h4 {
+  font-size: 1.4rem;
+}
+
+html[data-text-size="large"] p,
+html[data-text-size="large"] body {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+html[data-text-size="extra-large"] {
+  font-size: 20px;
+}
+
+html[data-text-size="extra-large"] h1 {
+  font-size: 2.75rem;
+}
+
+html[data-text-size="extra-large"] h2 {
+  font-size: 2.3rem;
+}
+
+html[data-text-size="extra-large"] h3 {
+  font-size: 2rem;
+}
+
+html[data-text-size="extra-large"] h4 {
+  font-size: 1.6rem;
+}
+
+html[data-text-size="extra-large"] p,
+html[data-text-size="extra-large"] body {
+  font-size: 1.25rem;
+  line-height: 1.8;
+}
+
+/* High contrast mode */
+html[data-contrast-mode="high-contrast"] {
+  --background: oklch(0.05 0.01 270);
+  --foreground: oklch(1 0.01 0);
+  --card: oklch(0.1 0.02 270);
+  --card-foreground: oklch(1 0.01 0);
+  --popover: oklch(0.1 0.02 270);
+  --popover-foreground: oklch(1 0.01 0);
+  --primary: oklch(0.9 0.25 160);
+  --primary-foreground: oklch(0.05 0.01 270);
+  --secondary: oklch(0.15 0.05 270);
+  --secondary-foreground: oklch(1 0.01 0);
+  --muted: oklch(0.15 0.04 270);
+  --muted-foreground: oklch(0.95 0.03 0);
+  --accent: oklch(0.15 0.05 270);
+  --accent-foreground: oklch(1 0.01 0);
+  --border: oklch(0.4 0.06 270);
+  --input: oklch(0.15 0.05 270);
+  --ring: oklch(0.9 0.25 160);
+}
+
+html[data-contrast-mode="high-contrast"] * {
+  border-width: 1.5px;
+}
+
+html[data-contrast-mode="high-contrast"] button,
+html[data-contrast-mode="high-contrast"] a {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+html[data-contrast-mode="high-contrast"] input,
+html[data-contrast-mode="high-contrast"] textarea,
+html[data-contrast-mode="high-contrast"] select {
+  border-width: 2px;
+}
+
+html[data-contrast-mode="high-contrast"] .glow-green,
+html[data-contrast-mode="high-contrast"] .glow-purple,
+html[data-contrast-mode="high-contrast"] .glow-card {
+  box-shadow: 0 0 0 2px oklch(0.9 0.25 160);
+}
+
+/* Ensure focus states are visible in high contrast */
+html[data-contrast-mode="high-contrast"] button:focus-visible,
+html[data-contrast-mode="high-contrast"] a:focus-visible,
+html[data-contrast-mode="high-contrast"] input:focus-visible {
+  outline: 3px solid oklch(0.9 0.25 160);
+  outline-offset: 2px;
+}
