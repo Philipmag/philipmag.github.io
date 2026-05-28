@@ -290,7 +290,9 @@ export default function About() {
                   <p className="text-sm text-muted-foreground mb-3">
                     Monday to Friday, 9 AM – 5 PM EST.
                   </p>
-                  <p className="text-sm text-primary">Coming soon</p>
+                  <a href="tel:+17057725140" className="text-sm text-primary hover:underline">
+                    +1 (705) 772-5140
+                  </a>
                 </div>
 
                 <div className="p-6 rounded-2xl border border-border/60 bg-card/50 backdrop-blur-sm">

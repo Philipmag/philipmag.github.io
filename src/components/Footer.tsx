@@ -107,9 +107,13 @@ export default function Footer() {
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} Digital Guardians. A nonprofit organization.
           </p>
-          <p className="text-xs text-muted-foreground">
-            digitalguardians.ca
-          </p>
+          <div className="flex flex-col md:flex-row items-center gap-4 text-xs text-muted-foreground">
+            <a href="mailto:info@digitalguards.ca" className="hover:text-primary transition-colors">info@digitalguards.ca</a>
+            <span className="hidden md:inline">•</span>
+            <a href="tel:+17057725140" className="hover:text-primary transition-colors">+1 (705) 772-5140</a>
+            <span className="hidden md:inline">•</span>
+            <span>digitalguards.ca</span>
+          </div>
         </div>
       </div>
     </footer>

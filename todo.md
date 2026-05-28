@@ -86,3 +86,6 @@
 - [x] Slow down network background animation speed for calming effect
 - [x] Integrate senior photos into Hero and About sections
 - [x] Deploy to Manus hosting with custom domain support
+- [x] Fix animated network background not showing on deployed site
+- [x] Update all email references to info@digitalguards.ca
+- [x] Add phone number +1 (705) 772-5140 to contact/about sections
