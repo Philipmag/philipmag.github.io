@@ -44,6 +44,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import TrainingSlideshow from "@/components/TrainingSlideshow";
 import { CybersecurityWebBackground } from "@/components/CybersecurityWebBackground";
+import { EnhancedNetworkBackground } from "@/components/EnhancedNetworkBackground";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/hero-anime_9f6f8c56.png";
 const LEARNING_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/learning-anime_097893cd.png";
@@ -155,7 +156,7 @@ function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Right: Anime Image */}
+          {/* Right: Senior Photo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -166,8 +167,8 @@ function HeroSection() {
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-[oklch(0.6_0.2_290)]/20 blur-xl" />
               <div className="relative rounded-2xl overflow-hidden border border-border/50 glow-card">
                 <img
-                  src={HERO_IMG}
-                  alt="Digital Guardians — protecting seniors online"
+                  src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-at-desk-1-eHQ2rN7tcYup86KCyELn48.webp"
+                  alt="Senior woman confidently using a laptop"
                   className="w-full h-auto"
                 />
               </div>
@@ -709,8 +710,8 @@ function LearningSection() {
   return (
     <section id="learn" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[oklch(0.15_0.03_270)] to-background" />
-      {/* Cybersecurity Web Background */}
-      <CybersecurityWebBackground />
+      {/* Enhanced Network Background */}
+      <EnhancedNetworkBackground />
       {/* Animated Mantra Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
         <div className="text-center">
@@ -911,6 +912,37 @@ function AboutSection() {
               </div>
             </AnimatedSection>
           ))}
+        </div>
+
+        {/* Senior Photos Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+          <AnimatedSection delay={0}>
+            <div className="rounded-2xl overflow-hidden border border-border/50 glow-card h-80">
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-at-desk-2-kUgzdZFeTxiTGsumKFZWZD.webp"
+                alt="Senior man confidently using a laptop"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </AnimatedSection>
+          <AnimatedSection delay={0.1}>
+            <div className="rounded-2xl overflow-hidden border border-border/50 glow-card h-80">
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-couple-learning-QA3z453eRxLuGv4d9NqzVB.webp"
+                alt="Senior couple learning together on a tablet"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </AnimatedSection>
+          <AnimatedSection delay={0.2}>
+            <div className="rounded-2xl overflow-hidden border border-border/50 glow-card h-80">
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-video-call-Lspkm6MKQJKU4iTmJSuDWU.webp"
+                alt="Senior woman having a video call on her laptop"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>
