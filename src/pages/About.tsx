@@ -277,8 +277,8 @@ export default function About() {
                   <p className="text-sm text-muted-foreground mb-3">
                     We'll respond within 24–48 hours.
                   </p>
-                  <a href="mailto:support@digitalguardians.org" className="text-sm text-primary hover:underline">
-                    support@digitalguardians.org
+                  <a href="mailto:info@digitalguards.ca" className="text-sm text-primary hover:underline">
+                    info@digitalguards.ca
                   </a>
                 </div>
 
