@@ -43,6 +43,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import TrainingSlideshow from "@/components/TrainingSlideshow";
+import { CybersecurityWebBackground } from "@/components/CybersecurityWebBackground";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/hero-anime_9f6f8c56.png";
 const LEARNING_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/learning-anime_097893cd.png";
@@ -303,10 +304,10 @@ function AnalyzerSection() {
           <div className="inline-flex rounded-xl border border-border/50 bg-card p-1.5 gap-1">
             <button
               onClick={() => switchMode("scam")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
                 mode === "scam"
-                  ? "bg-primary text-primary-foreground glow-green"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  ? "bg-primary text-primary-foreground glow-green shadow-lg shadow-primary/50 scale-105"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/10 hover:scale-105 hover:shadow-md"
               }`}
             >
               <Shield className="w-4 h-4" />
@@ -314,10 +315,10 @@ function AnalyzerSection() {
             </button>
             <button
               onClick={() => switchMode("help")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
                 mode === "help"
-                  ? "bg-[oklch(0.6_0.2_290)] text-white"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                  ? "bg-[oklch(0.6_0.2_290)] text-white shadow-lg shadow-[oklch(0.6_0.2_290)]/50 scale-105"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/10 hover:scale-105 hover:shadow-md"
               }`}
             >
               <HelpCircle className="w-4 h-4" />
@@ -708,6 +709,8 @@ function LearningSection() {
   return (
     <section id="learn" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[oklch(0.15_0.03_270)] to-background" />
+      {/* Cybersecurity Web Background */}
+      <CybersecurityWebBackground />
       {/* Animated Mantra Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
         <div className="text-center">

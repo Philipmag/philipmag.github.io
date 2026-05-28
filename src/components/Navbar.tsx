@@ -71,7 +71,11 @@ export default function Navbar() {
                     handleNavClick(link);
                   }
                 }}
-                className="px-4 py-2 text-sm font-medium rounded-lg transition-all text-muted-foreground hover:text-foreground hover:bg-white/5"
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 relative ${
+                  location === "/"
+                    ? "text-primary font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:rounded-full"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                }`}
               >
                 {link.label}
               </a>
@@ -79,10 +83,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 relative ${
                   isActive
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                    ? "text-primary font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:rounded-full shadow-md shadow-primary/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/5 hover:shadow-sm"
                 }`}
               >
                 {link.label}
