@@ -89,3 +89,14 @@
 - [x] Fix animated network background not showing on deployed site
 - [x] Update all email references to info@digitalguards.ca
 - [x] Add phone number +1 (705) 772-5140 to contact/about sections
+- [x] Fix navigation highlighting - only current page should be lit (IntersectionObserver-based)
+- [x] Remove duplicate AI Assistant nav link (merged into Try AI Assistant CTA button)
+- [x] Add copy/share functionality to scam analysis results
+- [x] Identify and implement missing UI principles for better UX
+- [x] Add ScrollToTop button for easy navigation
+- [x] Add Toast notification system for user feedback
+- [x] Add SkipToContent link for keyboard accessibility
+- [x] Add PageProgress scroll indicator bar
+- [x] Enhanced focus ring styles for keyboard navigation
+- [x] Better text selection colors
+- [x] Smooth transitions on all interactive elements

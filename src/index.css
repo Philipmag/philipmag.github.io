@@ -108,6 +108,24 @@ html {
   input[type="radio"]:not(:disabled) {
     @apply cursor-pointer;
   }
+
+  /* Enhanced focus rings for keyboard accessibility (important for seniors) */
+  :focus-visible {
+    outline: 2px solid oklch(0.72 0.19 160);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Smooth transitions on interactive elements */
+  a, button, input, textarea, select {
+    transition: all 0.2s ease;
+  }
+
+  /* Better selection colors */
+  ::selection {
+    background: oklch(0.72 0.19 160 / 0.3);
+    color: oklch(0.95 0.01 270);
+  }
 }
 
 @layer components {

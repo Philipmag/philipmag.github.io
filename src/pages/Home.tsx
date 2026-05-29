@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <HeroSection />
         <AnalyzerSection />
         <HowItWorksSection />
@@ -208,6 +208,7 @@ function AnalyzerSection() {
   const [question, setQuestion] = useState("");
   const [scamResult, setScamResult] = useState<AnalysisResult | null>(null);
   const [helpResult, setHelpResult] = useState<TechHelpResult | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const analyzeMutation = trpc.scamAnalyzer.analyze.useMutation({
     onSuccess: (data) => setScamResult(data as AnalysisResult),
@@ -493,6 +494,46 @@ function AnalyzerSection() {
                   <div className="p-4 rounded-lg bg-white/5 border border-white/5">
                     <p className="text-xs font-semibold text-foreground mb-1">What to Do:</p>
                     <p className="text-xs text-muted-foreground leading-relaxed">{scamResult.advice}</p>
+                  </div>
+
+                  {/* Copy & Share Actions */}
+                  <div className="flex items-center gap-3 mt-5 pt-4 border-t border-white/10">
+                    <button
+                      onClick={() => {
+                        const text = `🔍 Scam Analysis Result\n\n⚠️ ${riskConfig[scamResult.riskLevel].title} (${scamResult.confidence}% confident)\n\n${scamResult.summary}\n\n${scamResult.scamType !== "none" ? `Type: ${scamResult.scamType}\n\n` : ""}${scamResult.redFlags.length > 0 ? `Red Flags:\n${scamResult.redFlags.map(f => `• ${f}`).join("\n")}\n\n` : ""}What to Do:\n${scamResult.advice}\n\n— Analyzed by Digital Guardians (digitalguards.ca)`;
+                        navigator.clipboard.writeText(text);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/5 border border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all"
+                    >
+                      {copied ? (
+                        <>
+                          <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <ClipboardPaste className="w-3.5 h-3.5" />
+                          Copy Results
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        const text = `🔍 Scam Analysis from Digital Guardians:\n\n⚠️ ${riskConfig[scamResult.riskLevel].title} (${scamResult.confidence}% confident)\n\n${scamResult.summary}\n\nCheck messages for free at digitalguards.ca`;
+                        if (navigator.share) {
+                          navigator.share({ title: "Scam Analysis Result", text });
+                        } else {
+                          const mailTo = `mailto:?subject=Scam Analysis Result&body=${encodeURIComponent(text)}`;
+                          window.open(mailTo);
+                        }
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/5 border border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Share
+                    </button>
                   </div>
                 </div>
               </motion.div>

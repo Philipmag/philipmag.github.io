@@ -4,6 +4,10 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { ToastProvider } from "./components/Toast";
+import { ScrollToTop } from "./components/ScrollToTop";
+import { SkipToContent } from "./components/SkipToContent";
+import { PageProgress } from "./components/PageProgress";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import EmailBasics from "./pages/guides/EmailBasics";
@@ -34,10 +38,15 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <ToastProvider>
+          <TooltipProvider>
+            <SkipToContent />
+            <PageProgress />
+            <Toaster />
+            <Router />
+            <ScrollToTop />
+          </TooltipProvider>
+        </ToastProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
