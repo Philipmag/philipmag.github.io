@@ -105,3 +105,5 @@
 - [x] Fix favicon/logo for search results and browser tabs (ICO + apple-touch-icon + manifest)
 - [x] Improve SEO with meta tags, structured data, Open Graph, and JSON-LD for all pages
 - [x] Text size toggle and high contrast mode verified working (already implemented)
+- [x] Fix blank favicon in browser tabs (multi-size ICO + PNG fallbacks)
+- [x] Fix broken senior video call image (re-uploaded to CDN)

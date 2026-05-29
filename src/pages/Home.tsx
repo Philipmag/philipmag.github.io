@@ -1017,7 +1017,7 @@ function AboutSection() {
           <AnimatedSection delay={0.2}>
             <div className="rounded-2xl overflow-hidden border border-border/50 glow-card h-80">
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-video-call-Lspkm6MKQJKU4iTmJSuDWU.webp"
+                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-video-call_f68bd415.png"
                 alt="Senior woman having a video call on her laptop"
                 className="w-full h-full object-cover"
               />
