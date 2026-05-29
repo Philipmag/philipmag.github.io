@@ -31,6 +31,7 @@ import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionLabel from "@/components/SectionLabel";
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/SEO";
 
 const categories = [
   { value: "general", label: "General Inquiry", icon: MessageSquare },
@@ -86,6 +87,20 @@ const values = [
 ];
 
 export default function About() {
+  return (
+    <>
+    <SEO
+      title="About Us & Contact"
+      description="Digital Guardians is a nonprofit organization dedicated to helping seniors stay safe online. Contact us for cybersecurity help, scam reporting, or general inquiries."
+      keywords="digital guardians about, cybersecurity nonprofit, seniors online safety organization, contact digital guardians, report scam Canada"
+      canonicalPath="/about"
+    />
+    <AboutContent />
+    </>
+  );
+}
+
+function AboutContent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -142,7 +157,7 @@ export default function About() {
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="max-w-3xl"
             >
               <div className="flex items-center gap-3 mb-6">
@@ -229,7 +244,7 @@ export default function About() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((value, i) => (
                 <AnimatedSection key={value.title + i} delay={i * 0.06}>
-                  <div className="p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-300 h-full glow-card">
+                  <div className="p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-200 h-full glow-card">
                     <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 border border-primary/15">
                       <value.icon className="w-5 h-5 text-primary" />
                     </div>

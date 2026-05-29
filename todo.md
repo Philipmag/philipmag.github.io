@@ -100,3 +100,8 @@
 - [x] Enhanced focus ring styles for keyboard navigation
 - [x] Better text selection colors
 - [x] Smooth transitions on all interactive elements
+- [x] Optimize page load times and tab transitions (animations reduced to 150-200ms)
+- [x] Add Canadian Anti-Fraud Centre scam alerts feed to homepage
+- [x] Fix favicon/logo for search results and browser tabs (ICO + apple-touch-icon + manifest)
+- [x] Improve SEO with meta tags, structured data, Open Graph, and JSON-LD for all pages
+- [x] Text size toggle and high contrast mode verified working (already implemented)

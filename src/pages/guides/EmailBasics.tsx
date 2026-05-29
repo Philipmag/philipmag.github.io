@@ -3,6 +3,7 @@
  */
 
 import { Mail, AlertTriangle, Shield, Eye, Trash2, Link2, UserX } from "lucide-react";
+import SEO from "@/components/SEO";
 import ArticleLayout, {
   ArticleSection,
   ArticleParagraph,
@@ -24,6 +25,16 @@ const tableOfContents = [
 
 export default function EmailBasics() {
   return (
+    <>
+    <SEO
+      title="Email Basics & Safety Guide for Seniors"
+      description="Learn how to use email safely, recognize phishing scams, and protect yourself from suspicious messages. A beginner-friendly guide for seniors."
+      keywords="email safety seniors, phishing scams, email security, recognize fake emails, senior online safety"
+      canonicalPath="/guides/email-basics"
+      type="article"
+      publishedDate="2024-01-15"
+      modifiedDate="2026-05-01"
+    />
     <ArticleLayout
       title="Email Basics & Safety"
       subtitle="Learn how to use email safely, recognize suspicious messages, and protect yourself from phishing scams — explained in plain language."
@@ -202,5 +213,6 @@ export default function EmailBasics() {
         </QuizProvider>
       </ArticleSection>
     </ArticleLayout>
+    </>
   );
 }

@@ -45,6 +45,7 @@ import { trpc } from "@/lib/trpc";
 import TrainingSlideshow from "@/components/TrainingSlideshow";
 import { CybersecurityWebBackground } from "@/components/CybersecurityWebBackground";
 import { EnhancedNetworkBackground } from "@/components/EnhancedNetworkBackground";
+import ScamAlertsFeed from "@/components/ScamAlertsFeed";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/hero-anime_9f6f8c56.png";
 const LEARNING_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/learning-anime_097893cd.png";
@@ -60,6 +61,7 @@ export default function Home() {
       <main id="main-content" className="flex-1">
         <HeroSection />
         <AnalyzerSection />
+        <ScamAlertsSection />
         <HowItWorksSection />
         <LearningSection />
         <TrainingsSection />
@@ -86,9 +88,9 @@ function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Content */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div className="flex items-center gap-2 mb-8">
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
@@ -158,9 +160,9 @@ function HeroSection() {
 
           {/* Right: Senior Photo */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
             className="hidden lg:block"
           >
             <div className="relative">
@@ -306,7 +308,7 @@ function AnalyzerSection() {
           <div className="inline-flex rounded-xl border border-border/50 bg-card p-1.5 gap-1">
             <button
               onClick={() => switchMode("scam")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
                 mode === "scam"
                   ? "bg-primary text-primary-foreground glow-green shadow-lg shadow-primary/50 scale-105"
                   : "text-muted-foreground hover:text-foreground hover:bg-white/10 hover:scale-105 hover:shadow-md"
@@ -317,7 +319,7 @@ function AnalyzerSection() {
             </button>
             <button
               onClick={() => switchMode("help")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
                 mode === "help"
                   ? "bg-[oklch(0.6_0.2_290)] text-white shadow-lg shadow-[oklch(0.6_0.2_290)]/50 scale-105"
                   : "text-muted-foreground hover:text-foreground hover:bg-white/10 hover:scale-105 hover:shadow-md"
@@ -678,6 +680,43 @@ function AnalyzerSection() {
   );
 }
 
+/* ─── Scam Alerts Section ─── */
+function ScamAlertsSection() {
+  return (
+    <section className="py-20 md:py-28">
+      <div className="container">
+        <AnimatedSection className="mb-10">
+          <SectionLabel number="02" label="Scam Alerts" />
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h2 className="font-display font-extrabold text-3xl md:text-4xl tracking-tight text-foreground mb-2">
+                Latest Fraud Warnings
+              </h2>
+              <p className="text-muted-foreground max-w-xl">
+                Stay informed about the latest scams targeting Canadians. Data sourced from the Canadian Anti-Fraud Centre.
+              </p>
+            </div>
+            <a
+              href="https://antifraudcentre-centreantifraude.ca/index-eng.htm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="outline" size="sm" className="gap-2 rounded-lg border-border/60 hover:border-primary/30">
+                <ExternalLink className="w-3.5 h-3.5" />
+                Visit CAFC
+              </Button>
+            </a>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.1}>
+          <ScamAlertsFeed />
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
+
 /* ─── How It Works Section ─── */
 function HowItWorksSection() {
   const steps = [
@@ -715,7 +754,7 @@ function HowItWorksSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {steps.map((step, i) => (
             <AnimatedSection key={step.title} delay={i * 0.1}>
-              <div className="relative p-8 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-300 group h-full glow-card">
+              <div className="relative p-8 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-200 group h-full glow-card">
                 <div className="flex items-center gap-4 mb-5">
                   <span className="font-mono font-bold text-3xl text-primary/20 group-hover:text-primary/40 transition-colors">
                     {String(i + 1).padStart(2, "0")}
@@ -940,7 +979,7 @@ function AboutSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {values.map((value, i) => (
             <AnimatedSection key={value.title} delay={i * 0.08}>
-              <div className="p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-300 h-full glow-card">
+              <div className="p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-200 h-full glow-card">
                 <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 border border-primary/15">
                   <value.icon className="w-5 h-5 text-primary" />
                 </div>

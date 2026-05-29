@@ -14,6 +14,7 @@ import {
   CreditCard,
   Search,
 } from "lucide-react";
+import SEO from "@/components/SEO";
 import ArticleLayout, {
   ArticleSection,
   ArticleParagraph,
@@ -36,6 +37,16 @@ const tableOfContents = [
 
 export default function SafeBrowsing() {
   return (
+    <>
+    <SEO
+      title="Safe Browsing Guide for Seniors"
+      description="Learn how to browse the internet safely, recognize secure websites, shop online securely, and protect yourself on public Wi-Fi. A complete guide for seniors."
+      keywords="safe browsing seniors, secure websites, online shopping safety, public wifi security, internet safety guide"
+      canonicalPath="/guides/safe-browsing"
+      type="article"
+      publishedDate="2024-01-15"
+      modifiedDate="2026-05-01"
+    />
     <ArticleLayout
       title="Safe Browsing & Internet Safety"
       subtitle="Navigate the internet with confidence. Learn how to browse safely, shop securely, and protect your personal information online."
@@ -233,5 +244,6 @@ export default function SafeBrowsing() {
         </QuizProvider>
       </ArticleSection>
     </ArticleLayout>
+    </>
   );
 }

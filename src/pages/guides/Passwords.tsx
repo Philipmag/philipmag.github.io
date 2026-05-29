@@ -3,6 +3,7 @@
  */
 
 import { KeyRound, Shield, Eye, Lock, Fingerprint, AlertTriangle, RefreshCw } from "lucide-react";
+import SEO from "@/components/SEO";
 import ArticleLayout, {
   ArticleSection,
   ArticleParagraph,
@@ -24,6 +25,16 @@ const tableOfContents = [
 
 export default function Passwords() {
   return (
+    <>
+    <SEO
+      title="Password Security Guide for Seniors"
+      description="Learn how to create strong passwords, use password managers, and enable two-factor authentication. A step-by-step guide for seniors."
+      keywords="strong passwords seniors, password manager guide, two-factor authentication, account security, online safety"
+      canonicalPath="/guides/passwords"
+      type="article"
+      publishedDate="2024-01-15"
+      modifiedDate="2026-05-01"
+    />
     <ArticleLayout
       title="Creating & Managing Strong Passwords"
       subtitle="Learn how to create passwords that are hard to guess, easy to manage, and keep your accounts truly secure — no technical jargon required."
@@ -221,5 +232,6 @@ export default function Passwords() {
         </QuizProvider>
       </ArticleSection>
     </ArticleLayout>
+    </>
   );
 }

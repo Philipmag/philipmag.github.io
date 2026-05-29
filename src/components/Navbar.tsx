@@ -97,7 +97,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         scrolled
           ? "bg-background/90 backdrop-blur-xl border-b border-border/50"
           : "bg-transparent"
@@ -132,7 +132,7 @@ export default function Navbar() {
                     handleNavClick(link);
                   }
                 }}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 relative ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 relative ${
                   active
                     ? "text-primary font-semibold after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:bg-primary after:rounded-full shadow-md shadow-primary/20"
                     : "text-muted-foreground hover:text-foreground hover:bg-white/5 hover:shadow-sm"
@@ -144,7 +144,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 relative ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 relative ${
                   active
                     ? "text-primary font-semibold after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:bg-primary after:rounded-full shadow-md shadow-primary/20"
                     : "text-muted-foreground hover:text-foreground hover:bg-white/5 hover:shadow-sm"

@@ -26,6 +26,7 @@ import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionLabel from "@/components/SectionLabel";
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/SEO";
 
 const RESOURCES_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/resources-anime_a3a0c68c.png";
 const PPTX_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardiansCybersecurityTraining_4c8b571f(1)_c5be9772.pptx";
@@ -174,6 +175,20 @@ const categories: { value: ResourceCategory; label: string }[] = [
 ];
 
 export default function Resources() {
+  return (
+    <>
+    <SEO
+      title="Cybersecurity Resources for Seniors"
+      description="Free downloadable training materials, guides, and tools to help seniors stay safe online. Includes presentations, PDF guides, and scam awareness resources."
+      keywords="cybersecurity resources seniors, online safety training, scam awareness materials, digital literacy guides, free security tools"
+      canonicalPath="/resources"
+    />
+    <ResourcesContent />
+    </>
+  );
+}
+
+function ResourcesContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ResourceCategory>("all");
 
@@ -209,7 +224,7 @@ export default function Resources() {
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="max-w-2xl"
             >
               <div className="flex items-center gap-2 mb-6">
@@ -298,7 +313,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
   const Icon = resource.icon;
 
   return (
-    <div className="group relative flex flex-col h-full p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-300 glow-card">
+    <div className="group relative flex flex-col h-full p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-200 glow-card">
       {/* Badge */}
       {resource.badge && (
         <span

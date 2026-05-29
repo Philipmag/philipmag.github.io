@@ -14,6 +14,7 @@ import {
   Shield,
   Search,
 } from "lucide-react";
+import SEO from "@/components/SEO";
 import ArticleLayout, {
   ArticleSection,
   ArticleParagraph,
@@ -36,6 +37,16 @@ const tableOfContents = [
 
 export default function SpottingScams() {
   return (
+    <>
+    <SEO
+      title="How to Spot Scams - Guide for Seniors"
+      description="Learn to identify common scams targeting seniors including phone scams, email fraud, romance scams, and tech support scams. Protect yourself today."
+      keywords="spotting scams seniors, phone scams, romance scams, tech support scams, fraud prevention Canada"
+      canonicalPath="/guides/spotting-scams"
+      type="article"
+      publishedDate="2024-01-15"
+      modifiedDate="2026-05-01"
+    />
     <ArticleLayout
       title="Spotting Scams: A Complete Guide"
       subtitle="Learn to recognize the most common scams targeting seniors, understand the tactics scammers use, and know exactly what to do to protect yourself."
@@ -256,5 +267,6 @@ export default function SpottingScams() {
         </QuizProvider>
       </ArticleSection>
     </ArticleLayout>
+    </>
   );
 }
