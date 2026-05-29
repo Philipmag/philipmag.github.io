@@ -7,6 +7,8 @@ interface Particle {
   vy: number;
   radius: number;
   brightness: number;
+  pulseSpeed: number;
+  pulseOffset: number;
 }
 
 export function EnhancedNetworkBackground() {
@@ -19,48 +21,39 @@ export function EnhancedNetworkBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set canvas size
+    // Set canvas size to full viewport
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Create particles with varying brightness
-    const particleCount = 40;
+    // Create particles spread across the full viewport
+    const particleCount = 55;
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.1,
-        vy: (Math.random() - 0.5) * 0.1,
-        radius: Math.random() * 2 + 1,
-        brightness: Math.random() * 0.5 + 0.5,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        radius: Math.random() * 2.0 + 1.5,
+        brightness: Math.random() * 0.4 + 0.6,
+        pulseSpeed: Math.random() * 0.015 + 0.008,
+        pulseOffset: Math.random() * Math.PI * 2,
       });
     }
 
     let animationFrameId: number;
+    let time = 0;
 
     const animate = () => {
-      // Create gradient background from dark blue to lighter blue (like the reference image)
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, "rgba(15, 30, 60, 0.95)");
-      gradient.addColorStop(0.5, "rgba(20, 50, 100, 0.95)");
-      gradient.addColorStop(1, "rgba(30, 80, 150, 0.95)");
+      time++;
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Add subtle particle noise/stars
-      ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
-      for (let i = 0; i < 100; i++) {
-        const x = Math.sin(i * 12.9898 + Date.now() * 0.0001) * canvas.width;
-        const y = Math.cos(i * 78.233 + Date.now() * 0.00008) * canvas.height;
-        ctx.fillRect(x, y, 1, 1);
-      }
+      // Clear with transparent background
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
       particles.forEach((particle) => {
@@ -68,53 +61,48 @@ export function EnhancedNetworkBackground() {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Bounce off edges with smooth wrapping
-        if (particle.x - particle.radius < 0 || particle.x + particle.radius > canvas.width) {
-          particle.vx *= -1;
-          particle.x = Math.max(particle.radius, Math.min(canvas.width - particle.radius, particle.x));
-        }
-        if (particle.y - particle.radius < 0 || particle.y + particle.radius > canvas.height) {
-          particle.vy *= -1;
-          particle.y = Math.max(particle.radius, Math.min(canvas.height - particle.radius, particle.y));
-        }
+        // Wrap around edges
+        if (particle.x < -30) particle.x = canvas.width + 30;
+        if (particle.x > canvas.width + 30) particle.x = -30;
+        if (particle.y < -30) particle.y = canvas.height + 30;
+        if (particle.y > canvas.height + 30) particle.y = -30;
 
-        // Pulsing brightness effect
-        particle.brightness += (Math.random() - 0.5) * 0.1;
-        particle.brightness = Math.max(0.3, Math.min(1, particle.brightness));
+        // Smooth pulsing brightness
+        const pulse = Math.sin(time * particle.pulseSpeed + particle.pulseOffset);
+        const currentBrightness = particle.brightness + pulse * 0.2;
+        const b = Math.max(0.5, Math.min(1, currentBrightness));
 
-        // Draw particle with glow (like the reference image)
+        // Draw large outer glow (bright cyan)
+        const glowRadius = particle.radius * 8;
         const glowGradient = ctx.createRadialGradient(
-          particle.x,
-          particle.y,
-          0,
-          particle.x,
-          particle.y,
-          particle.radius * 4
+          particle.x, particle.y, 0,
+          particle.x, particle.y, glowRadius
         );
-
-        // Bright white core with blue/cyan glow
-        glowGradient.addColorStop(0, `rgba(255, 255, 255, ${particle.brightness * 0.8})`);
-        glowGradient.addColorStop(0.3, `rgba(100, 200, 255, ${particle.brightness * 0.5})`);
-        glowGradient.addColorStop(0.7, `rgba(50, 150, 255, ${particle.brightness * 0.2})`);
-        glowGradient.addColorStop(1, `rgba(50, 150, 255, 0)`);
+        glowGradient.addColorStop(0, `rgba(100, 240, 255, ${b * 0.9})`);
+        glowGradient.addColorStop(0.3, `rgba(60, 200, 255, ${b * 0.5})`);
+        glowGradient.addColorStop(0.6, `rgba(40, 160, 255, ${b * 0.2})`);
+        glowGradient.addColorStop(1, `rgba(40, 120, 255, 0)`);
 
         ctx.fillStyle = glowGradient;
-        ctx.fillRect(
-          particle.x - particle.radius * 4,
-          particle.y - particle.radius * 4,
-          particle.radius * 8,
-          particle.radius * 8
-        );
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, glowRadius, 0, Math.PI * 2);
+        ctx.fill();
 
-        // Draw bright core
-        ctx.fillStyle = `rgba(255, 255, 255, ${particle.brightness})`;
+        // Draw bright cyan core dot
+        ctx.fillStyle = `rgba(160, 240, 255, ${b * 0.95})`;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Bright white center highlight
+        ctx.fillStyle = `rgba(255, 255, 255, ${b})`;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius * 0.45, 0, Math.PI * 2);
         ctx.fill();
       });
 
       // Draw connections between nearby particles
-      const connectionDistance = 250;
+      const connectionDistance = 200;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[j].x - particles[i].x;
@@ -122,23 +110,12 @@ export function EnhancedNetworkBackground() {
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < connectionDistance) {
-            const opacity = (1 - distance / connectionDistance) * 0.4;
-            const avgBrightness = (particles[i].brightness + particles[j].brightness) / 2;
+            const proximity = 1 - distance / connectionDistance;
+            const opacity = proximity * proximity * 0.55;
+            const avgB = (particles[i].brightness + particles[j].brightness) / 2;
 
-            // Draw connection line with gradient
-            const lineGradient = ctx.createLinearGradient(
-              particles[i].x,
-              particles[i].y,
-              particles[j].x,
-              particles[j].y
-            );
-
-            lineGradient.addColorStop(0, `rgba(100, 200, 255, ${opacity * avgBrightness})`);
-            lineGradient.addColorStop(0.5, `rgba(150, 220, 255, ${opacity * avgBrightness * 0.8})`);
-            lineGradient.addColorStop(1, `rgba(100, 200, 255, ${opacity * avgBrightness})`);
-
-            ctx.strokeStyle = lineGradient;
-            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = `rgba(80, 220, 255, ${opacity * avgB})`;
+            ctx.lineWidth = proximity * 1.8;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -161,8 +138,9 @@ export function EnhancedNetworkBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full opacity-60"
-      style={{ pointerEvents: "none" }}
+      className="fixed inset-0 w-full h-full pointer-events-none"
+      style={{ zIndex: 0, opacity: 1.0 }}
+      aria-hidden="true"
     />
   );
 }

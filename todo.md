@@ -107,3 +107,6 @@
 - [x] Text size toggle and high contrast mode verified working (already implemented)
 - [x] Fix blank favicon in browser tabs (multi-size ICO + PNG fallbacks)
 - [x] Fix broken senior video call image (re-uploaded to CDN)
+- [x] Fix animated network background in Learn section
+- [x] Extend animated network background to entire website (global)
+- [x] Boost network background visibility with bright cyan particles and higher opacity

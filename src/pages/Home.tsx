@@ -43,8 +43,6 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import TrainingSlideshow from "@/components/TrainingSlideshow";
-import { CybersecurityWebBackground } from "@/components/CybersecurityWebBackground";
-import { EnhancedNetworkBackground } from "@/components/EnhancedNetworkBackground";
 import ScamAlertsFeed from "@/components/ScamAlertsFeed";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/hero-anime_9f6f8c56.png";
@@ -790,8 +788,7 @@ function LearningSection() {
   return (
     <section id="learn" className="relative py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[oklch(0.15_0.03_270)] to-background" />
-      {/* Enhanced Network Background */}
-      <EnhancedNetworkBackground />
+
       {/* Animated Mantra Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
         <div className="text-center">

@@ -8,6 +8,7 @@ import { ToastProvider } from "./components/Toast";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { SkipToContent } from "./components/SkipToContent";
 import { PageProgress } from "./components/PageProgress";
+import { EnhancedNetworkBackground } from "./components/EnhancedNetworkBackground";
 import Home from "./pages/Home";
 import Resources from "./pages/Resources";
 import EmailBasics from "./pages/guides/EmailBasics";
@@ -42,8 +43,11 @@ function App() {
           <TooltipProvider>
             <SkipToContent />
             <PageProgress />
+            <EnhancedNetworkBackground />
             <Toaster />
-            <Router />
+            <div className="relative z-10">
+              <Router />
+            </div>
             <ScrollToTop />
           </TooltipProvider>
         </ToastProvider>
