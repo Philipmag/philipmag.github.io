@@ -110,3 +110,4 @@
 - [x] Fix animated network background in Learn section
 - [x] Extend animated network background to entire website (global)
 - [x] Boost network background visibility with bright cyan particles and higher opacity
+- [x] Fix network background hidden by page bg-background — removed opaque background from page root divs

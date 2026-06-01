@@ -52,8 +52,9 @@ export function EnhancedNetworkBackground() {
     const animate = () => {
       time++;
 
-      // Clear with transparent background
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Fill with the site's dark background color (so canvas IS the background)
+      ctx.fillStyle = 'oklch(0.13 0.03 270)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
       particles.forEach((particle) => {
@@ -127,6 +128,7 @@ export function EnhancedNetworkBackground() {
       animationFrameId = requestAnimationFrame(animate);
     };
 
+    // Draw initial frame synchronously so background is visible immediately on mount
     animate();
 
     return () => {
@@ -139,7 +141,7 @@ export function EnhancedNetworkBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 0, opacity: 1.0 }}
+      style={{ zIndex: 1, opacity: 1.0 }}
       aria-hidden="true"
     />
   );
