@@ -1,5 +1,7 @@
 # Digital Guardians — Safe and Savvy Seniors
 
+[![CI](https://github.com/Philipmag/philipmag.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/Philipmag/philipmag.github.io/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A modern, AI-powered web application designed to help seniors stay safe online. Digital Guardians provides scam detection, cybersecurity education, and interactive learning resources to build digital confidence.
 
 **Live Site:** https://philipmag.github.io  
