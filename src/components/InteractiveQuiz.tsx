@@ -55,9 +55,9 @@ export function InteractiveQuiz({
   const isCorrect = selectedIndex === correctIndex;
 
   return (
-    <div className="p-6 rounded-xl border border-[oklch(0.6_0.2_290)]/20 bg-[oklch(0.6_0.2_290)]/5 mb-6">
+    <div className="p-6 rounded-xl border border-[rgb(100,80,200)]/20 bg-[rgb(100,80,200)]/5 mb-6">
       <p className="font-display font-bold text-sm text-foreground mb-4">
-        <span className="text-[oklch(0.6_0.2_290)] mr-1.5">Q.</span> {question}
+        <span className="text-[rgb(100,80,200)] mr-1.5">Q.</span> {question}
       </p>
 
       <div className="space-y-2 mb-4">
@@ -204,7 +204,7 @@ export function QuizScoreboard() {
         </div>
         <div className="w-full h-2.5 rounded-full bg-border/30 overflow-hidden">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-primary to-[oklch(0.6_0.2_290)]"
+            className="h-full rounded-full bg-gradient-to-r from-primary to-[rgb(100,80,200)]"
             initial={{ width: 0 }}
             animate={{ width: `${totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0}%` }}
             transition={{ duration: 0.5, ease: "easeOut" }}

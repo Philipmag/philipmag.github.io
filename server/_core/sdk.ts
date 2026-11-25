@@ -82,6 +82,16 @@ const createOAuthHttpClient = (): AxiosInstance =>
     timeout: AXIOS_TIMEOUT_MS,
   });
 
+// In-memory cache: avoid DB read for recently authenticated users
+// The cache entry expires after 5 minutes so profile changes propagate quickly
+const userCache = new Map<string, { user: User; cachedAt: number }>();
+const USER_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+// In-memory throttle: skip lastSignedIn DB write if we already wrote it within the last hour
+// This eliminates one DB round-trip per request for active logged-in users
+const lastSignedInWriteCache = new Map<string, number>();
+const LAST_SIGNED_IN_THROTTLE_MS = 60 * 60 * 1000; // 1 hour
+
 class SDKServer {
   private readonly client: AxiosInstance;
   private readonly oauthService: OAuthService;
@@ -268,6 +278,21 @@ class SDKServer {
 
     const sessionUserId = session.openId;
     const signedInAt = new Date();
+
+    // Check in-memory cache first to avoid a DB round-trip on every request
+    const cached = userCache.get(sessionUserId);
+    if (cached && Date.now() - cached.cachedAt < USER_CACHE_TTL_MS) {
+      // Still throttle the lastSignedIn write
+      const lastWrite = lastSignedInWriteCache.get(sessionUserId) ?? 0;
+      if (Date.now() - lastWrite > LAST_SIGNED_IN_THROTTLE_MS) {
+        lastSignedInWriteCache.set(sessionUserId, Date.now());
+        db.upsertUser({ openId: sessionUserId, lastSignedIn: signedInAt }).catch(
+          (err) => console.warn("[Auth] lastSignedIn update failed", err)
+        );
+      }
+      return cached.user;
+    }
+
     let user = await db.getUserByOpenId(sessionUserId);
 
     // If user not in DB, sync from OAuth server automatically
@@ -292,10 +317,19 @@ class SDKServer {
       throw ForbiddenError("User not found");
     }
 
-    await db.upsertUser({
-      openId: user.openId,
-      lastSignedIn: signedInAt,
-    });
+    // Populate cache so subsequent requests within 5 min skip the DB read
+    userCache.set(user.openId, { user, cachedAt: Date.now() });
+
+    // Throttle the lastSignedIn write to at most once per hour per user
+    // This avoids a DB round-trip on every single request
+    const lastWrite = lastSignedInWriteCache.get(user.openId) ?? 0;
+    if (Date.now() - lastWrite > LAST_SIGNED_IN_THROTTLE_MS) {
+      lastSignedInWriteCache.set(user.openId, Date.now());
+      // Fire-and-forget: don't await so it doesn't block the response
+      db.upsertUser({ openId: user.openId, lastSignedIn: signedInAt }).catch(
+        (err) => console.warn("[Auth] lastSignedIn update failed", err)
+      );
+    }
 
     return user;
   }

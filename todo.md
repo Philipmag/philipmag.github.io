@@ -111,3 +111,94 @@
 - [x] Extend animated network background to entire website (global)
 - [x] Boost network background visibility with bright cyan particles and higher opacity
 - [x] Fix network background hidden by page bg-background — removed opaque background from page root divs
+
+- [x] Fix blank white page on Safari iOS — replaced all oklch() CSS values with RGB fallbacks for cross-browser compatibility
+- [x] Fix canvas background color from oklch to rgb for Safari iOS canvas support
+- [x] Add prefers-reduced-motion support to network background animation
+
+## Calendar & Training Sessions Feature
+- [x] Add `events` table to drizzle schema (id, title, description, date, location, capacity, type)
+- [x] Add `trainingRequests` table to drizzle schema (id, name, email, phone, preferredDate, message, status, createdAt)
+- [x] Run pnpm db:push to migrate schema
+- [x] Add server DB helpers for events and training requests
+- [x] Add tRPC procedures: list events, get event, submit training request
+- [x] Seed initial upcoming events in the database
+- [x] Build Calendar page with upcoming events list and tab switcher
+- [x] Build Training Request form with name, email, phone, preferred date, topics, message
+- [x] Add owner notification on new training request submission
+- [x] Add Calendar link to Navbar (Events)
+- [x] Add Calendar route to App.tsx (/calendar)
+- [x] Write vitest tests for calendar procedures (11 tests)
+- [x] Add monthly calendar grid view to the Events page (enhancement — already implemented in Calendar.tsx)
+- [x] Save checkpoint and publish
+
+## ## Calendar Updates — June 21, 2026
+- [x] Fix location from Barrie to Peterborough, Ontario across the site (index.html, SEO, structured data)
+- [x] Update events DB: add `dateConfirmed` boolean and `sessionSlot` field (morning/afternoon) to schema
+- [x] Clear existing seeded events and re-seed: June 21, 2026 morning + afternoon as confirmed; other events as TBD
+- [x] Add `eventSignups` table for session registrations (name, email, phone, session preference, eventId)
+- [x] Add tRPC procedure: signUpForSession (public, with validation)
+- [x] Update Calendar page: show June 21, 2026 as confirmed with sign-up button; show other events as "Date TBD"
+- [x] Add session sign-up modal/form on the Calendar page for June 21 sessions
+- [x] Notify owner on new session sign-up
+- [x] Run tests and save checkpoint (33 tests passing)
+
+## Email Receipt for Session Sign-Up
+- [x] Research available email sending API in Manus built-in APIs (no built-in user email; using Resend external service)
+- [~] Add sendConfirmationEmail helper to server (DEFERRED — requires Resend API key)
+- [~] Update signUpForEvent procedure to send email receipt (DEFERRED)
+- [~] Email receipt content (DEFERRED)
+- [x] Update sign-up modal UI with polished success confirmation screen (green checkmark, session details, what to bring, contact info)
+- [x] Save checkpoint and publish
+
+## Event Date Update — June 21 → June 28, 2026
+- [x] Update seed-events-v2.mjs: change June 21 timestamps to June 28, 2026
+- [x] Re-run seed script to update database events
+- [x] Update Calendar.tsx: all "June 21" text references changed to "June 28, 2026"
+- [x] Create church bulletin announcement (PDF) for June 28 event with full program/agenda
+- [x] Create promotional poster for June 28 event (similar style to June 22 poster)
+- [x] Run tests (33 passing) and save checkpoint
+
+## Resources Page Update — June 28, 2026
+- [x] Upload DigitalGuardians_Cybersecurity_2026.pptx to CDN and replace Seniors Cybersecurity Training resource
+- [x] Upload DigitalSecurity_Seniors_2026_Redesigned.pptx to CDN and replace Digital Security for Seniors resource
+- [x] Upload Staying_Connected_Seniors_Guide.pptx to CDN and replace Seniors Cybersecurity & Video Skills resource
+- [x] Upload AIforSeniors_ChatGPT_Guide_2026_Redesigned.pptx to CDN and add as new AI for Seniors resource
+- [x] Update all descriptions to accurately reflect actual file content
+- [x] Run tests (33 passing) and save checkpoint
+
+## Performance Optimisation
+- [x] Code-split all routes with React.lazy + Suspense (eliminate 1.1MB monolithic bundle)
+- [x] Add manual Rollup chunks for vendor libs (framer-motion, recharts, radix-ui, trpc)
+- [x] Reduce canvas particle count and O(n²) connection loop in EnhancedNetworkBackground
+- [x] Add loading="lazy" + decoding="async" to all below-fold images
+- [x] Add fetchpriority="high" + loading="eager" to LCP hero image
+- [x] Add <link rel="preload"> for hero image in index.html
+- [x] Add font-display: swap and subset Google Fonts URL
+- [x] Isolate framer-motion into its own lazy chunk (not on critical path)
+- [x] Add will-change: transform to animated canvas element
+
+## Server-Side Performance Fix (June 28)
+- [x] Add in-memory user cache (5-min TTL) to skip DB read on every authenticated request
+- [x] Throttle lastSignedIn DB write to fire-and-forget, max once per hour per user
+- [x] Add gzip compression middleware (compression npm package) to cut HTML/JS/CSS payload ~75%
+
+## Mobile Performance Optimisation — July 2026
+- [x] Disable canvas animation on mobile, use static CSS gradient instead
+- [x] Replace backdrop-blur-xl on Navbar with solid semi-transparent bg on mobile
+- [x] Replace AnimatedSection (framer-motion) with pure CSS IntersectionObserver animation
+- [x] Hide expensive blur orbs on mobile (hero section)
+- [x] Remove unused useAuth() call from Home page
+- [x] Add lazy loading to all non-first TrainingSlideshow images
+
+## SEO & Full-Stack Performance Audit — July 2026
+- [x] Measure live TTFB, FCP, LCP on mobile/tablet/desktop
+- [x] Audit Google indexing status and keyword rankings
+- [x] Fix meta tags (title, description, og:image) on all pages
+- [x] Add sitemap.xml and robots.txt
+- [x] Add JSON-LD structured data (Organization schema)
+- [x] Fix canonical URL (www vs non-www redirect)
+- [x] Add preconnect + dns-prefetch for CDN and font origins
+- [x] Fix DB connection pool (eliminates 300-800ms TCP handshake per request)
+- [x] Fix asset caching (1-year immutable cache for hashed JS/CSS bundles)
+- [x] Add staleTime to auth.me query (eliminates repeat DB calls on navigation)

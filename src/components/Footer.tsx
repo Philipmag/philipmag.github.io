@@ -1,118 +1,145 @@
 import { Link } from "wouter";
-import { Shield } from "lucide-react";
+import {
+  ArrowUpRight,
+  CalendarDays,
+  Heart,
+  Mail,
+  MapPin,
+  Phone,
+  Shield,
+  Sparkles,
+} from "lucide-react";
 
-const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo5_479e26ca.png";
+const LOGO_URL =
+  "/manus-storage/digital-guardians-logo-restored-web_49a53968.webp";
+
+const quickLinks = [
+  { label: "Check a message", href: "/#analyzer" },
+  { label: "Learn at your pace", href: "/#learn" },
+  { label: "Workshops & training", href: "/calendar" },
+  { label: "Resource library", href: "/resources" },
+  { label: "About Digital Guardians", href: "/about" },
+];
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border/50 bg-background">
-      <div className="container py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="logo-neon-wrapper w-10 h-10 shrink-0">
-                <img src={LOGO_URL} alt="Digital Guardians" className="logo-neon-img w-10 h-10 object-contain" />
-              </div>
-              <span className="font-display font-bold text-lg tracking-tight text-foreground">
-                Digital Guardians
-              </span>
-            </Link>
-            <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
-              A nonprofit organization dedicated to helping seniors feel confident
-              and safe online. Made with care for seniors everywhere.
-            </p>
-            <div className="flex items-center gap-4 mt-6">
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                <Shield className="w-3 h-3" />
-                Nonprofit
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-muted px-3 py-1.5 rounded-full border border-border/50">
-                Always Free
-              </span>
-            </div>
-          </div>
+    <footer className="clay-footer relative isolate overflow-hidden border-t border-[rgb(146,194,255)]/16 bg-[rgb(5,16,60)]">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_8%_4%,rgba(68,143,255,0.28),transparent_25%),radial-gradient(circle_at_91%_28%,rgba(78,104,255,0.25),transparent_28%),linear-gradient(180deg,rgb(8,28,92),rgb(5,16,60))]" />
+      <div className="pointer-events-none absolute -left-20 bottom-0 -z-10 h-64 w-64 rounded-full border border-primary/10" />
+      <div className="pointer-events-none absolute right-[14%] top-12 -z-10 h-28 w-28 rounded-full border border-[rgb(145,202,255)]/20" />
+      <div aria-hidden="true" className="footer-aurora footer-aurora-one" />
+      <div aria-hidden="true" className="footer-aurora footer-aurora-two" />
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-display font-semibold text-sm mb-4 text-foreground">
-              Quick Links
-            </h4>
-            <ul className="space-y-3">
-              {[
-                { label: "AI Assistant", href: "/#analyzer" },
-                { label: "Learn & Practice", href: "/#learn" },
-                { label: "Resources", href: "/resources" },
-                { label: "About Us", href: "/about" },
-                { label: "Contact Us", href: "/about#contact" },
-              ].map((link) => (
-                <li key={link.href}>
-                  {link.href.startsWith("/#") ? (
-                    <a
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
+      <div className="container py-12 md:py-16">
+        <div className="clay-surface rounded-[2rem] border p-5 sm:p-8 lg:p-10">
+          <div className="grid gap-10 lg:grid-cols-[1.35fr_0.8fr_0.9fr] lg:gap-12">
+            <div>
+              <Link href="/" className="inline-flex items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(5,16,60)]">
+                <span className="logo-clay-wrapper h-11 w-11 shrink-0">
+                  <img
+                    src={LOGO_URL}
+                    alt="Digital Guardians"
+                    className="logo-clay-img h-11 w-11 object-contain"
+                  />
+                </span>
+                <span className="font-display text-xl font-extrabold tracking-tight text-white">
+                  Digital Guardians
+                </span>
+              </Link>
+
+              <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">
+                A calm, local place for seniors to build confidence online, check
+                suspicious messages, and get patient support with everyday technology.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary">
+                  <Shield className="h-3.5 w-3.5" />
+                  Nonprofit
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-xs font-bold text-slate-200">
+                  <Heart className="h-3.5 w-3.5 text-[rgb(174,209,255)]" />
+                  Always free
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-xs font-bold text-slate-200">
+                  <MapPin className="h-3.5 w-3.5 text-[rgb(161,197,255)]" />
+                  Peterborough, ON
+                </span>
+              </div>
+
+              <div className="mt-8 max-w-md rounded-2xl border border-primary/20 clay-inset bg-[linear-gradient(135deg,rgba(65,130,246,0.25),rgba(255,255,255,0.035))] p-4">
+                <div className="flex gap-3">
+                  <div className="mt-0.5 rounded-xl border border-primary/20 bg-primary/10 p-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-display text-sm font-bold text-white">Need a human next step?</p>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-300">Contact us for a workshop, one-on-one guidance, or a question you would rather ask in person.</p>
+                    <Link href="/calendar" className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-primary transition hover:text-[rgb(193,220,255)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                      Explore local support <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <nav aria-label="Footer navigation">
+              <p className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">Explore</p>
+              <ul className="mt-5 space-y-3">
+                {quickLinks.map((link) => (
+                  <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      className="inline-flex items-center gap-2 text-sm text-slate-300 transition hover:translate-x-0.5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
                       {link.label}
                     </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          {/* Report */}
-          <div>
-            <h4 className="font-display font-semibold text-sm mb-4 text-foreground">
-              Report a Scam
-            </h4>
-            <ul className="space-y-3">
-              <li>
+            <div>
+              <p className="font-display text-sm font-bold uppercase tracking-[0.14em] text-white">Support & report</p>
+              <div className="mt-5 space-y-3">
                 <a
-                  href="https://reportfraud.ftc.gov"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  href="mailto:info@digitalguards.ca"
+                  className="group flex items-center gap-3 rounded-xl border border-white/10 bg-black/10 p-3 transition hover:border-primary/30 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  FTC (USA)
+                  <span className="rounded-lg bg-white/[0.08] p-2 text-primary"><Mail className="h-4 w-4" /></span>
+                  <span className="min-w-0"><span className="block text-xs font-bold uppercase tracking-wide text-slate-400">Email us</span><span className="block truncate text-sm font-semibold text-white">info@digitalguards.ca</span></span>
                 </a>
-              </li>
-              <li>
+                <a
+                  href="tel:+17057725140"
+                  className="group flex items-center gap-3 rounded-xl border border-white/10 bg-black/10 p-3 transition hover:border-primary/30 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <span className="rounded-lg bg-white/[0.08] p-2 text-primary"><Phone className="h-4 w-4" /></span>
+                  <span><span className="block text-xs font-bold uppercase tracking-wide text-slate-400">Call us</span><span className="block text-sm font-semibold text-white">+1 (705) 772-5140</span></span>
+                </a>
+              </div>
+
+              <div className="mt-6 border-t border-white/10 pt-5">
+                <p className="text-sm font-bold text-white">Think you have been scammed?</p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-300">Pause contact, call your bank using a trusted number, then report it.</p>
                 <a
                   href="https://www.antifraudcentre.ca"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-primary transition hover:text-[rgb(193,220,255)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
-                  Canadian Anti-Fraud Centre
+                  Canadian Anti-Fraud Centre <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
-              </li>
-              <li>
-                <span className="text-sm text-muted-foreground">
-                  Local Police Non-Emergency Line
-                </span>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Digital Guardians. A nonprofit organization.
-          </p>
-          <div className="flex flex-col md:flex-row items-center gap-4 text-xs text-muted-foreground">
-            <a href="mailto:info@digitalguards.ca" className="hover:text-primary transition-colors">info@digitalguards.ca</a>
-            <span className="hidden md:inline">•</span>
-            <a href="tel:+17057725140" className="hover:text-primary transition-colors">+1 (705) 772-5140</a>
-            <span className="hidden md:inline">•</span>
-            <span>digitalguards.ca</span>
+          <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-5 text-xs text-slate-400 md:flex-row md:items-center md:justify-between">
+            <p>© {new Date().getFullYear()} Digital Guardians. Built with care for seniors.</p>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <span className="inline-flex items-center gap-1.5"><Shield className="h-3.5 w-3.5 text-primary" /> Privacy-led guidance</span>
+              <Link href="/calendar" className="inline-flex items-center gap-1.5 transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"><CalendarDays className="h-3.5 w-3.5 text-[rgb(161,197,255)]" /> Community workshops</Link>
+            </div>
           </div>
         </div>
       </div>

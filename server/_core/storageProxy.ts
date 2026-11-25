@@ -1,0 +1,54 @@
+import type { Express } from "express";
+import { ENV } from "./env";
+
+/**
+ * Resolves private WebDev asset paths to short-lived Forge storage URLs.
+ * This keeps source files outside the repository while allowing the browser
+ * to request `/manus-storage/<key>` as a normal same-origin asset.
+ */
+export function registerStorageProxy(app: Express) {
+  app.get("/manus-storage/*", async (req, res) => {
+    const key = (req.params as { 0?: string })[0];
+
+    if (!key) {
+      res.status(400).send("Missing storage key");
+      return;
+    }
+
+    if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
+      res.status(500).send("Storage proxy not configured");
+      return;
+    }
+
+    try {
+      const forgeUrl = new URL(
+        "v1/storage/presign/get",
+        `${ENV.forgeApiUrl.replace(/\/+$/, "")}/`
+      );
+      forgeUrl.searchParams.set("path", key);
+
+      const forgeResponse = await fetch(forgeUrl, {
+        headers: { Authorization: `Bearer ${ENV.forgeApiKey}` },
+      });
+
+      if (!forgeResponse.ok) {
+        const body = await forgeResponse.text().catch(() => "");
+        console.error(`[StorageProxy] Forge error: ${forgeResponse.status} ${body}`);
+        res.status(502).send("Storage backend error");
+        return;
+      }
+
+      const { url } = (await forgeResponse.json()) as { url?: string };
+      if (!url) {
+        res.status(502).send("Storage backend returned an empty URL");
+        return;
+      }
+
+      res.set("Cache-Control", "private, max-age=300");
+      res.redirect(307, url);
+    } catch (error) {
+      console.error("[StorageProxy] failed:", error);
+      res.status(502).send("Storage proxy error");
+    }
+  });
+}

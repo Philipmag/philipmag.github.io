@@ -1,5 +1,5 @@
 /*
- * Design: Yeldra-inspired — Deep blue/black with neon green accents, anime illustrations
+ * Design: Championship Night Clay — cobalt depth, raised blue surfaces, surreal editorial illustrations
  * Page: Home — Main landing page with all sections
  */
 
@@ -40,19 +40,16 @@ import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import SectionLabel from "@/components/SectionLabel";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import TrainingSlideshow from "@/components/TrainingSlideshow";
 import ScamAlertsFeed from "@/components/ScamAlertsFeed";
 
-const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/hero-anime_9f6f8c56.png";
-const LEARNING_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/learning-anime_097893cd.png";
-const ANALYZER_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/analyzer-anime_00b27eab.png";
-const EMERGENCY_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/emergency-anime_147a2006.png";
+const HERO_IMG = "/manus-storage/coffee-shop-guidance-web_f03beea5.webp";
+const LEARNING_IMG = "/manus-storage/library-circle-web_27968e1f.webp";
+const COMMUNITY_IMG = "/manus-storage/garden-bench-confidence-web_de2755d5.webp";
+const EMERGENCY_IMG = "/manus-storage/safety-beacon-web_5785753e.webp";
 
 export default function Home() {
-  let { user, loading, error, isAuthenticated, logout } = useAuth();
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -74,103 +71,69 @@ export default function Home() {
 /* ─── Hero Section ─── */
 function HeroSection() {
   return (
-    <section className="relative overflow-hidden min-h-[90vh] flex items-center">
-      {/* Animated background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-grid opacity-30" />
-        <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-primary/10 blur-[120px]" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 rounded-full bg-[oklch(0.6_0.2_290)]/10 blur-[120px]" />
-      </div>
+    <section className="relative isolate flex min-h-[86vh] items-center overflow-hidden">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_16%_24%,rgba(48,126,255,0.30),transparent_27%),radial-gradient(circle_at_84%_72%,rgba(78,102,255,0.23),transparent_31%),linear-gradient(135deg,rgba(5,16,60,0.78),rgba(10,38,115,0.80)_48%,rgba(5,16,60,0.78))]" />
+      <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-primary/55 to-transparent" />
+      <div className="absolute left-[8%] top-[28%] -z-10 h-40 w-40 rounded-full border border-primary/15" />
+      <div className="absolute bottom-[12%] right-[11%] -z-10 h-56 w-56 rounded-full border border-[rgb(126,166,255)]/16" />
 
-      <div className="container relative z-10 py-32 md:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Content */}
+      <div className="container py-28 md:py-36">
+        <div className="grid items-center gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:gap-20">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <div className="flex items-center gap-2 mb-8">
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                <Shield className="w-3 h-3" />
-                Nonprofit Organization
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.6_0.2_290)] bg-[oklch(0.6_0.2_290)]/10 px-3 py-1.5 rounded-full border border-[oklch(0.6_0.2_290)]/20">
-                <Sparkles className="w-3 h-3" />
-                AI-Powered
-              </span>
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3.5 py-2 text-xs font-bold uppercase tracking-[0.14em] text-primary">
+              <Shield className="h-3.5 w-3.5" />
+              Peterborough’s digital safety guide
             </div>
-
-            <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight leading-[1.05] mb-6">
-              Safe and Savvy{" "}
-              <span className="text-gradient-green">Seniors</span>
+            <h1 className="carved-text max-w-3xl font-display text-5xl font-extrabold leading-[0.98] tracking-[-0.04em] text-foreground md:text-6xl lg:text-7xl">
+              Feel safer online, <span className="text-gradient-green">one clear step</span> at a time.
             </h1>
-
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl mb-4">
-              Your friendly guide to staying safe online. Let's check messages
-              together and build your digital confidence.
+            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+              Digital Guardians gives older adults practical, judgment-free support for recognizing scams, protecting accounts, and using everyday technology with confidence.
             </p>
-
-            <p className="text-sm text-muted-foreground/70 mb-10">
-              You're doing the right thing by checking — scams are getting harder to spot.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href="#analyzer">
-                <Button
-                  size="lg"
-                  className="gap-2 text-base px-8 h-13 rounded-xl font-semibold glow-green"
-                >
-                  <Search className="w-4 h-4" />
-                  Check a Message
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <a href="#analyzer" className="inline-flex">
+                <Button size="lg" className="h-14 w-full gap-2 rounded-xl px-7 text-base font-extrabold clay-button shadow-[0_10px_28px_rgba(22,94,211,0.30)] sm:w-auto">
+                  <Search className="h-5 w-5" />
+                  Check a message
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
-              <Link href="/resources">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="gap-2 text-base px-8 h-13 rounded-xl font-semibold border-border/60 hover:bg-white/5 hover:border-primary/30"
-                >
-                  <BookOpen className="w-4 h-4" />
-                  Browse Resources
+              <Link href="/calendar">
+                <Button variant="outline" size="lg" className="clay-inset h-14 w-full gap-2 rounded-xl border-white/15 px-7 text-base font-bold text-foreground hover:border-primary/40 sm:w-auto">
+                  <Users className="h-5 w-5 text-primary" />
+                  Find a workshop
                 </Button>
               </Link>
             </div>
-
-            {/* Trust indicators */}
-            <div className="flex items-center gap-6 mt-12 pt-8 border-t border-border/30">
-              <div>
-                <p className="font-display font-bold text-2xl text-foreground">100%</p>
-                <p className="text-xs text-muted-foreground">Free to Use</p>
-              </div>
-              <div className="w-px h-10 bg-border/30" />
-              <div>
-                <p className="font-display font-bold text-2xl text-foreground">AI</p>
-                <p className="text-xs text-muted-foreground">Powered Analysis</p>
-              </div>
-              <div className="w-px h-10 bg-border/30" />
-              <div>
-                <p className="font-display font-bold text-2xl text-foreground">24/7</p>
-                <p className="text-xs text-muted-foreground">Available</p>
-              </div>
+            <div className="mt-10 grid max-w-2xl gap-3 border-t border-white/10 pt-6 sm:grid-cols-3">
+              <div><p className="text-sm font-bold text-foreground">Free support</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">Simple guidance without the jargon.</p></div>
+              <div className="border-white/10 sm:border-l sm:pl-5"><p className="text-sm font-bold text-foreground">Private by design</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">Never share your passwords or banking details.</p></div>
+              <div className="border-white/10 sm:border-l sm:pl-5"><p className="text-sm font-bold text-foreground">Built for seniors</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">Patient, practical, and always respectful.</p></div>
             </div>
           </motion.div>
 
-          {/* Right: Senior Photo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
-            className="hidden lg:block"
+            transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.08 }}
+            className="relative mx-auto w-full max-w-xl"
           >
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-[oklch(0.6_0.2_290)]/20 blur-xl" />
-              <div className="relative rounded-2xl overflow-hidden border border-border/50 glow-card">
-                <img
-                  src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-at-desk-1-eHQ2rN7tcYup86KCyELn48.webp"
-                  alt="Senior woman confidently using a laptop"
-                  className="w-full h-auto"
-                />
+            <div className="absolute -inset-5 rounded-[2rem] bg-gradient-to-br from-[rgb(79,151,255)]/24 via-transparent to-[rgb(91,112,255)]/25 blur-2xl" />
+            <div className="clay-surface relative overflow-hidden rounded-[1.75rem] border p-3">
+              <img
+                src={HERO_IMG}
+                alt="Two women receiving friendly digital guidance together at a café, with luminous blue stars around their tablet"
+                className="aspect-[1.15/1] w-full rounded-[1.2rem] object-cover"
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
+              />
+              <div className="absolute bottom-7 left-7 right-7 clay-inset rounded-2xl border border-white/15 p-4 md:left-8 md:right-auto md:max-w-[19rem]">
+                <div className="flex items-start gap-3"><div className="rounded-xl bg-primary/15 p-2"><ShieldAlert className="h-5 w-5 text-primary" /></div><div><p className="text-sm font-extrabold text-foreground">Guidance you can trust</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">Pause, ask questions, and take the next safe step at your own pace.</p></div></div>
               </div>
             </div>
           </motion.div>
@@ -184,6 +147,8 @@ function HeroSection() {
 type AIMode = "scam" | "help";
 
 type AnalysisResult = {
+  source: "ai" | "safety-check";
+  privacyProtected: boolean;
   riskLevel: "safe" | "suspicious" | "dangerous";
   confidence: number;
   summary: string;
@@ -193,6 +158,8 @@ type AnalysisResult = {
 };
 
 type TechHelpResult = {
+  source: "ai" | "quick-guide";
+  privacyProtected: boolean;
   title: string;
   difficulty: "beginner" | "intermediate" | "advanced";
   estimatedTime: string;
@@ -218,15 +185,15 @@ function AnalyzerSection() {
     onSuccess: (data) => setHelpResult(data as TechHelpResult),
   });
 
-  const handleAnalyze = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAnalyze = (event: React.FormEvent) => {
+    event.preventDefault();
     if (!message.trim()) return;
     setScamResult(null);
     analyzeMutation.mutate({ message: message.trim() });
   };
 
-  const handleTechHelp = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleTechHelp = (event: React.FormEvent) => {
+    event.preventDefault();
     if (!question.trim()) return;
     setHelpResult(null);
     techHelpMutation.mutate({ question: question.trim() });
@@ -240,41 +207,32 @@ function AnalyzerSection() {
 
   const riskConfig = {
     safe: {
-      bg: "bg-emerald-950/50",
-      border: "border-emerald-500/30",
+      badge: "bg-emerald-400/15 text-emerald-200 border-emerald-300/25",
+      panel: "border-emerald-300/25 bg-emerald-950/35",
       icon: CheckCircle,
-      iconColor: "text-emerald-400",
-      titleColor: "text-emerald-300",
-      textColor: "text-emerald-300/80",
-      badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-      title: "Likely Safe",
+      iconColor: "text-emerald-300",
+      title: "No obvious scam signs found",
     },
     suspicious: {
-      bg: "bg-amber-950/50",
-      border: "border-amber-500/30",
+      badge: "bg-amber-300/15 text-amber-100 border-amber-200/25",
+      panel: "border-amber-200/25 bg-amber-950/35",
       icon: AlertTriangle,
-      iconColor: "text-amber-400",
-      titleColor: "text-amber-300",
-      textColor: "text-amber-300/80",
-      badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-      title: "Suspicious \u2014 Be Careful",
+      iconColor: "text-amber-200",
+      title: "Take a closer look",
     },
     dangerous: {
-      bg: "bg-red-950/50",
-      border: "border-red-500/30",
+      badge: "bg-red-400/15 text-red-100 border-red-300/25",
+      panel: "border-red-300/25 bg-red-950/35",
       icon: ShieldAlert,
-      iconColor: "text-red-400",
-      titleColor: "text-red-300",
-      textColor: "text-red-300/80",
-      badgeBg: "bg-red-500/20 text-red-300 border-red-500/30",
-      title: "Likely a Scam \u2014 Do Not Engage",
+      iconColor: "text-red-200",
+      title: "Likely a scam — do not engage",
     },
   };
 
   const difficultyConfig = {
-    beginner: { color: "text-emerald-400", bg: "bg-emerald-500/20 border-emerald-500/30" },
-    intermediate: { color: "text-amber-400", bg: "bg-amber-500/20 border-amber-500/30" },
-    advanced: { color: "text-red-400", bg: "bg-red-500/20 border-red-500/30" },
+    beginner: "bg-emerald-400/15 text-emerald-200 border-emerald-300/25",
+    intermediate: "bg-amber-300/15 text-amber-100 border-amber-200/25",
+    advanced: "bg-red-400/15 text-red-100 border-red-300/25",
   };
 
   const quickQuestions = [
@@ -284,395 +242,184 @@ function AnalyzerSection() {
     "How do I make text bigger on my screen?",
   ];
 
+  const isAnalyzing = analyzeMutation.isPending || techHelpMutation.isPending;
+
   return (
-    <section id="analyzer" className="relative py-24 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-[oklch(0.15_0.03_270)] to-background" />
+    <section id="analyzer" className="relative isolate overflow-hidden py-20 md:py-28">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_12%,rgba(46,125,255,0.25),transparent_27%),radial-gradient(circle_at_88%_88%,rgba(95,111,255,0.23),transparent_31%),linear-gradient(180deg,rgba(5,16,60,0.84),rgba(10,38,115,0.86)_48%,rgba(5,16,60,0.84))]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
-      <div className="container relative z-10">
-        {/* Section Header */}
-        <AnimatedSection className="text-center mb-12">
-          <SectionLabel number="01" label="AI Assistant" />
-          <h2 className="font-display font-extrabold text-3xl md:text-4xl tracking-tight mb-4 text-foreground">
-            Your Personal <span className="text-gradient-green">AI Helper</span>
-          </h2>
-          <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Two powerful tools in one: check suspicious messages for scams, or ask for
-            step-by-step help with any technology question.
-          </p>
-        </AnimatedSection>
-
-        {/* Mode Tabs */}
-        <AnimatedSection delay={0.05} className="flex justify-center mb-12">
-          <div className="inline-flex rounded-xl border border-border/50 bg-card p-1.5 gap-1">
-            <button
-              onClick={() => switchMode("scam")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
-                mode === "scam"
-                  ? "bg-primary text-primary-foreground glow-green shadow-lg shadow-primary/50 scale-105"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/10 hover:scale-105 hover:shadow-md"
-              }`}
-            >
-              <Shield className="w-4 h-4" />
-              Analyze a Message
-            </button>
-            <button
-              onClick={() => switchMode("help")}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
-                mode === "help"
-                  ? "bg-[oklch(0.6_0.2_290)] text-white shadow-lg shadow-[oklch(0.6_0.2_290)]/50 scale-105"
-                  : "text-muted-foreground hover:text-foreground hover:bg-white/10 hover:scale-105 hover:shadow-md"
-              }`}
-            >
-              <HelpCircle className="w-4 h-4" />
-              Ask AI for Help
-            </button>
+      <div className="container relative">
+        <AnimatedSection className="mb-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary">
+              <Shield className="h-3.5 w-3.5" />
+              Guided safety check
+            </div>
+            <h2 className="max-w-3xl font-display text-3xl font-extrabold tracking-tight text-foreground md:text-5xl">
+              Calm answers for moments when something feels <span className="text-gradient-green">off.</span>
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              Paste a message you are unsure about, or ask a technology question. You will receive clear next steps in plain language — without being rushed or judged.
+            </p>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              This is AI-guided safety information, not proof that a message is genuine. When something involves money, an account, or personal information, verify independently using a trusted contact method.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="clay-inset rounded-2xl border border-white/10 p-4">
+              <div className="mb-2 flex items-center gap-2 text-sm font-bold text-foreground">
+                <Lock className="h-4 w-4 text-primary" />
+                Private by design
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">Your check is processed to answer you; this page does not save your pasted message.</p>
+            </div>
+            <div className="clay-inset rounded-2xl border border-white/10 p-4">
+              <div className="mb-2 flex items-center gap-2 text-sm font-bold text-foreground">
+                <Heart className="h-4 w-4 text-primary" />
+                You are in control
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">The tool gives guidance. It never asks for passwords, bank details, or verification codes.</p>
+            </div>
           </div>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left: Form */}
-          <AnimatedSection delay={0.1}>
-            {mode === "scam" ? (
-              /* ─── Scam Analyzer Form ─── */
-              <div>
-                <h3 className="font-display font-bold text-xl mb-2 text-foreground">
-                  Check a Message for <span className="text-gradient-green">Scams</span>
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Copy and paste an email, text, or message below. Our AI will analyze it and explain if it's safe.
-                </p>
-
-                <div className="flex items-start gap-3 p-3 rounded-xl bg-primary/5 border border-primary/15 mb-6">
-                  <Lock className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-xs text-muted-foreground">
-                    <strong className="text-foreground">Privacy:</strong> Messages are analyzed by AI but never stored.
-                  </p>
-                </div>
-
-                <form onSubmit={handleAnalyze}>
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rows={6}
-                    placeholder="Paste the email, text, or message you want to check..."
-                    className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground leading-relaxed placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 resize-none mb-4"
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="gap-2 rounded-xl h-12 px-8 font-semibold glow-green w-full sm:w-auto"
-                    disabled={analyzeMutation.isPending || !message.trim()}
-                  >
-                    {analyzeMutation.isPending ? (
-                      <><Scan className="w-4 h-4 animate-spin" /> AI is Analyzing...</>
-                    ) : (
-                      <><Zap className="w-4 h-4" /> Check This Message</>
-                    )}
-                  </Button>
-                </form>
+        <AnimatedSection delay={0.05}>
+          <div className="clay-surface overflow-hidden rounded-[1.75rem] border">
+            <div className="border-b border-white/10 px-4 py-4 sm:px-6">
+              <div role="tablist" aria-label="AI helper options" className="clay-inset inline-flex w-full gap-2 rounded-2xl border border-white/10 p-1.5 sm:w-auto">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={mode === "scam"}
+                  onClick={() => switchMode("scam")}
+                  className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition sm:flex-none sm:px-6 ${mode === "scam" ? "bg-primary text-primary-foreground clay-button shadow-[0_8px_22px_rgba(22,94,211,0.30)]" : "text-muted-foreground hover:bg-white/5 hover:text-foreground"}`}
+                >
+                  <Shield className="h-4 w-4" />
+                  Check a message
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={mode === "help"}
+                  onClick={() => switchMode("help")}
+                  className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition sm:flex-none sm:px-6 ${mode === "help" ? "bg-[rgb(43,91,209)] text-white clay-button shadow-[0_8px_22px_rgba(23,74,194,0.32)]" : "text-muted-foreground hover:bg-white/5 hover:text-foreground"}`}
+                >
+                  <HelpCircle className="h-4 w-4" />
+                  Ask for help
+                </button>
               </div>
-            ) : (
-              /* ─── Tech Help Form ─── */
-              <div>
-                <h3 className="font-display font-bold text-xl mb-2 text-foreground">
-                  Ask AI for <span className="text-gradient-purple">Help</span>
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Describe what you need help with and our AI will create a clear, step-by-step guide just for you.
-                </p>
+            </div>
 
-                {/* Quick question suggestions */}
-                <div className="mb-6">
-                  <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Try asking:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {quickQuestions.map((q) => (
-                      <button
-                        key={q}
-                        onClick={() => setQuestion(q)}
-                        className="text-xs px-3 py-1.5 rounded-lg border border-border/50 bg-card text-muted-foreground hover:text-foreground hover:border-[oklch(0.6_0.2_290)]/30 transition-all"
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <form onSubmit={handleTechHelp}>
-                  <textarea
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    rows={4}
-                    placeholder="e.g., How do I join a Zoom meeting? How do I find a website? How do I change my password?"
-                    className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground leading-relaxed placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-[oklch(0.6_0.2_290)]/30 focus:border-[oklch(0.6_0.2_290)]/40 resize-none mb-4"
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="gap-2 rounded-xl h-12 px-8 font-semibold w-full sm:w-auto bg-[oklch(0.6_0.2_290)] hover:bg-[oklch(0.55_0.2_290)] text-white"
-                    disabled={techHelpMutation.isPending || !question.trim()}
-                  >
-                    {techHelpMutation.isPending ? (
-                      <><Scan className="w-4 h-4 animate-spin" /> Creating Guide...</>
-                    ) : (
-                      <><Lightbulb className="w-4 h-4" /> Get Step-by-Step Help</>
-                    )}
-                  </Button>
-                </form>
+            <div className="grid lg:grid-cols-[0.92fr_1.08fr]">
+              <div className="border-b border-white/10 p-5 sm:p-7 lg:border-b-0 lg:border-r">
+                {mode === "scam" ? (
+                  <form onSubmit={handleAnalyze} className="space-y-5" aria-describedby="scam-helper-description">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Message check</p>
+                      <h3 className="mt-2 font-display text-2xl font-bold text-foreground">Does this look suspicious?</h3>
+                      <p id="scam-helper-description" className="mt-2 text-sm leading-relaxed text-muted-foreground">Paste the full email, text, or social message. Include links or phone numbers exactly as written, but remove passwords and private account details.</p>
+                    </div>
+                    <div>
+                      <label htmlFor="scam-message" className="mb-2 block text-sm font-bold text-foreground">Message to check</label>
+                      <textarea
+                        id="scam-message"
+                        value={message}
+                        onChange={(event) => setMessage(event.target.value)}
+                        rows={7}
+                        placeholder="Example: Your account will be closed today. Click here to verify your password..."
+                        className="textarea-animated-border clay-input w-full resize-none rounded-2xl border border-border px-4 py-3.5 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/65"
+                      />
+                    </div>
+                    <button type="submit" disabled={analyzeMutation.isPending || !message.trim()} className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-base font-extrabold text-primary-foreground clay-button shadow-[0_10px_28px_rgba(22,94,211,0.30)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
+                      {analyzeMutation.isPending ? <><Scan className="h-5 w-5 animate-spin" /> Checking safely...</> : <><Scan className="h-5 w-5 transition-transform group-hover:rotate-12" /> Check this message</>}
+                    </button>
+                    <p className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground"><Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />Never paste a password, one-time code, banking number, or government ID.</p>
+                  </form>
+                ) : (
+                  <form onSubmit={handleTechHelp} className="space-y-5" aria-describedby="help-helper-description">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-[rgb(177,205,255)]">Step-by-step help</p>
+                      <h3 className="mt-2 font-display text-2xl font-bold text-foreground">What would you like to do?</h3>
+                      <p id="help-helper-description" className="mt-2 text-sm leading-relaxed text-muted-foreground">Ask one question at a time. We will turn it into clear, manageable steps you can follow at your own pace.</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {quickQuestions.map((quickQuestion) => (
+                        <button key={quickQuestion} type="button" onClick={() => setQuestion(quickQuestion)} className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-left text-xs font-semibold text-muted-foreground transition hover:border-[rgb(145,202,255)]/50 hover:bg-[rgb(65,115,226)]/22 hover:text-foreground">
+                          {quickQuestion}
+                        </button>
+                      ))}
+                    </div>
+                    <div>
+                      <label htmlFor="help-question" className="mb-2 block text-sm font-bold text-foreground">Your technology question</label>
+                      <textarea
+                        id="help-question"
+                        value={question}
+                        onChange={(event) => setQuestion(event.target.value)}
+                        rows={6}
+                        placeholder="For example: How do I join a Zoom meeting from an email invitation?"
+                        className="textarea-animated-border clay-input w-full resize-none rounded-2xl border border-border px-4 py-3.5 text-base leading-relaxed text-foreground placeholder:text-muted-foreground/65"
+                      />
+                    </div>
+                    <button type="submit" disabled={techHelpMutation.isPending || !question.trim()} className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[rgb(43,91,209)] clay-button px-5 py-3.5 text-base font-extrabold text-white shadow-[0_10px_28px_rgba(23,74,194,0.32)] transition hover:bg-[rgb(58,111,233)] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
+                      {techHelpMutation.isPending ? <><Scan className="h-5 w-5 animate-spin" /> Building your guide...</> : <><Lightbulb className="h-5 w-5 transition-transform group-hover:-rotate-12" /> Create my guide</>}
+                    </button>
+                  </form>
+                )}
               </div>
-            )}
-          </AnimatedSection>
 
-          {/* Right: Results */}
-          <AnimatedSection delay={0.15}>
-            {/* Scam Analysis Results */}
-            {mode === "scam" && analyzeMutation.isError && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-6 rounded-xl border bg-red-950/50 border-red-500/30"
-              >
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5 shrink-0" />
-                  <div>
-                    <h4 className="font-display font-semibold text-sm mb-1 text-red-300">Analysis Error</h4>
-                    <p className="text-sm leading-relaxed text-red-300/80">
-                      We couldn't analyze this message right now. Please try again.
-                    </p>
+              <div className="min-h-[460px] p-5 sm:p-7" aria-live="polite">
+                {mode === "scam" && analyzeMutation.isError && (
+                  <div className="rounded-2xl border border-red-300/25 bg-red-950/30 p-5">
+                    <div className="flex gap-3"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-200" /><div><h4 className="font-display text-lg font-bold text-red-100">We could not complete that check</h4><p className="mt-2 text-sm leading-relaxed text-red-100/80">Please try again. Until you receive an assessment, avoid links and phone numbers in unexpected messages.</p></div></div>
                   </div>
-                </div>
-              </motion.div>
-            )}
+                )}
 
-            {mode === "scam" && scamResult && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`rounded-xl border overflow-hidden ${riskConfig[scamResult.riskLevel].bg} ${riskConfig[scamResult.riskLevel].border}`}
-              >
-                <div className="p-6">
-                  <div className="flex items-start gap-3 mb-4">
-                    {(() => {
-                      const IconComp = riskConfig[scamResult.riskLevel].icon;
-                      return <IconComp className={`w-5 h-5 mt-0.5 shrink-0 ${riskConfig[scamResult.riskLevel].iconColor}`} />;
-                    })()}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1 flex-wrap">
-                        <h4 className={`font-display font-semibold text-base ${riskConfig[scamResult.riskLevel].titleColor}`}>
-                          {riskConfig[scamResult.riskLevel].title}
-                        </h4>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${riskConfig[scamResult.riskLevel].badgeBg}`}>
-                          {scamResult.confidence}% confident
-                        </span>
-                      </div>
-                      <p className={`text-sm leading-relaxed ${riskConfig[scamResult.riskLevel].textColor}`}>
-                        {scamResult.summary}
-                      </p>
-                    </div>
+                {mode === "help" && techHelpMutation.isError && (
+                  <div className="rounded-2xl border border-red-300/25 bg-red-950/30 p-5">
+                    <div className="flex gap-3"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-200" /><div><h4 className="font-display text-lg font-bold text-red-100">We could not create that guide</h4><p className="mt-2 text-sm leading-relaxed text-red-100/80">Please try again with one clear question. You can also browse the learning guides below.</p></div></div>
                   </div>
+                )}
 
-                  {scamResult.scamType && scamResult.scamType !== "none" && (
-                    <div className="mb-4">
-                      <span className="text-xs font-medium text-muted-foreground">Identified type: </span>
-                      <span className="text-xs font-semibold text-foreground capitalize">{scamResult.scamType.replace(/-/g, " ")}</span>
-                    </div>
-                  )}
-
-                  {scamResult.redFlags.length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-xs font-semibold text-foreground mb-2">Red Flags Found:</p>
-                      <ul className="space-y-1.5">
-                        {scamResult.redFlags.map((flag, i) => (
-                          <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                            <span className="text-red-400 mt-0.5 shrink-0">\u2022</span>
-                            {flag}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <div className="p-4 rounded-lg bg-white/5 border border-white/5">
-                    <p className="text-xs font-semibold text-foreground mb-1">What to Do:</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{scamResult.advice}</p>
-                  </div>
-
-                  {/* Copy & Share Actions */}
-                  <div className="flex items-center gap-3 mt-5 pt-4 border-t border-white/10">
-                    <button
-                      onClick={() => {
-                        const text = `🔍 Scam Analysis Result\n\n⚠️ ${riskConfig[scamResult.riskLevel].title} (${scamResult.confidence}% confident)\n\n${scamResult.summary}\n\n${scamResult.scamType !== "none" ? `Type: ${scamResult.scamType}\n\n` : ""}${scamResult.redFlags.length > 0 ? `Red Flags:\n${scamResult.redFlags.map(f => `• ${f}`).join("\n")}\n\n` : ""}What to Do:\n${scamResult.advice}\n\n— Analyzed by Digital Guardians (digitalguards.ca)`;
-                        navigator.clipboard.writeText(text);
-                        setCopied(true);
-                        setTimeout(() => setCopied(false), 2000);
-                      }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/5 border border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all"
-                    >
-                      {copied ? (
-                        <>
-                          <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-                          Copied!
-                        </>
-                      ) : (
-                        <>
-                          <ClipboardPaste className="w-3.5 h-3.5" />
-                          Copy Results
-                        </>
-                      )}
-                    </button>
-                    <button
-                      onClick={() => {
-                        const text = `🔍 Scam Analysis from Digital Guardians:\n\n⚠️ ${riskConfig[scamResult.riskLevel].title} (${scamResult.confidence}% confident)\n\n${scamResult.summary}\n\nCheck messages for free at digitalguards.ca`;
-                        if (navigator.share) {
-                          navigator.share({ title: "Scam Analysis Result", text });
-                        } else {
-                          const mailTo = `mailto:?subject=Scam Analysis Result&body=${encodeURIComponent(text)}`;
-                          window.open(mailTo);
-                        }
-                      }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/5 border border-white/10 text-muted-foreground hover:text-foreground hover:bg-white/10 transition-all"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      Share
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* Tech Help Results */}
-            {mode === "help" && techHelpMutation.isError && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-6 rounded-xl border bg-red-950/50 border-red-500/30"
-              >
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5 shrink-0" />
-                  <div>
-                    <h4 className="font-display font-semibold text-sm mb-1 text-red-300">Couldn't Create Guide</h4>
-                    <p className="text-sm leading-relaxed text-red-300/80">
-                      We couldn't generate a guide right now. Please try rephrasing your question.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {mode === "help" && helpResult && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-xl border border-[oklch(0.6_0.2_290)]/30 bg-[oklch(0.15_0.05_290)]/50 overflow-hidden"
-              >
-                {/* Guide Header */}
-                <div className="p-6 border-b border-[oklch(0.6_0.2_290)]/15">
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <h4 className="font-display font-bold text-lg text-foreground leading-snug">
-                      {helpResult.title}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${difficultyConfig[helpResult.difficulty].bg} ${difficultyConfig[helpResult.difficulty].color}`}>
-                      {helpResult.difficulty}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="w-3 h-3" />
-                      {helpResult.estimatedTime}
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed mt-3">
-                    {helpResult.overview}
-                  </p>
-                </div>
-
-                {/* Steps */}
-                <div className="p-6">
-                  <div className="space-y-4">
-                    {helpResult.steps.map((step) => (
-                      <div key={step.stepNumber} className="flex gap-4">
-                        <div className="shrink-0 w-8 h-8 rounded-lg bg-[oklch(0.6_0.2_290)]/15 border border-[oklch(0.6_0.2_290)]/20 flex items-center justify-center">
-                          <span className="text-xs font-bold text-[oklch(0.7_0.2_290)]">{step.stepNumber}</span>
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-display font-semibold text-sm text-foreground mb-1">{step.title}</p>
-                          <p className="text-xs text-muted-foreground leading-relaxed">{step.instruction}</p>
-                          {step.tip && (
-                            <div className="mt-2 flex items-start gap-2 p-2.5 rounded-lg bg-primary/5 border border-primary/10">
-                              <Lightbulb className="w-3 h-3 text-primary mt-0.5 shrink-0" />
-                              <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                <strong className="text-foreground">Tip:</strong> {step.tip}
-                              </p>
-                            </div>
-                          )}
+                {mode === "scam" && scamResult && (() => {
+                  const config = riskConfig[scamResult.riskLevel];
+                  const ResultIcon = config.icon;
+                  const shareText = `Scam Check from Digital Guardians\n\n${config.title}${scamResult.source === "ai" ? ` (${scamResult.confidence}% confidence)` : ""}\n\n${scamResult.summary}\n\nWhat to do:\n${scamResult.advice}`;
+                  return (
+                    <div className={`rounded-2xl border ${config.panel} overflow-hidden`}>
+                      <div className="border-b border-white/10 bg-black/10 px-5 py-4">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div className="flex items-start gap-3"><div className="rounded-xl bg-black/20 p-2"><ResultIcon className={`h-5 w-5 ${config.iconColor}`} /></div><div><p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Your safety check</p><h4 className="mt-1 font-display text-xl font-bold text-foreground">{config.title}</h4></div></div>
+                          <span className={`rounded-full border px-3 py-1.5 text-xs font-bold ${config.badge}`}>{scamResult.source === "ai" ? `${scamResult.confidence}% AI confidence` : "Safety guidance"}</span>
                         </div>
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Troubleshooting */}
-                  {helpResult.troubleshooting.length > 0 && (
-                    <div className="mt-6 pt-6 border-t border-white/5">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Wrench className="w-4 h-4 text-amber-400" />
-                        <p className="text-xs font-semibold text-foreground">Troubleshooting</p>
-                      </div>
-                      <div className="space-y-2">
-                        {helpResult.troubleshooting.map((item, i) => (
-                          <div key={i} className="p-3 rounded-lg bg-white/3 border border-white/5">
-                            <p className="text-xs font-semibold text-amber-300 mb-1">{item.problem}</p>
-                            <p className="text-xs text-muted-foreground leading-relaxed">{item.solution}</p>
-                          </div>
-                        ))}
+                      <div className="space-y-5 p-5">
+                        {scamResult.source === "safety-check" && <div role="status" className="rounded-xl border border-amber-200/20 bg-amber-300/10 p-3 text-sm leading-relaxed text-amber-100">The live AI check is temporarily unavailable. These are precautionary steps, not an assessment of the message.</div>}
+                        {scamResult.privacyProtected && <div role="status" className="flex items-start gap-2 rounded-xl border border-primary/20 bg-primary/10 p-3 text-sm leading-relaxed text-primary"><Lock className="mt-0.5 h-4 w-4 shrink-0" />Private details that looked like credentials or account numbers were hidden before the AI check.</div>}
+                        <p className="text-base leading-relaxed text-foreground/90">{scamResult.summary}</p>
+                        {scamResult.scamType !== "none" && scamResult.scamType !== "unknown" && <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-bold text-foreground">Possible type:</span><span className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-sm capitalize text-muted-foreground">{scamResult.scamType.replace(/-/g, " ")}</span></div>}
+                        {scamResult.redFlags.length > 0 && <div><p className="mb-3 text-sm font-bold text-foreground">What stood out</p><ul className="space-y-2">{scamResult.redFlags.map((flag) => <li key={flag} className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />{flag}</li>)}</ul></div>}
+                        <div className="rounded-xl border border-white/10 bg-black/20 p-4"><p className="mb-1 flex items-center gap-2 text-sm font-bold text-foreground"><Shield className="h-4 w-4 text-primary" />What to do next</p><p className="text-sm leading-relaxed text-muted-foreground">{scamResult.advice}</p></div>
+                        <div className="flex flex-wrap gap-2 border-t border-white/10 pt-4"><button type="button" onClick={() => { navigator.clipboard.writeText(shareText); setCopied(true); window.setTimeout(() => setCopied(false), 2000); }} className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-xs font-bold text-muted-foreground transition hover:bg-white/10 hover:text-foreground"><ClipboardPaste className="h-3.5 w-3.5" />{copied ? "Copied" : "Copy results"}</button><button type="button" onClick={() => { if (navigator.share) { navigator.share({ title: "Digital Guardians safety check", text: shareText }); } else { window.open(`mailto:?subject=Digital Guardians safety check&body=${encodeURIComponent(shareText)}`); } }} className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-xs font-bold text-muted-foreground transition hover:bg-white/10 hover:text-foreground"><ExternalLink className="h-3.5 w-3.5" />Share</button></div>
                       </div>
                     </div>
-                  )}
+                  );
+                })()}
 
-                  {/* Safety Note */}
-                  <div className="mt-6 flex items-start gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10">
-                    <Shield className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">
-                      <strong className="text-foreground">Safety Note:</strong> {helpResult.safetyNote}
-                    </p>
+                {mode === "help" && helpResult && (
+                  <div className="overflow-hidden rounded-2xl border border-[rgb(126,166,255)]/28 bg-[rgb(17,53,145)]/55">
+                    <div className="border-b border-white/10 bg-black/10 px-5 py-4"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.14em] text-[rgb(177,205,255)]">{helpResult.source === "ai" ? "Your personal guide" : "Your quick starting guide"}</p><h4 className="mt-1 font-display text-xl font-bold text-foreground">{helpResult.title}</h4></div><div className="flex gap-2"><span className={`rounded-full border px-3 py-1.5 text-xs font-bold capitalize ${difficultyConfig[helpResult.difficulty]}`}>{helpResult.difficulty}</span><span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs font-bold text-muted-foreground"><Clock className="h-3.5 w-3.5" />{helpResult.estimatedTime}</span></div></div></div>
+                    <div className="space-y-5 p-5">{helpResult.source === "quick-guide" && <div role="status" className="rounded-xl border border-[rgb(145,202,255)]/25 bg-[rgb(65,115,226)]/15 p-3 text-sm leading-relaxed text-[rgb(213,228,255)]">Here is a safe starting guide for your question. You can follow these steps at your own pace.</div>}{helpResult.privacyProtected && <div role="status" className="flex items-start gap-2 rounded-xl border border-primary/20 bg-primary/10 p-3 text-sm leading-relaxed text-primary"><Lock className="mt-0.5 h-4 w-4 shrink-0" />Private details that looked like credentials or account numbers were hidden before the AI check.</div>}<p className="text-base leading-relaxed text-foreground/90">{helpResult.overview}</p><div className="space-y-4">{helpResult.steps.map((step) => <div key={step.stepNumber} className="flex gap-3"><div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[rgb(43,91,209)] text-sm font-extrabold text-white">{step.stepNumber}</div><div className="min-w-0 pt-1"><p className="font-display text-sm font-bold text-foreground">{step.title}</p><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{step.instruction}</p>{step.tip && <p className="mt-2 rounded-lg border border-primary/15 bg-primary/5 px-3 py-2 text-xs leading-relaxed text-muted-foreground"><span className="font-bold text-primary">Helpful tip: </span>{step.tip}</p>}</div></div>)}</div>{helpResult.troubleshooting.length > 0 && <div className="border-t border-white/10 pt-5"><p className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground"><Wrench className="h-4 w-4 text-amber-200" />If something goes wrong</p><div className="space-y-2">{helpResult.troubleshooting.map((item) => <div key={item.problem} className="rounded-xl border border-white/10 bg-black/15 p-3"><p className="text-sm font-bold text-amber-100">{item.problem}</p><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.solution}</p></div>)}</div></div>}<div className="rounded-xl border border-primary/15 bg-primary/5 p-4 text-sm leading-relaxed text-muted-foreground"><p className="mb-1 flex items-center gap-2 font-bold text-foreground"><Shield className="h-4 w-4 text-primary" />Safety reminder</p>{helpResult.safetyNote}</div></div>
                   </div>
-                </div>
-              </motion.div>
-            )}
+                )}
 
-            {/* Default state — show image */}
-            {mode === "scam" && !scamResult && !analyzeMutation.isPending && !analyzeMutation.isError && (
-              <div className="relative hidden lg:block">
-                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/15 via-transparent to-[oklch(0.6_0.2_290)]/15 blur-xl" />
-                <div className="relative rounded-2xl overflow-hidden border border-border/50 glow-card">
-                  <img src={ANALYZER_IMG} alt="AI Scam analysis illustration" className="w-full h-auto" />
-                </div>
+                {!isAnalyzing && mode === "scam" && !scamResult && !analyzeMutation.isError && <div className="flex h-full min-h-[400px] flex-col justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.025] p-6"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10"><Shield className="h-6 w-6 text-primary" /></div><p className="font-display text-2xl font-bold text-foreground">A second set of eyes, without the pressure.</p><p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">We will look for urgency, unexpected requests, suspicious links, payment pressure, and impersonation tactics — then explain the result in plain language.</p><div className="mt-7 grid gap-3 sm:grid-cols-3">{[["1", "Paste", "Add the message"], ["2", "Check", "Review the guidance"], ["3", "Pause", "Take the safest next step"]].map(([number, title, detail]) => <div key={title} className="rounded-xl border border-white/10 bg-black/15 p-3"><p className="text-xs font-black text-primary">{number}</p><p className="mt-1 text-sm font-bold text-foreground">{title}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{detail}</p></div>)}</div></div>}
+                {!isAnalyzing && mode === "help" && !helpResult && !techHelpMutation.isError && <div className="flex h-full min-h-[400px] flex-col justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.025] p-6"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[rgb(43,91,209)]/25"><Lightbulb className="h-6 w-6 text-[rgb(185,170,255)]" /></div><p className="font-display text-2xl font-bold text-foreground">Clear steps, one at a time.</p><p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">Ask about email, video calls, passwords, photos, browsing, phone settings, or another everyday technology task.</p><p className="mt-7 rounded-xl border border-white/10 bg-black/15 p-4 text-sm leading-relaxed text-muted-foreground"><span className="font-bold text-foreground">A good question is specific: </span>“How do I join a Zoom meeting from an email invitation?”</p></div>}
+                {isAnalyzing && <div className="flex h-full min-h-[400px] flex-col items-center justify-center text-center"><div className="mb-5 flex h-16 w-16 items-center justify-center rounded-3xl border border-primary/20 bg-primary/10"><Scan className="h-7 w-7 animate-spin text-primary" /></div><p className="font-display text-xl font-bold text-foreground">{mode === "scam" ? "Checking the message carefully" : "Creating your step-by-step guide"}</p><p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">This usually takes a few seconds. Please keep this page open while we prepare your answer.</p></div>}
               </div>
-            )}
-
-            {mode === "help" && !helpResult && !techHelpMutation.isPending && !techHelpMutation.isError && (
-              <div className="relative hidden lg:block">
-                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[oklch(0.6_0.2_290)]/15 via-transparent to-primary/15 blur-xl" />
-                <div className="relative rounded-2xl overflow-hidden border border-border/50 glow-card">
-                  <img src={LEARNING_IMG} alt="AI Tech help illustration" className="w-full h-auto" />
-                </div>
-              </div>
-            )}
-
-            {/* Loading states */}
-            {(analyzeMutation.isPending || techHelpMutation.isPending) && (
-              <div className="flex flex-col items-center justify-center py-16">
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
-                  <Scan className="w-8 h-8 text-primary animate-spin" />
-                </div>
-                <p className="font-display font-semibold text-foreground mb-1">
-                  {mode === "scam" ? "Analyzing message..." : "Creating your guide..."}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  This usually takes a few seconds
-                </p>
-              </div>
-            )}
-          </AnimatedSection>
-        </div>
+            </div>
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
@@ -787,7 +534,7 @@ function LearningSection() {
 
   return (
     <section id="learn" className="relative py-24 md:py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-[oklch(0.15_0.03_270)] to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-[rgb(8,10,26)] to-background" />
 
       {/* Animated Mantra Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
@@ -802,12 +549,14 @@ function LearningSection() {
           {/* Image */}
           <AnimatedSection>
             <div className="relative">
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[oklch(0.6_0.2_290)]/15 via-transparent to-primary/15 blur-xl" />
+              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[rgb(100,80,200)]/15 via-transparent to-primary/15 blur-xl" />
               <div className="relative rounded-2xl overflow-hidden border border-border/50 glow-card">
                 <img
                   src={LEARNING_IMG}
-                  alt="Senior learning on tablet"
+                  alt="Older adults learning together in a welcoming public-library workshop with a soft blue constellation web"
                   className="w-full h-auto"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
@@ -866,7 +615,7 @@ function LearningSection() {
 function TrainingsSection() {
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-[oklch(0.15_0.03_270)] to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-[rgb(8,10,26)] to-background" />
       <div className="container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left: Slideshow */}
@@ -991,33 +740,42 @@ function AboutSection() {
           ))}
         </div>
 
-        {/* Senior Photos Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-          <AnimatedSection delay={0}>
-            <div className="rounded-2xl overflow-hidden border border-border/50 glow-card h-80">
+        <div className="mt-16 grid gap-7 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
+          <AnimatedSection>
+            <figure className="relative h-full min-h-[21rem] overflow-hidden rounded-[1.75rem] border border-white/15 bg-[rgb(10,18,36)] shadow-[0_24px_80px_rgba(0,0,0,0.25)]">
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-at-desk-2-kUgzdZFeTxiTGsumKFZWZD.webp"
-                alt="Senior man confidently using a laptop"
-                className="w-full h-full object-cover"
+                src={COMMUNITY_IMG}
+                alt="Older couple using a tablet together in a community garden beneath a luminous blue shield constellation"
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
-            </div>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(5,12,28,0.95)] via-[rgba(5,12,28,0.48)] to-transparent p-6 pt-20">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">A local circle of support</p>
+                <figcaption className="mt-2 max-w-sm font-display text-2xl font-bold text-white">Technology is easier when you never have to learn alone.</figcaption>
+              </div>
+            </figure>
           </AnimatedSection>
+
           <AnimatedSection delay={0.1}>
-            <div className="rounded-2xl overflow-hidden border border-border/50 glow-card h-80">
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-couple-learning-QA3z453eRxLuGv4d9NqzVB.webp"
-                alt="Senior couple learning together on a tablet"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </AnimatedSection>
-          <AnimatedSection delay={0.2}>
-            <div className="rounded-2xl overflow-hidden border border-border/50 glow-card h-80">
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/senior-video-call_f68bd415.png"
-                alt="Senior woman having a video call on her laptop"
-                className="w-full h-full object-cover"
-              />
+            <div className="flex h-full flex-col justify-center rounded-[1.75rem] border border-white/12 bg-white/[0.045] p-6 shadow-[0_20px_70px_rgba(0,0,0,0.2)] md:p-8 md:backdrop-blur-xl">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[rgb(185,170,255)]">Our promise</p>
+              <p className="mt-3 font-display text-2xl font-bold leading-tight text-foreground">Practical support, with room to ask every question.</p>
+              <div className="mt-7 space-y-4">
+                {[
+                  [Users, "Learn together", "Friendly workshops with a comfortable pace and plenty of time for questions."],
+                  [Shield, "Build safer habits", "Understand what to do before a suspicious email, call, or link causes stress."],
+                  [Heart, "Stay connected", "Use the tools that matter to you while protecting your privacy and independence."],
+                ].map(([Icon, title, description]) => {
+                  const CardIcon = Icon as typeof Shield;
+                  return (
+                    <div key={title as string} className="flex gap-3 rounded-xl border border-white/10 bg-black/15 p-3.5">
+                      <div className="mt-0.5 rounded-lg bg-primary/10 p-2"><CardIcon className="h-4 w-4 text-primary" /></div>
+                      <div><p className="text-sm font-bold text-foreground">{title as string}</p><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description as string}</p></div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </AnimatedSection>
         </div>
@@ -1044,6 +802,8 @@ function EmergencySection() {
           src={EMERGENCY_IMG}
           alt=""
           className="w-full h-full object-cover opacity-15"
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/80" />
       </div>

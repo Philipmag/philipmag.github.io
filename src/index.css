@@ -40,46 +40,93 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: system-ui, sans-serif;
   --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Yeldra-inspired deep blue/black palette */
-  --background: oklch(0.13 0.03 270);
-  --foreground: oklch(0.95 0.01 270);
-  --card: oklch(0.17 0.03 270);
-  --card-foreground: oklch(0.95 0.01 270);
-  --popover: oklch(0.17 0.03 270);
-  --popover-foreground: oklch(0.95 0.01 270);
-  --primary: oklch(0.72 0.19 160);
-  --primary-foreground: oklch(0.13 0.03 270);
-  --secondary: oklch(0.22 0.04 270);
-  --secondary-foreground: oklch(0.85 0.02 270);
-  --muted: oklch(0.2 0.03 270);
-  --muted-foreground: oklch(0.6 0.02 270);
-  --accent: oklch(0.22 0.04 270);
-  --accent-foreground: oklch(0.95 0.01 270);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.25 0.04 270);
-  --input: oklch(0.22 0.04 270);
-  --ring: oklch(0.72 0.19 160);
-  --chart-1: oklch(0.72 0.19 160);
-  --chart-2: oklch(0.6 0.2 290);
-  --chart-3: oklch(0.75 0.15 85);
-  --chart-4: oklch(0.65 0.2 330);
-  --chart-5: oklch(0.7 0.15 200);
-  --sidebar: oklch(0.15 0.03 270);
-  --sidebar-foreground: oklch(0.95 0.01 270);
-  --sidebar-accent: oklch(0.22 0.04 270);
-  --sidebar-accent-foreground: oklch(0.95 0.01 270);
-  --sidebar-border: oklch(0.25 0.04 270);
-  --sidebar-ring: oklch(0.72 0.19 160);
-  --sidebar-primary: oklch(0.72 0.19 160);
-  --sidebar-primary-foreground: oklch(0.13 0.03 270);
+  /* ── Championship-night clay palette ──────────────────────────────────────
+   * A non-branded deep cobalt system inspired by night-match lighting:
+   * midnight field, royal-blue clay surfaces, electric-blue focus and action.
+   * RGB values intentionally come first for older Safari compatibility.
+   * ───────────────────────────────────────────────────────────────────────── */
+  --radius: 1rem;
+
+  --background: rgb(6, 18, 68);
+  --background: oklch(0.18 0.07 270);
+  --foreground: rgb(246, 249, 255);
+  --foreground: oklch(0.98 0.01 260);
+
+  --card: rgb(21, 55, 145);
+  --card: oklch(0.35 0.14 270);
+  --card-foreground: rgb(246, 249, 255);
+  --card-foreground: oklch(0.98 0.01 260);
+
+  --popover: rgb(15, 43, 122);
+  --popover: oklch(0.30 0.12 270);
+  --popover-foreground: rgb(246, 249, 255);
+  --popover-foreground: oklch(0.98 0.01 260);
+
+  --primary: rgb(98, 174, 255);
+  --primary: oklch(0.73 0.14 248);
+  --primary-foreground: rgb(4, 19, 68);
+  --primary-foreground: oklch(0.18 0.07 270);
+
+  --secondary: rgb(37, 78, 184);
+  --secondary: oklch(0.43 0.15 270);
+  --secondary-foreground: rgb(234, 242, 255);
+  --secondary-foreground: oklch(0.95 0.025 260);
+
+  --muted: rgb(12, 36, 105);
+  --muted: oklch(0.28 0.11 270);
+  --muted-foreground: rgb(198, 216, 255);
+  --muted-foreground: oklch(0.86 0.05 260);
+
+  --accent: rgb(33, 69, 163);
+  --accent: oklch(0.39 0.15 270);
+  --accent-foreground: rgb(246, 249, 255);
+  --accent-foreground: oklch(0.98 0.01 260);
+
+  --destructive: rgb(235, 85, 101);
+  --destructive: oklch(0.64 0.20 20);
+  --destructive-foreground: rgb(255, 255, 255);
+  --destructive-foreground: oklch(1 0 0);
+
+  --border: rgb(74, 115, 213);
+  --border: oklch(0.52 0.13 267);
+  --input: rgb(13, 39, 112);
+  --input: oklch(0.29 0.11 270);
+  --ring: rgb(145, 202, 255);
+  --ring: oklch(0.82 0.11 240);
+
+  --chart-1: rgb(98, 174, 255);
+  --chart-1: oklch(0.73 0.14 248);
+  --chart-2: rgb(123, 146, 255);
+  --chart-2: oklch(0.65 0.14 280);
+  --chart-3: rgb(105, 213, 230);
+  --chart-3: oklch(0.78 0.10 210);
+  --chart-4: rgb(180, 198, 255);
+  --chart-4: oklch(0.84 0.06 265);
+  --chart-5: rgb(243, 193, 101);
+  --chart-5: oklch(0.82 0.12 75);
+
+  --sidebar: rgb(5, 15, 56);
+  --sidebar: oklch(0.16 0.065 270);
+  --sidebar-foreground: rgb(246, 249, 255);
+  --sidebar-foreground: oklch(0.98 0.01 260);
+  --sidebar-primary: rgb(98, 174, 255);
+  --sidebar-primary: oklch(0.73 0.14 248);
+  --sidebar-primary-foreground: rgb(4, 19, 68);
+  --sidebar-primary-foreground: oklch(0.18 0.07 270);
+  --sidebar-accent: rgb(28, 61, 151);
+  --sidebar-accent: oklch(0.36 0.14 270);
+  --sidebar-accent-foreground: rgb(246, 249, 255);
+  --sidebar-accent-foreground: oklch(0.98 0.01 260);
+  --sidebar-border: rgb(61, 100, 196);
+  --sidebar-border: oklch(0.47 0.13 267);
+  --sidebar-ring: rgb(145, 202, 255);
+  --sidebar-ring: oklch(0.82 0.11 240);
 }
 
 html {
@@ -111,7 +158,7 @@ html {
 
   /* Enhanced focus rings for keyboard accessibility (important for seniors) */
   :focus-visible {
-    outline: 2px solid oklch(0.72 0.19 160);
+    outline: 3px solid rgb(145, 202, 255);
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -123,8 +170,8 @@ html {
 
   /* Better selection colors */
   ::selection {
-    background: oklch(0.72 0.19 160 / 0.3);
-    color: oklch(0.95 0.01 270);
+    background: rgba(98, 174, 255, 0.42);
+    color: rgb(246, 249, 255);
   }
 }
 
@@ -158,140 +205,137 @@ html {
   }
 }
 
-/* Yeldra-style glow effects */
-.glow-green {
-  box-shadow: 0 0 20px oklch(0.72 0.19 160 / 0.15), 0 0 60px oklch(0.72 0.19 160 / 0.05);
-}
-
-.glow-purple {
-  box-shadow: 0 0 20px oklch(0.6 0.2 290 / 0.15), 0 0 60px oklch(0.6 0.2 290 / 0.05);
-}
-
+/* ── Championship-night clay surfaces ──────────────────────────────────────── */
+.clay-surface,
 .glow-card {
-  box-shadow: 0 0 0 1px oklch(0.3 0.04 270), 0 4px 24px oklch(0 0 0 / 0.3);
+  border-color: rgba(150, 194, 255, 0.20) !important;
+  background: linear-gradient(145deg, rgba(42, 85, 194, 0.94), rgba(15, 43, 122, 0.98)) !important;
+  box-shadow:
+    14px 16px 30px rgba(1, 8, 41, 0.34),
+    -8px -8px 22px rgba(115, 171, 255, 0.10),
+    inset 1px 1px 0 rgba(225, 241, 255, 0.16),
+    inset -1px -1px 0 rgba(3, 17, 72, 0.22);
 }
 
 .glow-card:hover {
-  box-shadow: 0 0 0 1px oklch(0.72 0.19 160 / 0.3), 0 4px 32px oklch(0.72 0.19 160 / 0.08);
+  border-color: rgba(157, 208, 255, 0.46) !important;
+  transform: translateY(-2px);
+  box-shadow:
+    18px 21px 38px rgba(1, 8, 41, 0.38),
+    -9px -9px 24px rgba(128, 181, 255, 0.15),
+    inset 1px 1px 0 rgba(236, 246, 255, 0.18),
+    inset -1px -1px 0 rgba(3, 17, 72, 0.24);
 }
 
-/* Gradient text utility */
+.glow-green,
+.clay-button {
+  box-shadow:
+    8px 10px 18px rgba(1, 10, 54, 0.35),
+    -3px -3px 8px rgba(190, 223, 255, 0.16),
+    inset 1px 1px 0 rgba(235, 247, 255, 0.22),
+    inset -1px -1px 0 rgba(16, 68, 169, 0.16);
+}
+
+.glow-purple {
+  box-shadow:
+    8px 10px 18px rgba(1, 10, 54, 0.32),
+    -3px -3px 8px rgba(181, 204, 255, 0.13),
+    inset 1px 1px 0 rgba(235, 247, 255, 0.18);
+}
+
+.clay-inset {
+  background: linear-gradient(145deg, rgba(5, 19, 72, 0.70), rgba(16, 43, 119, 0.68));
+  box-shadow:
+    inset 5px 6px 12px rgba(2, 10, 48, 0.34),
+    inset -2px -2px 7px rgba(127, 174, 255, 0.10),
+    1px 1px 0 rgba(219, 239, 255, 0.08);
+}
+
+.clay-input {
+  background: linear-gradient(145deg, rgb(7, 25, 87), rgb(13, 40, 114)) !important;
+  border-color: rgba(150, 194, 255, 0.25) !important;
+  box-shadow:
+    inset 5px 5px 10px rgba(1, 9, 43, 0.38),
+    inset -2px -2px 6px rgba(129, 176, 255, 0.10);
+}
+
+.clay-input:focus {
+  border-color: rgba(160, 211, 255, 0.80) !important;
+  box-shadow:
+    0 0 0 3px rgba(145, 202, 255, 0.26),
+    inset 5px 5px 10px rgba(1, 9, 43, 0.30),
+    inset -2px -2px 6px rgba(129, 176, 255, 0.10) !important;
+}
+
+/* Gradient text utility retained for existing semantic markup. */
 .text-gradient-green {
-  background: linear-gradient(135deg, oklch(0.72 0.19 160), oklch(0.8 0.15 140));
+  background: linear-gradient(180deg, rgb(244, 250, 255), rgb(161, 207, 255) 52%, rgb(106, 157, 241));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-purple {
-  background: linear-gradient(135deg, oklch(0.6 0.2 290), oklch(0.7 0.18 310));
+  background: linear-gradient(135deg, rgb(209, 224, 255), rgb(128, 153, 255));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Subtle grid background */
+/* A shallow, tactile engraving: readable selectable text rather than an image. */
+.carved-text {
+  text-shadow:
+    0 1px 0 rgba(239, 248, 255, 0.30),
+    0 -1px 0 rgba(1, 11, 54, 0.56),
+    0 7px 18px rgba(1, 10, 45, 0.20);
+}
+
+.carved-text .text-gradient-green {
+  filter: drop-shadow(0 1px 0 rgba(226, 242, 255, 0.14));
+}
+
+html[data-contrast-mode="high-contrast"] .carved-text,
+html[data-contrast-mode="high-contrast"] .carved-text .text-gradient-green {
+  background: none;
+  color: rgb(255, 255, 255) !important;
+  -webkit-text-fill-color: rgb(255, 255, 255);
+  text-shadow: none;
+}
+
+/* Soft field lines, hinting at a championship night without sports branding. */
 .bg-grid {
   background-image:
-    linear-gradient(oklch(0.25 0.04 270 / 0.5) 1px, transparent 1px),
-    linear-gradient(90deg, oklch(0.25 0.04 270 / 0.5) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(139, 187, 255, 0.095) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 187, 255, 0.095) 1px, transparent 1px);
+  background-size: 64px 64px;
 }
 
-/* Animated gradient border */
-@keyframes border-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-.animate-border-glow {
-  animation: border-glow 3s ease-in-out infinite;
-}
-
-/* Neon white light orbit animation for logo */
-@keyframes neon-orbit {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes neon-glow-pulse {
-  0%, 100% {
-    box-shadow:
-      0 0 6px 1px rgba(255, 255, 255, 0.5),
-      0 0 12px 2px rgba(180, 255, 210, 0.3),
-      0 0 20px 4px rgba(100, 220, 150, 0.15);
-  }
-  50% {
-    box-shadow:
-      0 0 10px 2px rgba(255, 255, 255, 0.8),
-      0 0 20px 4px rgba(180, 255, 210, 0.5),
-      0 0 35px 8px rgba(100, 220, 150, 0.25);
-  }
-}
-
-.logo-neon-wrapper {
-  position: relative;
+.logo-clay-wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  overflow: visible;
-}
-
-/* Spinning neon arc layer */
-.logo-neon-wrapper::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
+  overflow: hidden;
   border-radius: 14px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(255, 255, 255, 0.95) 30deg,
-    rgba(200, 255, 230, 0.8) 55deg,
-    transparent 90deg,
-    transparent 180deg,
-    rgba(255, 255, 255, 0.6) 210deg,
-    rgba(200, 255, 230, 0.4) 235deg,
-    transparent 270deg,
-    transparent 360deg
-  );
-  animation: neon-orbit 5s linear infinite;
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), white calc(100% - 2px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), white calc(100% - 2px));
-  z-index: 0;
+  background: linear-gradient(145deg, rgb(48, 93, 205), rgb(11, 35, 106));
+  box-shadow:
+    5px 6px 12px rgba(1, 9, 43, 0.30),
+    -3px -3px 8px rgba(167, 205, 255, 0.17),
+    inset 1px 1px 0 rgba(235, 247, 255, 0.20);
 }
 
-/* Soft glow bloom layer */
-.logo-neon-wrapper::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: 16px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(255, 255, 255, 0.25) 30deg,
-    rgba(180, 255, 210, 0.18) 55deg,
-    transparent 90deg,
-    transparent 360deg
-  );
-  animation: neon-orbit 5s linear infinite;
-  filter: blur(4px);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), white calc(100% - 6px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 6px), white calc(100% - 6px));
-  z-index: 0;
+.logo-clay-img {
+  border-radius: 11px;
 }
 
-.logo-neon-img {
-  position: relative;
-  z-index: 1;
-  border-radius: 10px;
-  animation: neon-glow-pulse 3s ease-in-out infinite;
+.clay-nav {
+  background: linear-gradient(145deg, rgba(20, 57, 151, 0.98), rgba(6, 24, 83, 0.98));
+  box-shadow:
+    0 10px 26px rgba(1, 10, 48, 0.26),
+    inset 0 1px 0 rgba(222, 240, 255, 0.12);
+}
+
+.clay-footer {
+  box-shadow: inset 0 1px 0 rgba(188, 220, 255, 0.08);
 }
 
 
@@ -378,23 +422,23 @@ html[data-text-size="extra-large"] body {
 
 /* High contrast mode */
 html[data-contrast-mode="high-contrast"] {
-  --background: oklch(0.05 0.01 270);
-  --foreground: oklch(1 0.01 0);
-  --card: oklch(0.1 0.02 270);
-  --card-foreground: oklch(1 0.01 0);
-  --popover: oklch(0.1 0.02 270);
-  --popover-foreground: oklch(1 0.01 0);
-  --primary: oklch(0.9 0.25 160);
-  --primary-foreground: oklch(0.05 0.01 270);
-  --secondary: oklch(0.15 0.05 270);
-  --secondary-foreground: oklch(1 0.01 0);
-  --muted: oklch(0.15 0.04 270);
-  --muted-foreground: oklch(0.95 0.03 0);
-  --accent: oklch(0.15 0.05 270);
-  --accent-foreground: oklch(1 0.01 0);
-  --border: oklch(0.4 0.06 270);
-  --input: oklch(0.15 0.05 270);
-  --ring: oklch(0.9 0.25 160);
+  --background: rgb(3, 13, 54);
+  --foreground: rgb(255, 255, 255);
+  --card: rgb(8, 31, 100);
+  --card-foreground: rgb(255, 255, 255);
+  --popover: rgb(8, 8, 20);
+  --popover-foreground: rgb(255, 255, 255);
+  --primary: rgb(166, 215, 255);
+  --primary-foreground: rgb(3, 13, 54);
+  --secondary: rgb(15, 41, 117);
+  --secondary-foreground: rgb(255, 255, 255);
+  --muted: rgb(15, 41, 117);
+  --muted-foreground: rgb(240, 240, 245);
+  --accent: rgb(15, 41, 117);
+  --accent-foreground: rgb(255, 255, 255);
+  --border: rgb(152, 205, 255);
+  --input: rgb(15, 41, 117);
+  --ring: rgb(166, 215, 255);
 }
 
 html[data-contrast-mode="high-contrast"] * {
@@ -416,13 +460,153 @@ html[data-contrast-mode="high-contrast"] select {
 html[data-contrast-mode="high-contrast"] .glow-green,
 html[data-contrast-mode="high-contrast"] .glow-purple,
 html[data-contrast-mode="high-contrast"] .glow-card {
-  box-shadow: 0 0 0 2px oklch(0.9 0.25 160);
+  box-shadow: 0 0 0 2px rgb(166, 215, 255);
 }
 
 /* Ensure focus states are visible in high contrast */
 html[data-contrast-mode="high-contrast"] button:focus-visible,
 html[data-contrast-mode="high-contrast"] a:focus-visible,
 html[data-contrast-mode="high-contrast"] input:focus-visible {
-  outline: 3px solid oklch(0.9 0.25 160);
+  outline: 3px solid rgb(166, 215, 255);
   outline-offset: 2px;
+}
+
+/* ─── Animated input/textarea border glow ─────────────────────────────────────
+ * A soft, continuous shimmer that draws the eye to the input without alarming.
+ * The animation cycles through three states:
+ *   dim  →  bright  →  dim  (ease-in-out, 3 s loop)
+ * The box-shadow layering produces a rectangular halo that sits just outside
+ * the element's border-radius, matching the rounded-xl corners used on both
+ * the Scam Analyzer and Tech Help textareas.
+ * ─────────────────────────────────────────────────────────────────────────── */
+@keyframes textarea-border-shimmer {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(119, 186, 255, 0.15),
+      0 0 6px 1px rgba(119, 186, 255, 0.08),
+      0 0 14px 2px rgba(119, 186, 255, 0.04);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1.5px rgba(162, 210, 255, 0.45),
+      0 0 10px 3px rgba(162, 210, 255, 0.18),
+      0 0 22px 5px rgba(162, 210, 255, 0.08);
+  }
+}
+
+.textarea-animated-border {
+  animation: textarea-border-shimmer 3s ease-in-out infinite;
+  /* Preserve existing border so it layers on top, not replaces */
+  border-color: rgba(119, 186, 255, 0.25) !important;
+  transition: border-color 0.2s ease;
+}
+
+/* When focused, pause the ambient shimmer and show a crisp focus ring instead */
+.textarea-animated-border:focus {
+  animation-play-state: paused;
+  box-shadow:
+    0 0 0 2px rgba(162, 210, 255, 0.55),
+    0 0 16px 4px rgba(162, 210, 255, 0.18) !important;
+  border-color: rgba(162, 210, 255, 0.6) !important;
+  outline: 3px solid rgba(193, 226, 255, 0.9);
+  outline-offset: 2px;
+}
+
+/* High-contrast mode: replace glow with a solid visible border */
+html[data-contrast-mode="high-contrast"] .textarea-animated-border {
+  animation: none;
+  box-shadow: none !important;
+  border: 2px solid #fff !important;
+}
+
+/* ── AnimatedSection: pure CSS scroll-reveal (replaces framer-motion) ────────
+   .section-fade-up        = initial hidden state (applied by component)
+   .animate-section-in     = triggered by IntersectionObserver
+   GPU-only: opacity + transform promoted via will-change.
+   ─────────────────────────────────────────────────────────────────────────── */
+.section-fade-up {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: opacity, transform;
+}
+.section-fade-up.animate-section-in {
+  animation: section-fade-up-kf 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@keyframes section-fade-up-kf {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section-fade-up {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+  .section-fade-up.animate-section-in {
+    animation: none;
+  }
+}
+
+/* ── Mobile: disable expensive backdrop-blur on Navbar ──────────────────────
+   backdrop-blur-xl triggers GPU compositing on every scroll on mobile.
+   On screens < 768px we use a solid semi-transparent background instead.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .mobile-no-blur {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(10, 14, 35, 0.97) !important;
+  }
+}
+
+/* ── Mobile: hide expensive CSS blur orbs in hero section ───────────────────
+   blur-[120px] on absolutely-positioned divs forces a full repaint on mobile.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .hero-blur-orb {
+    display: none;
+  }
+}
+
+/* Designwarrior accessibility guardrail: remove decorative continuous motion. */
+@media (prefers-reduced-motion: reduce) {
+  .textarea-animated-border,
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+/* ── Digital Sanctuary footer: restrained liquid-glass ambience ─────────────── */
+.footer-aurora {
+  position: absolute;
+  z-index: -1;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0.30;
+  background: linear-gradient(145deg, rgba(71, 126, 245, 0.34), rgba(7, 28, 96, 0.16));
+  box-shadow: inset 10px 10px 26px rgba(183, 216, 255, 0.10), inset -12px -12px 30px rgba(1, 10, 48, 0.30);
+}
+
+.footer-aurora-one { top: -7rem; right: 12%; }
+.footer-aurora-two { bottom: -9rem; left: 22%; transform: scale(0.70); }
+
+@media (max-width: 767px) {
+  .footer-aurora {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-aurora {
+    animation: none;
+    opacity: 0.12;
+  }
 }

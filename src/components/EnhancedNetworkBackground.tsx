@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Particle {
   x: number;
@@ -11,137 +11,229 @@ interface Particle {
   pulseOffset: number;
 }
 
+const BG_COLOR = "rgb(6, 18, 68)";
+const CONNECTION_DIST = 168;
+const CONNECTION_DIST_SQ = CONNECTION_DIST * CONNECTION_DIST;
+const MAX_PARTICLES = 34;
+
+// Mobile receives the same night-sky feeling without a canvas render loop.
+function MobileBackground() {
+  return (
+    <div
+      aria-hidden="true"
+      className="fixed inset-0 pointer-events-none"
+      style={{
+        zIndex: 1,
+        backgroundColor: BG_COLOR,
+        backgroundImage:
+          "radial-gradient(ellipse 85% 62% at 18% 22%, rgba(59,137,255,0.17) 0%, transparent 60%)," +
+          "radial-gradient(ellipse 76% 55% at 86% 76%, rgba(105,120,255,0.13) 0%, transparent 64%)," +
+          "radial-gradient(circle at 1px 1px, rgba(186,219,255,0.14) 1px, transparent 1.5px)",
+        backgroundSize: "auto, auto, 38px 38px",
+      }}
+    />
+  );
+}
+
+function paintBackdrop(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  time: number
+) {
+  context.fillStyle = BG_COLOR;
+  context.fillRect(0, 0, width, height);
+
+  const sweep = Math.sin(time * 0.0025) * 0.04;
+  const upperGlow = context.createRadialGradient(
+    width * (0.18 + sweep),
+    height * 0.20,
+    0,
+    width * (0.18 + sweep),
+    height * 0.20,
+    Math.max(width, height) * 0.72
+  );
+  upperGlow.addColorStop(0, "rgba(42, 112, 242, 0.20)");
+  upperGlow.addColorStop(0.52, "rgba(17, 59, 164, 0.08)");
+  upperGlow.addColorStop(1, "rgba(6, 18, 68, 0)");
+  context.fillStyle = upperGlow;
+  context.fillRect(0, 0, width, height);
+
+  const lowerGlow = context.createRadialGradient(
+    width * (0.82 - sweep),
+    height * 0.78,
+    0,
+    width * (0.82 - sweep),
+    height * 0.78,
+    Math.max(width, height) * 0.62
+  );
+  lowerGlow.addColorStop(0, "rgba(92, 105, 246, 0.15)");
+  lowerGlow.addColorStop(0.58, "rgba(25, 54, 150, 0.06)");
+  lowerGlow.addColorStop(1, "rgba(6, 18, 68, 0)");
+  context.fillStyle = lowerGlow;
+  context.fillRect(0, 0, width, height);
+}
+
 export function EnhancedNetworkBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 768
+  );
 
   useEffect(() => {
+    if (isMobile) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const context = canvas.getContext("2d", { alpha: false });
+    if (!context) return;
+    context.imageSmoothingEnabled = true;
 
-    // Set canvas size to full viewport
+    let resizeTimer: ReturnType<typeof setTimeout>;
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }, 150);
     };
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
 
-    // Create particles spread across the full viewport
-    const particleCount = 55;
-    const particles: Particle[] = [];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener("resize", resizeCanvas, { passive: true });
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: (Math.random() - 0.5) * 0.12,
-        radius: Math.random() * 2.0 + 1.5,
-        brightness: Math.random() * 0.4 + 0.6,
-        pulseSpeed: Math.random() * 0.015 + 0.008,
-        pulseOffset: Math.random() * Math.PI * 2,
-      });
+    if (prefersReducedMotion) {
+      paintBackdrop(context, canvas.width, canvas.height, 0);
+      return () => {
+        window.removeEventListener("resize", resizeCanvas);
+        clearTimeout(resizeTimer);
+      };
     }
 
-    let animationFrameId: number;
+    const particleCount = Math.min(
+      MAX_PARTICLES,
+      Math.max(16, Math.floor((window.innerWidth * window.innerHeight) / 24000))
+    );
+    const particles: Particle[] = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.11,
+      vy: (Math.random() - 0.5) * 0.11,
+      radius: Math.random() * 1.25 + 0.85,
+      brightness: Math.random() * 0.27 + 0.38,
+      pulseSpeed: Math.random() * 0.014 + 0.008,
+      pulseOffset: Math.random() * Math.PI * 2,
+    }));
+
+    let animationFrameId = 0;
     let time = 0;
+    let paused = false;
+
+    const drawParticle = (particle: Particle) => {
+      const pulse = Math.sin(time * particle.pulseSpeed + particle.pulseOffset);
+      const brightness = Math.max(0.46, Math.min(1, particle.brightness + pulse * 0.20));
+      const glowRadius = particle.radius * 8;
+      const glow = context.createRadialGradient(
+        particle.x,
+        particle.y,
+        0,
+        particle.x,
+        particle.y,
+        glowRadius
+      );
+      glow.addColorStop(0, `rgba(187, 225, 255, ${(brightness * 0.52).toFixed(3)})`);
+      glow.addColorStop(0.35, `rgba(103, 181, 255, ${(brightness * 0.20).toFixed(3)})`);
+      glow.addColorStop(1, "rgba(65, 118, 255, 0)");
+      context.fillStyle = glow;
+      context.beginPath();
+      context.arc(particle.x, particle.y, glowRadius, 0, Math.PI * 2);
+      context.fill();
+
+      context.strokeStyle = `rgba(207, 234, 255, ${(brightness * 0.34).toFixed(3)})`;
+      context.lineWidth = 0.7;
+      context.beginPath();
+      context.moveTo(particle.x - particle.radius * 3.1, particle.y);
+      context.lineTo(particle.x + particle.radius * 3.1, particle.y);
+      context.moveTo(particle.x, particle.y - particle.radius * 3.1);
+      context.lineTo(particle.x, particle.y + particle.radius * 3.1);
+      context.stroke();
+
+      context.fillStyle = `rgba(223, 242, 255, ${(brightness * 0.78).toFixed(3)})`;
+      context.beginPath();
+      context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+      context.fill();
+    };
 
     const animate = () => {
-      time++;
+      if (paused) return;
+      time += 1;
+      const width = canvas.width;
+      const height = canvas.height;
+      paintBackdrop(context, width, height, time);
 
-      // Fill with the site's dark background color (so canvas IS the background)
-      ctx.fillStyle = 'oklch(0.13 0.03 270)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Update and draw particles
-      particles.forEach((particle) => {
-        // Update position
+      for (const particle of particles) {
         particle.x += particle.vx;
         particle.y += particle.vy;
+        if (particle.x < -30) particle.x = width + 30;
+        else if (particle.x > width + 30) particle.x = -30;
+        if (particle.y < -30) particle.y = height + 30;
+        else if (particle.y > height + 30) particle.y = -30;
+      }
 
-        // Wrap around edges
-        if (particle.x < -30) particle.x = canvas.width + 30;
-        if (particle.x > canvas.width + 30) particle.x = -30;
-        if (particle.y < -30) particle.y = canvas.height + 30;
-        if (particle.y > canvas.height + 30) particle.y = -30;
+      context.lineCap = "round";
+      for (let index = 0; index < particles.length; index += 1) {
+        for (let compareIndex = index + 1; compareIndex < particles.length; compareIndex += 1) {
+          const first = particles[index];
+          const second = particles[compareIndex];
+          const dx = second.x - first.x;
+          const dy = second.y - first.y;
+          const distanceSquared = dx * dx + dy * dy;
 
-        // Smooth pulsing brightness
-        const pulse = Math.sin(time * particle.pulseSpeed + particle.pulseOffset);
-        const currentBrightness = particle.brightness + pulse * 0.2;
-        const b = Math.max(0.5, Math.min(1, currentBrightness));
+          if (distanceSquared >= CONNECTION_DIST_SQ) continue;
 
-        // Draw large outer glow (bright cyan)
-        const glowRadius = particle.radius * 8;
-        const glowGradient = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, glowRadius
-        );
-        glowGradient.addColorStop(0, `rgba(100, 240, 255, ${b * 0.9})`);
-        glowGradient.addColorStop(0.3, `rgba(60, 200, 255, ${b * 0.5})`);
-        glowGradient.addColorStop(0.6, `rgba(40, 160, 255, ${b * 0.2})`);
-        glowGradient.addColorStop(1, `rgba(40, 120, 255, 0)`);
-
-        ctx.fillStyle = glowGradient;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, glowRadius, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Draw bright cyan core dot
-        ctx.fillStyle = `rgba(160, 240, 255, ${b * 0.95})`;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Bright white center highlight
-        ctx.fillStyle = `rgba(255, 255, 255, ${b})`;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius * 0.45, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      // Draw connections between nearby particles
-      const connectionDistance = 200;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[j].x - particles[i].x;
-          const dy = particles[j].y - particles[i].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < connectionDistance) {
-            const proximity = 1 - distance / connectionDistance;
-            const opacity = proximity * proximity * 0.55;
-            const avgB = (particles[i].brightness + particles[j].brightness) / 2;
-
-            ctx.strokeStyle = `rgba(80, 220, 255, ${opacity * avgB})`;
-            ctx.lineWidth = proximity * 1.8;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
+          const distance = Math.sqrt(distanceSquared);
+          const proximity = 1 - distance / CONNECTION_DIST;
+          const opacity = proximity * proximity * 0.26;
+          context.strokeStyle = `rgba(124, 192, 255, ${opacity.toFixed(3)})`;
+          context.lineWidth = 0.5 + proximity * 0.8;
+          context.beginPath();
+          context.moveTo(first.x, first.y);
+          context.lineTo(second.x, second.y);
+          context.stroke();
         }
       }
 
+      for (const particle of particles) drawParticle(particle);
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    // Draw initial frame synchronously so background is visible immediately on mount
+    const handleVisibility = () => {
+      paused = document.hidden;
+      if (!paused) animationFrameId = requestAnimationFrame(animate);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
     animate();
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
+      document.removeEventListener("visibilitychange", handleVisibility);
       cancelAnimationFrame(animationFrameId);
+      clearTimeout(resizeTimer);
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return <MobileBackground />;
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 1, opacity: 1.0 }}
+      className="fixed inset-0 h-full w-full pointer-events-none"
+      style={{ zIndex: 1, willChange: "transform" }}
       aria-hidden="true"
     />
   );

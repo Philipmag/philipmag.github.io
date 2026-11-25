@@ -60,6 +60,7 @@ export default function TrainingSlideshow() {
               i === current ? "opacity-100" : "opacity-0"
             }`}
             loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
           />
         ))}
 

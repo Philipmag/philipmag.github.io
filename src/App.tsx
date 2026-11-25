@@ -1,6 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -9,29 +8,48 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { SkipToContent } from "./components/SkipToContent";
 import { PageProgress } from "./components/PageProgress";
 import { EnhancedNetworkBackground } from "./components/EnhancedNetworkBackground";
+import { lazy, Suspense } from "react";
+
+// ── Eagerly loaded (above-the-fold, always needed) ──────────────────────────
 import Home from "./pages/Home";
-import Resources from "./pages/Resources";
-import EmailBasics from "./pages/guides/EmailBasics";
-import Passwords from "./pages/guides/Passwords";
-import SpottingScams from "./pages/guides/SpottingScams";
-import SafeBrowsing from "./pages/guides/SafeBrowsing";
-import Contact from "./pages/Contact";
-import About from "./pages/About";
+import NotFound from "./pages/NotFound";
+
+// ── Lazy loaded (only fetched when user navigates to that route) ─────────────
+const Resources    = lazy(() => import("./pages/Resources"));
+const EmailBasics  = lazy(() => import("./pages/guides/EmailBasics"));
+const Passwords    = lazy(() => import("./pages/guides/Passwords"));
+const SpottingScams = lazy(() => import("./pages/guides/SpottingScams"));
+const SafeBrowsing = lazy(() => import("./pages/guides/SafeBrowsing"));
+const Contact      = lazy(() => import("./pages/Contact"));
+const About        = lazy(() => import("./pages/About"));
+const CalendarPage = lazy(() => import("./pages/Calendar"));
+
+// Minimal inline fallback — no extra component needed
+function PageFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+    </div>
+  );
+}
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/resources" component={Resources} />
-      <Route path="/guides/email-basics" component={EmailBasics} />
-      <Route path="/guides/passwords" component={Passwords} />
-      <Route path="/guides/spotting-scams" component={SpottingScams} />
-      <Route path="/guides/safe-browsing" component={SafeBrowsing} />
-      <Route path="/about" component={About} />
-      <Route path="/contact" component={Contact} />
-      <Route path="/404" component={NotFound} />
-      <Route component={NotFound} />
-    </Switch>
+    <Suspense fallback={<PageFallback />}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/resources" component={Resources} />
+        <Route path="/guides/email-basics" component={EmailBasics} />
+        <Route path="/guides/passwords" component={Passwords} />
+        <Route path="/guides/spotting-scams" component={SpottingScams} />
+        <Route path="/guides/safe-browsing" component={SafeBrowsing} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/calendar" component={CalendarPage} />
+        <Route path="/404" component={NotFound} />
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 

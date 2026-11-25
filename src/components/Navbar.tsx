@@ -3,11 +3,12 @@ import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { AccessibilityToggle } from "./AccessibilityToggle";
 
-const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo5_479e26ca.png";
+const LOGO_URL = "/manus-storage/digital-guardians-logo-restored-web_49a53968.webp";
 
 const navLinks = [
   { href: "/", label: "Home", isHash: false, sectionId: null },
   { href: "/#learn", label: "Learn", isHash: true, sectionId: "learn" },
+  { href: "/calendar", label: "Events", isHash: false, sectionId: null },
   { href: "/about", label: "About", isHash: false, sectionId: null },
   { href: "/resources", label: "Resources", isHash: false, sectionId: null },
 ];
@@ -99,18 +100,18 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         scrolled
-          ? "bg-background/90 backdrop-blur-xl border-b border-border/50"
+          ? "clay-nav border-b border-[rgb(146,194,255)]/20"
           : "bg-transparent"
       }`}
     >
       <div className="container flex items-center justify-between h-16 md:h-20">
-        {/* Logo with neon animation */}
+        {/* Static clay logo treatment preserves brand recognition and performance. */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="logo-neon-wrapper w-10 h-10 shrink-0">
+          <div className="logo-clay-wrapper w-10 h-10 shrink-0">
             <img
               src={LOGO_URL}
               alt="Digital Guardians"
-              className="logo-neon-img w-10 h-10 object-contain"
+              className="logo-clay-img w-10 h-10 object-contain"
             />
           </div>
           <span className="font-display font-bold text-lg tracking-tight text-foreground">
@@ -164,7 +165,7 @@ export default function Navbar() {
                 document.getElementById("analyzer")?.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="ml-3 px-5 py-2 text-sm font-semibold rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all glow-green"
+            className="ml-3 px-5 py-2 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:brightness-110 transition-all clay-button"
           >
             Try AI Assistant
           </a>
@@ -191,7 +192,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl">
+        <div className="md:hidden border-t border-[rgb(146,194,255)]/20 bg-[rgb(6,18,68)]">
           <nav className="container py-4 flex flex-col gap-1">
             {navLinks.map((link) => {
               const active = isLinkActive(link);
@@ -237,7 +238,7 @@ export default function Navbar() {
                 }
                 setMobileOpen(false);
               }}
-              className="mx-4 mt-2 px-5 py-3 text-sm font-semibold rounded-lg bg-primary text-primary-foreground text-center glow-green"
+              className="mx-4 mt-2 px-5 py-3 text-sm font-semibold rounded-xl bg-primary text-primary-foreground text-center clay-button"
             >
               Try AI Assistant
             </a>

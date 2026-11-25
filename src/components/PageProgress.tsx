@@ -23,7 +23,7 @@ export function PageProgress() {
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] h-0.5">
       <div
-        className="h-full bg-gradient-to-r from-primary via-primary to-[oklch(0.6_0.2_290)] transition-[width] duration-150 ease-out"
+        className="h-full bg-gradient-to-r from-primary via-primary to-[rgb(100,80,200)] transition-[width] duration-150 ease-out"
         style={{ width: `${progress}%` }}
       />
     </div>

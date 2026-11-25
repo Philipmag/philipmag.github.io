@@ -1,5 +1,5 @@
 /*
- * Design: Yeldra-inspired — Deep blue/black with neon accents, anime illustrations
+ * Design: Digital Sanctuary — natural midnight palette, restrained glass, surreal editorial illustrations
  * Page: Resources — Searchable, filterable resource cards with download links
  */
 
@@ -28,10 +28,11 @@ import SectionLabel from "@/components/SectionLabel";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 
-const RESOURCES_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/resources-anime_a3a0c68c.png";
-const PPTX_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardiansCybersecurityTraining_4c8b571f(1)_c5be9772.pptx";
-const PPTX_URL_2 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/Digital_Security_for_Seniors__ba76adc0.pptx";
-const PDF_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/Seniors_Cybersecurity_and_Video_Skills_46fd59cb(1)_f64f0fe7.pdf";
+const RESOURCES_IMG = "/manus-storage/resource-atlas-web_801a51ff.webp";
+const PPTX_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardians_Cybersecurity_2026_3cfab393.pptx";
+const PPTX_URL_2 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalSecurity_Seniors_2026_Redesigned_436bfe4d.pptx";
+const PPTX_URL_3 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/Staying_Connected_Seniors_Guide_54b053a8.pptx";
+const PPTX_URL_4 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/AIforSeniors_ChatGPT_Guide_2026_Redesigned_c1ecae50.pptx";
 
 type ResourceCategory = "all" | "training" | "guides" | "scam-awareness" | "tools";
 
@@ -50,9 +51,9 @@ interface Resource {
 const resources: Resource[] = [
   {
     id: "cybersecurity-training",
-    title: "Seniors Cybersecurity Training",
+    title: "Cybersecurity Awareness Training for Seniors",
     description:
-      "Comprehensive 24-slide presentation covering phishing, vishing, ransomware, common scams targeting seniors, and best practices for staying safe online. Includes real statistics and prevention techniques.",
+      "Updated June 2026 — our most comprehensive training presentation. 39 slides covering why seniors are disproportionately targeted, Canada's $704M+ fraud losses, the top 5 scams (financial impersonation, CRA fraud, fake tech support, romance scams, grandparent scams), phishing, vishing, ransomware, and the rise of AI-powered voice cloning and deepfake fraud. Includes a full cybersecurity action plan and reporting resources.",
     category: "training",
     type: "download",
     url: PPTX_URL_1,
@@ -64,25 +65,37 @@ const resources: Resource[] = [
     id: "digital-security-seniors",
     title: "Digital Security for Seniors",
     description:
-      "A comprehensive guide covering internet safety fundamentals, password management, recognizing online scams, safe social media practices, and protecting personal information online. Designed specifically for seniors.",
+      "Updated June 2026 — a focused 19-slide guide on three essential skills: safe device disposal (how to wipe your phone or computer before donating), strong passwords using the easy 3-random-words method, and Multi-Factor Authentication (MFA). Includes current 2025–2026 statistics, step-by-step setup instructions, and a personal action plan checklist.",
     category: "training",
     type: "download",
     url: PPTX_URL_2,
     icon: Presentation,
-    badge: "New",
+    badge: "Updated",
     fileType: "PPTX",
   },
   {
-    id: "cybersecurity-video-skills",
-    title: "Seniors Cybersecurity & Video Skills",
+    id: "staying-connected-seniors",
+    title: "Staying Connected: Video Meetings for Seniors",
     description:
-      "A comprehensive PDF guide combining cybersecurity awareness with practical video conferencing skills. Learn how to stay safe online while mastering tools like Zoom for staying connected with family and community.",
+      "An 85-slide step-by-step visual guide to joining and hosting online meetings using Zoom, Google Meet, and Microsoft Teams. Every action is illustrated with annotated screenshots and red-circle markers showing exactly where to click. Covers joining as an attendee, hosting a meeting, sharing your screen, recording, live captions, and troubleshooting — written in plain language at a comfortable pace.",
     category: "training",
     type: "download",
-    url: PDF_URL_1,
-    icon: FileText,
+    url: PPTX_URL_3,
+    icon: Presentation,
+    badge: "Updated",
+    fileType: "PPTX",
+  },
+  {
+    id: "ai-for-seniors",
+    title: "AI for Seniors: Your Friendly ChatGPT Guide",
+    description:
+      "New June 2026 — a beginner-friendly 16-slide introduction to artificial intelligence and ChatGPT. Covers what AI can and cannot do, how to create a free account, navigating the ChatGPT screen, writing good prompts, and practical daily uses (writing emails, health questions, recipes, travel planning). Includes an essential safety section on what never to share with AI, how to spot AI voice scams, and how to verify AI-generated information.",
+    category: "training",
+    type: "download",
+    url: PPTX_URL_4,
+    icon: Sparkles,
     badge: "New",
-    fileType: "PDF",
+    fileType: "PPTX",
   },
   {
     id: "phishing-guide",
@@ -319,7 +332,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
         <span
           className={`absolute top-4 right-4 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
             resource.badge === "New"
-              ? "text-[oklch(0.6_0.2_290)] bg-[oklch(0.6_0.2_290)]/10 border-[oklch(0.6_0.2_290)]/20"
+              ? "text-[rgb(100,80,200)] bg-[rgb(100,80,200)]/10 border-[rgb(100,80,200)]/20"
               : "text-primary bg-primary/10 border-primary/20"
           }`}
         >

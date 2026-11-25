@@ -224,6 +224,37 @@ export default defineConfig({
   build: {
     outDir,
     emptyOutDir: true,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        // Safe manual chunks: React MUST be in its own chunk loaded first.
+        // The key rule: never mix React with libraries that call React APIs
+        // at module evaluation time (like radix-ui, framer-motion, wouter).
+        // Vite/Rollup resolves inter-chunk dependencies automatically when
+        // chunks are declared this way — React chunk will always load first.
+        manualChunks(id) {
+          // React core MUST be isolated — everything depends on it
+          if (
+            id.includes('/node_modules/react/') ||
+            id.includes('/node_modules/react-dom/') ||
+            id.includes('/node_modules/scheduler/')
+          ) {
+            return 'react-vendor';
+          }
+          // tRPC + react-query (depends on React, isolated for caching)
+          if (
+            id.includes('/node_modules/@trpc/') ||
+            id.includes('/node_modules/@tanstack/react-query')
+          ) {
+            return 'trpc';
+          }
+          // framer-motion is large; lazy pages that use it will pull it in
+          if (id.includes('/node_modules/framer-motion/')) {
+            return 'framer-motion';
+          }
+        },
+      },
+    },
   },
   server: {
     host: true,

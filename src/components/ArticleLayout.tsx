@@ -50,7 +50,7 @@ export default function ArticleLayout({
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-grid opacity-20" />
             <div className="absolute top-1/3 -left-32 w-80 h-80 rounded-full bg-primary/10 blur-[100px]" />
-            <div className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-[oklch(0.6_0.2_290)]/10 blur-[100px]" />
+            <div className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-[rgb(100,80,200)]/10 blur-[100px]" />
           </div>
 
           <div className="container relative z-10">
@@ -222,7 +222,7 @@ export function ArticleTip({
   const styles = {
     tip: "bg-primary/5 border-primary/20 text-primary",
     warning: "bg-amber-500/5 border-amber-500/20 text-amber-400",
-    important: "bg-[oklch(0.6_0.2_290)]/5 border-[oklch(0.6_0.2_290)]/20 text-[oklch(0.6_0.2_290)]",
+    important: "bg-[rgb(100,80,200)]/5 border-[rgb(100,80,200)]/20 text-[rgb(100,80,200)]",
   };
 
   return (
@@ -306,7 +306,7 @@ export function ArticleQuiz({
   explanation: string;
 }) {
   return (
-    <div className="p-6 rounded-xl border border-[oklch(0.6_0.2_290)]/20 bg-[oklch(0.6_0.2_290)]/5 mb-6">
+    <div className="p-6 rounded-xl border border-[rgb(100,80,200)]/20 bg-[rgb(100,80,200)]/5 mb-6">
       <p className="font-display font-bold text-sm text-foreground mb-4">
         🧠 Quick Check: {question}
       </p>
