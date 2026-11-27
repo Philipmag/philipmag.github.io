@@ -1,64 +1,126 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-
-const projectRoot = resolve(import.meta.dirname, "..");
-
-function projectFile(path: string) {
-  return readFileSync(resolve(projectRoot, path), "utf8");
-}
-
-describe("championship-night clay design system", () => {
-  it("defines accessible cobalt tokens and reusable clay surfaces", () => {
-    const css = projectFile("src/index.css");
-
-    expect(css).toContain("--background: rgb(6, 18, 68)");
-    expect(css).toContain("--primary: rgb(98, 174, 255)");
-    expect(css).toContain(".clay-surface");
-    expect(css).toContain(".clay-inset");
-    expect(css).toContain(".clay-input");
-    expect(css).toContain(".clay-nav");
-    expect(css).toContain(".carved-text");
-    expect(css).toContain("outline: 3px solid rgb(145, 202, 255)");
-    expect(css).toContain("outline: 3px solid rgba(193, 226, 255, 0.9)");
+const root = resolve(import.meta.dirname, "..");
+const file = (path: string) =>
+  readFileSync(resolve(root, path), "utf8").replace(/\s+/g, " ");
+describe("Digital Guardians neighbourly editorial design", () => {
+  it("uses warm paper, navy ink and senior-readable defaults", () => {
+    const css = file("src/index.css");
+    expect(css).toContain("--background: #f7f4ee");
+    expect(css).toContain("--foreground: #142f4a");
+    expect(css).toContain("--primary: #173653");
+    expect(css).toContain("font-size: 18px");
+    expect(css).toContain("font-size: 20px");
+    expect(css).toContain("font-size: 22px");
+    expect(css).toContain('data-contrast-mode="high-contrast"');
+    expect(css).toContain("outline: 3px solid var(--primary)");
+    expect(css).toContain("prefers-reduced-motion: reduce");
+    expect(css).not.toMatch(
+      /(?:linear|radial)-gradient|text-shadow|shimmer|clay-surface/
+    );
   });
-
-  it("uses the static clay logo and not a continuous logo animation", () => {
-    const nav = projectFile("src/components/Navbar.tsx");
-    const footer = projectFile("src/components/Footer.tsx");
-
-    expect(nav).toContain("logo-clay-wrapper");
-    expect(footer).toContain("logo-clay-wrapper");
-    expect(nav).toContain("digital-guardians-logo-restored-web_49a53968.webp");
-    expect(footer).toContain("digital-guardians-logo-restored-web_49a53968.webp");
-    expect(nav).not.toContain("logo-neon-wrapper");
-    expect(footer).not.toContain("logo-neon-wrapper");
+  it("preserves a portable crest and exposes mobile reading controls", () => {
+    const nav = file("src/components/Navbar.tsx");
+    const footer = file("src/components/Footer.tsx");
+    expect(nav).toContain("SITE_ASSETS.logo");
+    expect(footer).toContain("SITE_ASSETS.logo");
+    expect(nav).toContain("<AccessibilityToggle");
+    expect(nav).toContain("aria-expanded={mobileOpen}");
+    expect(file("src/components/AccessibilityToggle.tsx")).toContain(
+      "aria-pressed"
+    );
+    expect(file("src/App.tsx")).not.toContain("EnhancedNetworkBackground");
   });
-
-  it("keeps the senior-facing analyzer on a clear, tactile input surface", () => {
-    const home = projectFile("src/pages/Home.tsx");
-
-    expect(home).toContain("textarea-animated-border clay-input");
-    expect(home).toContain("clay-surface overflow-hidden rounded-[1.75rem]");
-    expect(home).toContain("clay-inset inline-flex w-full gap-2");
-    expect(home).toContain("carved-text max-w-3xl");
+  it("keeps section order and limits generated scenes to purposeful moments", () => {
+    const home = file("src/pages/Home.tsx");
+    const sections = [
+      "<HeroSection",
+      "<AnalyzerSection",
+      "<ScamAlertsSection",
+      "<HowItWorksSection",
+      "<LearningSection",
+      "<TrainingsSection",
+      "<AboutSection",
+      "<EmergencySection",
+    ];
+    const positions = sections.map(section => home.indexOf(section));
+    expect(positions.every(position => position > -1)).toBe(true);
+    expect(positions).toEqual([...positions].sort((a, b) => a - b));
+    expect(home).toContain("SITE_ASSETS.hero");
+    expect(home).toContain("SITE_ASSETS.learning");
+    expect(home).toContain("Illustrative AI-generated scene");
+    expect(home).toContain("not a documented participant");
+    expect(home).not.toContain("SITE_ASSETS.emergency");
+    expect(file("src/index.css")).toContain("aspect-ratio: 3 / 2");
   });
-
-  it("uses the three selected people-centered images in their intended roles", () => {
-    const home = projectFile("src/pages/Home.tsx");
-
-    expect(home).toContain('const HERO_IMG = "/manus-storage/coffee-shop-guidance-web_f03beea5.webp"');
-    expect(home).toContain('const LEARNING_IMG = "/manus-storage/library-circle-web_27968e1f.webp"');
-    expect(home).toContain('const COMMUNITY_IMG = "/manus-storage/garden-bench-confidence-web_de2755d5.webp"');
-    expect(home).toContain("Guidance you can trust");
+  it("discloses third-party AI processing, redaction limits and local fallbacks", () => {
+    const home = file("src/pages/Home.tsx");
+    expect(home).toContain("OpenRouter and its AI provider");
+    expect(home).toContain("Automatic redaction can miss sensitive details");
+    expect(home).toContain("cannot guarantee a message is safe");
+    expect(home).toContain("Local safety checklist");
+    expect(home).toContain("not an assessment of your message");
+    expect(home).toContain("Local quick guide");
+    expect(home).toContain(
+      "analyzeMutation.mutate({ message: message.trim() })"
+    );
+    expect(home).toContain(
+      "techHelpMutation.mutate({ question: question.trim() })"
+    );
+    expect(home).toContain('aria-live="polite"');
   });
+  it("preserves downloadable training materials and removes auto-advancing photos", () => {
+    const resources = file("src/pages/Resources.tsx");
+    for (const name of [
+      "DigitalGuardians_Cybersecurity_2026_3cfab393.pptx",
+      "DigitalSecurity_Seniors_2026_Redesigned_436bfe4d.pptx",
+      "Staying_Connected_Seniors_Guide_54b053a8.pptx",
+      "AIforSeniors_ChatGPT_Guide_2026_Redesigned_c1ecae50.pptx",
+    ])
+      expect(resources).toContain(`/media/${name}`);
+    expect(resources).toContain("download");
+    const gallery = file("src/components/TrainingSlideshow.tsx");
+    expect(gallery).not.toContain("setInterval");
+    expect(gallery).toContain("Previous workshop photo");
+    expect(gallery).not.toMatch(/manus-storage|cloudfront/);
+  });
+  it("shows genuine contact and calendar errors instead of false success", () => {
+    for (const page of ["About", "Contact"]) {
+      const source = file(`src/pages/${page}.tsx`);
+      expect(source).toContain("setSubmitted(data.success === true)");
+      expect(source).toContain("onError");
+      expect(source).toContain('role="alert"');
+    }
+    const calendar = file("src/pages/Calendar.tsx");
+    expect(calendar).toContain("We could not load the workshop calendar");
+    expect(calendar).toContain("setSubmitted(data.success === true)");
+    expect(calendar).not.toContain("Sunday, June 28, 2026");
+  });
+});
 
-  it("keeps the live web decorative, bounded, and mobile-safe", () => {
-    const background = projectFile("src/components/EnhancedNetworkBackground.tsx");
+import { parseAccessibilitySettings } from "../src/contexts/AccessibilityContext";
 
-    expect(background).toContain("const MAX_PARTICLES = 34");
-    expect(background).toContain("if (isMobile) return <MobileBackground />");
-    expect(background).toContain("prefers-reduced-motion: reduce");
-    expect(background).toContain("document.addEventListener(\"visibilitychange\"");
+describe("saved accessibility settings", () => {
+  it("accepts valid large-text and high-contrast settings", () => {
+    expect(
+      parseAccessibilitySettings(
+        '{"textSize":"large","contrastMode":"high-contrast"}'
+      )
+    ).toEqual({ textSize: "large", contrastMode: "high-contrast" });
+  });
+  it("uses readable defaults for missing or malformed storage", () => {
+    for (const value of [null, "invalid-json", "{}", "null"])
+      expect(parseAccessibilitySettings(value)).toEqual({
+        textSize: "normal",
+        contrastMode: "normal",
+      });
+  });
+  it("rejects unsupported stored settings", () => {
+    expect(
+      parseAccessibilitySettings(
+        '{"textSize":"tiny","contrastMode":"invisible"}'
+      )
+    ).toEqual({ textSize: "normal", contrastMode: "normal" });
   });
 });

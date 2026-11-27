@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { SITE_ASSETS } from "@/lib/siteAssets";
 
 interface SEOProps {
   title: string;
@@ -102,7 +103,7 @@ export default function SEO({
           "name": "Digital Guardians",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardianslogo5_479e26ca.png",
+            "url": SITE_ASSETS.logo,
           },
         },
         ...(publishedDate && { "datePublished": publishedDate }),

@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 8;
+const MAX_TRACKED_CLIENTS = 10_000;
 
 type RequestLike = {
   ip?: string;
@@ -38,6 +39,9 @@ export function enforcePublicAiRateLimit(req: RequestLike): void {
   const bucket = requestBuckets.get(key);
 
   if (!bucket) {
+    if (requestBuckets.size >= MAX_TRACKED_CLIENTS) {
+      throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "The safety tools are busy. Please try again later." });
+    }
     requestBuckets.set(key, { startedAt: now, count: 1 });
     return;
   }

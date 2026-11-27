@@ -1,249 +1,103 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { AccessibilityToggle } from "./AccessibilityToggle";
-
-const LOGO_URL = "/manus-storage/digital-guardians-logo-restored-web_49a53968.webp";
-
+import { SITE_ASSETS } from "@/lib/siteAssets";
 const navLinks = [
-  { href: "/", label: "Home", isHash: false, sectionId: null },
-  { href: "/#learn", label: "Learn", isHash: true, sectionId: "learn" },
-  { href: "/calendar", label: "Events", isHash: false, sectionId: null },
-  { href: "/about", label: "About", isHash: false, sectionId: null },
-  { href: "/resources", label: "Resources", isHash: false, sectionId: null },
+  { href: "/", label: "Home" },
+  { href: "/#learn", label: "Learn" },
+  { href: "/calendar", label: "Events" },
+  { href: "/about", label: "About" },
+  { href: "/resources", label: "Resources" },
 ];
-
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [location] = useLocation();
-  const [activeSection, setActiveSection] = useState<string | null>(null);
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Track which section is currently in view using IntersectionObserver
-  useEffect(() => {
-    if (location !== "/") {
-      setActiveSection(null);
-      return;
-    }
-
-    const sectionIds = ["learn", "analyzer", "about"];
-    const observers: IntersectionObserver[] = [];
-
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) {
-        const observer = new IntersectionObserver(handleIntersect, {
-          rootMargin: "-30% 0px -60% 0px",
-          threshold: 0,
-        });
-        observer.observe(el);
-        observers.push(observer);
-      }
-    });
-
-    // Reset to null (Home) when at the top
-    const handleScroll = () => {
-      if (window.scrollY < 200) {
-        setActiveSection(null);
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      observers.forEach((o) => o.disconnect());
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [location]);
-
-  const isLinkActive = useCallback(
-    (link: (typeof navLinks)[0]) => {
-      // For non-home pages, match by path
-      if (!link.isHash && link.href !== "/") {
-        return location === link.href;
-      }
-      // For Home link: active when on "/" and no section is in view
-      if (link.href === "/" && !link.isHash) {
-        return location === "/" && activeSection === null;
-      }
-      // For hash links: active when their section is in view
-      if (link.isHash && link.sectionId) {
-        return location === "/" && activeSection === link.sectionId;
-      }
-      return false;
-    },
-    [location, activeSection]
-  );
-
-  const handleNavClick = (link: (typeof navLinks)[0]) => {
     setMobileOpen(false);
-    if (link.isHash && location === "/") {
-      const id = link.href.replace("/#", "");
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  }, [location]);
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
+  }, [mobileOpen]);
+  const navigateHash = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    setMobileOpen(false);
+    if (location === "/" && href.includes("#")) {
+      event.preventDefault();
+      const id = href.split("#")[1];
+      history.replaceState(null, "", `/#${id}`);
+      document.getElementById(id)?.scrollIntoView();
     }
   };
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        scrolled
-          ? "clay-nav border-b border-[rgb(146,194,255)]/20"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="container flex items-center justify-between h-16 md:h-20">
-        {/* Static clay logo treatment preserves brand recognition and performance. */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="logo-clay-wrapper w-10 h-10 shrink-0">
-            <img
-              src={LOGO_URL}
-              alt="Digital Guardians"
-              className="logo-clay-img w-10 h-10 object-contain"
-            />
-          </div>
-          <span className="font-display font-bold text-lg tracking-tight text-foreground">
-            Digital Guardians
-          </span>
+    <header className="site-header">
+      <div className="container header-row">
+        <Link href="/" className="brand" aria-label="Digital Guardians home">
+          <img src={SITE_ASSETS.logo} alt="" width="44" height="48" />
+          <span>Digital Guardians</span>
         </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
-          {navLinks.map((link) => {
-            const active = isLinkActive(link);
-            return link.isHash ? (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  if (location === "/") {
-                    e.preventDefault();
-                    handleNavClick(link);
-                  }
-                }}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 relative ${
-                  active
-                    ? "text-primary font-semibold after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:bg-primary after:rounded-full shadow-md shadow-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-white/5 hover:shadow-sm"
-                }`}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150 relative ${
-                  active
-                    ? "text-primary font-semibold after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:bg-primary after:rounded-full shadow-md shadow-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-white/5 hover:shadow-sm"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-
-          {/* CTA Button - Try AI Assistant */}
+        <nav aria-label="Main navigation" className="desktop-nav">
+          {navLinks.map(link => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="nav-link"
+              aria-current={location === link.href ? "page" : undefined}
+              onClick={event => navigateHash(event, link.href)}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="header-tools">
           <a
             href="/#analyzer"
-            onClick={(e) => {
-              if (location === "/") {
-                e.preventDefault();
-                document.getElementById("analyzer")?.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className="ml-3 px-5 py-2 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:brightness-110 transition-all clay-button"
+            onClick={event => navigateHash(event, "/#analyzer")}
+            className="button button-secondary header-helper"
           >
-            Try AI Assistant
+            Try the helper
+          </a>
+          <AccessibilityToggle />
+          <button
+            type="button"
+            className="icon-button menu-toggle"
+            aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+      </div>
+      {mobileOpen && (
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="container mobile-nav"
+        >
+          {navLinks.map(link => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-link"
+              onClick={event => navigateHash(event, link.href)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <a
+            href="/#analyzer"
+            className="text-link"
+            onClick={event => navigateHash(event, "/#analyzer")}
+          >
+            Try the helper
           </a>
         </nav>
-
-        {/* Accessibility Toggle */}
-        <div className="hidden md:flex items-center gap-2">
-          <AccessibilityToggle />
-        </div>
-
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors text-foreground"
-          aria-label="Toggle navigation"
-        >
-          {mobileOpen ? (
-            <X className="w-5 h-5" />
-          ) : (
-            <Menu className="w-5 h-5" />
-          )}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-[rgb(146,194,255)]/20 bg-[rgb(6,18,68)]">
-          <nav className="container py-4 flex flex-col gap-1">
-            {navLinks.map((link) => {
-              const active = isLinkActive(link);
-              return link.isHash ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => {
-                    if (location === "/") {
-                      e.preventDefault();
-                    }
-                    handleNavClick(link);
-                  }}
-                  className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                    active
-                      ? "text-primary bg-primary/5"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                  }`}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                    active
-                      ? "text-primary bg-primary/5"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-            <a
-              href="/#analyzer"
-              onClick={(e) => {
-                if (location === "/") {
-                  e.preventDefault();
-                  document.getElementById("analyzer")?.scrollIntoView({ behavior: "smooth" });
-                }
-                setMobileOpen(false);
-              }}
-              className="mx-4 mt-2 px-5 py-3 text-sm font-semibold rounded-xl bg-primary text-primary-foreground text-center clay-button"
-            >
-              Try AI Assistant
-            </a>
-          </nav>
-        </div>
       )}
     </header>
   );

@@ -16,8 +16,16 @@ export function ScrollToTop() {
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20 flex items-center justify-center hover:scale-110 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4"
+      onClick={() =>
+        window.scrollTo({
+          top: 0,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "instant"
+            : "smooth",
+        })
+      }
+      className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-lg bg-primary text-primary-foreground   flex items-center justify-center transition-colors duration-300"
       aria-label="Scroll to top"
     >
       <ArrowUp className="w-5 h-5" />

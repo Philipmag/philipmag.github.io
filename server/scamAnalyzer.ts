@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { publicProcedure, router } from "./_core/trpc";
-import { invokeLLM } from "./_core/llm";
+import { invokeLLM, safeLLMDiagnostic } from "./_core/llm";
 import { enforcePublicAiRateLimit, minimizeSensitiveInput } from "./aiSafety";
 
 /* ─── Scam Analysis System Prompt ─── */
@@ -178,7 +178,7 @@ const SAFETY_RULES: Array<{
     category: "phishing",
   },
   {
-    pattern: /\b(gift card|bitcoin|crypto(?:currency)?|wire transfer|e-transfer|send money|payment (?:is )?required)\b/i,
+    pattern: /\b(gift cards?|bitcoin|crypto(?:currency)?|wire transfers?|e-transfers?|send money|payment (?:is )?required)\b/i,
     weight: 3,
     flag: "The message mentions an unusual or hard-to-reverse payment method commonly used by scammers.",
     category: "payment scam",
@@ -264,6 +264,7 @@ export const scamAnalyzerRouter = router({
       z.object({
         message: z
           .string()
+          .trim()
           .min(1, "Please provide a message to analyze")
           .max(10000, "Message is too long. Please paste a shorter excerpt."),
       })
@@ -275,7 +276,6 @@ export const scamAnalyzerRouter = router({
 
       try {
         const result = await invokeLLM({
-          model: "gpt-5-mini",
           messages: [
             {
               role: "system",
@@ -287,37 +287,32 @@ export const scamAnalyzerRouter = router({
             },
           ],
           outputSchema: SCAM_ANALYSIS_SCHEMA,
-          maxCompletionTokens: 900,
-          reasoning: { effort: "minimal" },
+          // Reasoning-capable free models share this budget with the JSON answer.
+          // Keep the same total deadline, but avoid starving the visible response.
+          maxCompletionTokens: 1800,
         });
 
         const responseText = extractTextContent(result);
         if (!responseText.trim()) {
           throw new Error("AI returned an empty analysis");
         }
-        const analysis = parseJsonOutput<Record<string, unknown>>(responseText);
+        const analysis = ScamOutput.parse(parseJsonOutput(responseText));
+        assertSafeOutput(analysis);
+        const localCheck = buildSafetyCheck(minimized.value, minimized.redactionCount > 0);
+        if (analysis.riskLevel === "safe" && localCheck.riskLevel === "dangerous") throw new Error("Unsafe risk assessment");
 
         return {
           source: "ai" as const,
           privacyProtected: minimized.redactionCount > 0,
-          riskLevel: validateRiskLevel(analysis.riskLevel),
-          confidence: Math.min(100, Math.max(0, Number(analysis.confidence) || 50)),
-          summary: limitText(analysis.summary, 700, "Analysis complete."),
-          redFlags: Array.isArray(analysis.redFlags)
-            ? analysis.redFlags
-                .slice(0, 8)
-                .map(flag => limitText(flag, 280, ""))
-                .filter(Boolean)
-            : [],
-          advice: limitText(
-            analysis.advice,
-            1400,
-            "When in doubt, do not click any links or share personal information."
-          ),
-          scamType: limitText(analysis.scamType, 80, "none"),
+          riskLevel: analysis.riskLevel,
+          confidence: analysis.confidence,
+          summary: analysis.summary.slice(0, 700),
+          redFlags: analysis.redFlags.slice(0, 8).map(flag => flag.slice(0, 280)),
+          advice: analysis.advice.slice(0, 1400),
+          scamType: analysis.scamType.slice(0, 80),
         };
       } catch (error) {
-        console.error("[scamAnalyzer.analyze] live request failed:", getErrorMessage(error));
+        console.warn("[scamAnalyzer.analyze]", safeLLMDiagnostic(error));
 
         return buildSafetyCheck(minimized.value, minimized.redactionCount > 0);
       }
@@ -329,6 +324,7 @@ export const scamAnalyzerRouter = router({
       z.object({
         question: z
           .string()
+          .trim()
           .min(1, "Please describe what you need help with")
           .max(5000, "Question is too long. Please keep it brief."),
       })
@@ -340,7 +336,6 @@ export const scamAnalyzerRouter = router({
 
       try {
         const result = await invokeLLM({
-          model: "gpt-5-mini",
           messages: [
             {
               role: "system",
@@ -353,9 +348,7 @@ export const scamAnalyzerRouter = router({
           ],
           outputSchema: TECH_HELP_SCHEMA,
           maxCompletionTokens: 1800,
-          reasoning: { effort: "minimal" },
-          // A public help page should switch to the verified backup promptly rather
-          // than make someone wait through repeated attempts from one provider.
+          // Switch promptly to the local quick guide instead of repeated live attempts.
           timeoutMs: 12_000,
           maxAttempts: 1,
         });
@@ -364,15 +357,16 @@ export const scamAnalyzerRouter = router({
         if (!responseText.trim()) {
           throw new Error("AI returned an empty guide");
         }
-        const guide = parseJsonOutput<Record<string, any>>(responseText);
+        const guide = TechOutput.parse(parseJsonOutput(responseText));
+        assertSafeOutput(guide);
 
         return {
           source: "ai" as const,
           privacyProtected: minimized.redactionCount > 0,
-          ...normalizeTechHelpGuide(guide, minimized.value),
+          ...normalizeTechHelpGuide(guide),
         };
       } catch (error) {
-        console.error("[scamAnalyzer.techHelp] live request failed:", getErrorMessage(error));
+        console.warn("[scamAnalyzer.techHelp]", safeLLMDiagnostic(error));
 
         return {
           source: "quick-guide" as const,
@@ -404,14 +398,43 @@ function parseJsonOutput<T = unknown>(content: string): T {
   return JSON.parse(normalized) as T;
 }
 
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
-
-function limitText(value: unknown, maximum: number, fallback: string): string {
-  const text = String(value ?? "").trim();
-  if (!text) return fallback;
-  return text.slice(0, maximum);
+// Application validation is required even when a provider advertises strict output.
+const meaningful = z.string().trim().min(3).max(6000);
+const ScamOutput = z.object({
+  riskLevel: z.enum(["safe", "suspicious", "dangerous"]),
+  confidence: z.number().min(0).max(100),
+  summary: meaningful,
+  redFlags: z.array(meaningful).max(20),
+  advice: meaningful,
+  scamType: z.string().trim().min(1).max(160),
+}).strict().refine(value => value.riskLevel === "safe" || value.redFlags.length > 0);
+const TechOutput = z.object({
+  title: meaningful,
+  difficulty: z.enum(["beginner", "intermediate", "advanced"]),
+  estimatedTime: meaningful,
+  overview: meaningful,
+  steps: z.array(z.object({ stepNumber: z.number().int().positive(), title: meaningful, instruction: meaningful, tip: z.string().max(2000).nullable() }).strict()).min(1).max(10),
+  troubleshooting: z.array(z.object({ problem: meaningful, solution: meaningful }).strict()).min(1).max(4),
+  safetyNote: meaningful,
+}).strict();
+function assertSafeOutput(output: unknown): void {
+  const text = JSON.stringify(output);
+  if (minimizeSensitiveInput(text).redactionCount > 0) throw new Error("Sensitive answer");
+  // Defense in depth, not a claim that regex can establish model safety.
+  const fields: string[] = [];
+  const collect = (value: unknown): void => {
+    if (typeof value === "string") fields.push(value);
+    else if (Array.isArray(value)) value.forEach(collect);
+    else if (value && typeof value === "object") Object.values(value).forEach(collect);
+  };
+  collect(output);
+  const sentences = fields.flatMap(field => field.split(/[.!?;\n]|\b(?:but|however|instead)\b/i));
+  for (const sentence of sentences) {
+    const denied = /\b(never|do not|don't|should not|avoid|cannot|can't|not to|without|stop)\b/i.test(sentence);
+    if (!denied && /\b(send|share|give|tell|provide|enter|reply with|email|reveal)\b.{0,70}\b(password|passcode|verification code|one[- ]time code|pin|banking detail|credit card|social insurance)\b/i.test(sentence)) throw new Error("Unsafe answer");
+    if (!denied && /\b(disable|turn off)\b.{0,50}\b(antivirus|firewall|security|two[- ]factor)\b|\b(install|download|allow|grant|give)\b.{0,50}\b(anydesk|teamviewer|remote access)\b/i.test(sentence)) throw new Error("Unsafe answer");
+    if (/\b(i|we|this tool)\b.{0,30}\b(verified|confirmed|accessed|logged into|fixed|changed)\b.{0,45}\b(sender|identity|account|device|password|settings|link)\b/i.test(sentence)) throw new Error("Unsupported action claim");
+  }
 }
 
 type TechGuideContent = {
@@ -429,83 +452,20 @@ type TechGuideContent = {
   safetyNote: string;
 };
 
-/**
- * NVIDIA and other providers can return valid JSON with a simpler guide shape.
- * Normalize it instead of treating a good plain-language answer as an outage.
- */
-function normalizeTechHelpGuide(
-  guide: Record<string, unknown>,
-  question: string
-): TechGuideContent {
-  const quickGuide = buildQuickTechGuide(question);
-  const rawSteps = Array.isArray(guide.steps) ? guide.steps : [];
-  const steps = rawSteps
-    .map(normalizeGuideStep)
-    .filter((step): step is TechGuideContent["steps"][number] => step !== null)
-    .slice(0, 10)
-    .map((step, index) => ({
-      ...step,
-      stepNumber: index + 1,
-      title: step.title === "Next step" ? `Step ${index + 1}` : step.title,
-    }));
-
-  const rawTroubleshooting = Array.isArray(guide.troubleshooting)
-    ? guide.troubleshooting
-    : [];
-  const troubleshooting = rawTroubleshooting
-    .map(normalizeTroubleshootingItem)
-    .filter((item): item is TechGuideContent["troubleshooting"][number] => item !== null)
-    .slice(0, 4);
-
+/** Truncate validated fields for the public UI; never manufacture an AI answer. */
+function normalizeTechHelpGuide(guide: z.infer<typeof TechOutput>): TechGuideContent {
   return {
-    title: limitText(guide.title, 160, quickGuide.title),
-    difficulty: validateDifficulty(guide.difficulty),
-    estimatedTime: limitText(guide.estimatedTime, 80, quickGuide.estimatedTime),
-    overview: limitText(guide.overview ?? guide.note, 700, quickGuide.overview),
-    steps: steps.length > 0 ? steps : quickGuide.steps,
-    troubleshooting: troubleshooting.length > 0 ? troubleshooting : quickGuide.troubleshooting,
-    safetyNote: limitText(guide.safetyNote ?? guide.safety_tip, 600, quickGuide.safetyNote),
+    title: guide.title.slice(0, 160),
+    difficulty: guide.difficulty,
+    estimatedTime: guide.estimatedTime.slice(0, 80),
+    overview: guide.overview.slice(0, 700),
+    steps: guide.steps.map((step, index) => ({ stepNumber: index + 1, title: step.title.slice(0, 160), instruction: step.instruction.slice(0, 900), tip: step.tip?.slice(0, 400) || null })),
+    troubleshooting: guide.troubleshooting.map(item => ({ problem: item.problem.slice(0, 260), solution: item.solution.slice(0, 700) })),
+    safetyNote: guide.safetyNote.slice(0, 600),
   };
 }
 
-function normalizeGuideStep(
-  item: unknown
-): TechGuideContent["steps"][number] | null {
-  if (typeof item === "string") {
-    const instruction = limitText(item, 900, "");
-    return instruction
-      ? { stepNumber: 0, title: "Next step", instruction, tip: null }
-      : null;
-  }
-
-  if (!item || typeof item !== "object" || Array.isArray(item)) return null;
-  const record = item as Record<string, unknown>;
-  const instruction = limitText(
-    record.instruction ?? record.description ?? record.text ?? record.action,
-    900,
-    ""
-  );
-  if (!instruction) return null;
-
-  return {
-    stepNumber: Number(record.stepNumber) || 0,
-    title: limitText(record.title ?? record.name, 160, "Next step"),
-    instruction,
-    tip: record.tip ? limitText(record.tip, 400, "") : null,
-  };
-}
-
-function normalizeTroubleshootingItem(
-  item: unknown
-): TechGuideContent["troubleshooting"][number] | null {
-  if (!item || typeof item !== "object" || Array.isArray(item)) return null;
-  const record = item as Record<string, unknown>;
-  const problem = limitText(record.problem, 260, "");
-  const solution = limitText(record.solution, 700, "");
-  return problem && solution ? { problem, solution } : null;
-}
-
-/** Provide immediately useful, safe guidance even during a rare all-provider outage. */
+/** Provide immediately useful, safe guidance even during a rare OpenRouter outage. */
 function buildQuickTechGuide(question: string): TechGuideContent {
   const topic = question.toLowerCase();
   const base: Pick<TechGuideContent, "difficulty" | "estimatedTime" | "troubleshooting" | "safetyNote"> = {
@@ -573,22 +533,4 @@ function buildQuickTechGuide(question: string): TechGuideContent {
       { stepNumber: 3, title: "Make one change at a time", instruction: "Follow one on-screen step, then pause to check what changed before moving on.", tip: "If anything asks for a password or code unexpectedly, stop and verify through a trusted contact method." },
     ],
   };
-}
-
-function validateRiskLevel(
-  level: unknown
-): "safe" | "suspicious" | "dangerous" {
-  if (level === "safe" || level === "suspicious" || level === "dangerous") {
-    return level;
-  }
-  return "suspicious";
-}
-
-function validateDifficulty(
-  level: unknown
-): "beginner" | "intermediate" | "advanced" {
-  if (level === "beginner" || level === "intermediate" || level === "advanced") {
-    return level;
-  }
-  return "beginner";
 }

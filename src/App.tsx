@@ -7,7 +7,6 @@ import { ToastProvider } from "./components/Toast";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { SkipToContent } from "./components/SkipToContent";
 import { PageProgress } from "./components/PageProgress";
-import { EnhancedNetworkBackground } from "./components/EnhancedNetworkBackground";
 import { lazy, Suspense } from "react";
 
 // ── Eagerly loaded (above-the-fold, always needed) ──────────────────────────
@@ -15,24 +14,27 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 
 // ── Lazy loaded (only fetched when user navigates to that route) ─────────────
-const Resources    = lazy(() => import("./pages/Resources"));
-const EmailBasics  = lazy(() => import("./pages/guides/EmailBasics"));
-const Passwords    = lazy(() => import("./pages/guides/Passwords"));
+const Resources = lazy(() => import("./pages/Resources"));
+const EmailBasics = lazy(() => import("./pages/guides/EmailBasics"));
+const Passwords = lazy(() => import("./pages/guides/Passwords"));
 const SpottingScams = lazy(() => import("./pages/guides/SpottingScams"));
 const SafeBrowsing = lazy(() => import("./pages/guides/SafeBrowsing"));
-const Contact      = lazy(() => import("./pages/Contact"));
-const About        = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const About = lazy(() => import("./pages/About"));
 const CalendarPage = lazy(() => import("./pages/Calendar"));
 
 // Minimal inline fallback — no extra component needed
 function PageFallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-    </div>
+    <main
+      id="main-content"
+      role="status"
+      className="min-h-screen flex items-center justify-center bg-background"
+    >
+      <p>Loading the page…</p>
+    </main>
   );
 }
-
 function Router() {
   return (
     <Suspense fallback={<PageFallback />}>
@@ -56,12 +58,11 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark">
+      <ThemeProvider defaultTheme="light">
         <ToastProvider>
           <TooltipProvider>
             <SkipToContent />
             <PageProgress />
-            <EnhancedNetworkBackground />
             <Toaster />
             <div className="relative z-10">
               <Router />

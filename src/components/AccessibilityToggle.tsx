@@ -1,131 +1,112 @@
-import React, { useState } from 'react';
-import { useAccessibility, type TextSize } from '@/contexts/AccessibilityContext';
-import { Button } from '@/components/ui/button';
-import { 
-  Accessibility, 
-  X, 
-  Plus, 
-  Minus,
-  Contrast,
-  RotateCcw
-} from 'lucide-react';
-
-export const AccessibilityToggle: React.FC = () => {
-  const { settings, setTextSize, toggleContrastMode, resetSettings } = useAccessibility();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const textSizeOptions: { label: string; value: TextSize }[] = [
-    { label: 'Normal', value: 'normal' },
-    { label: 'Large', value: 'large' },
-    { label: 'Extra Large', value: 'extra-large' },
+import { useEffect, useRef, useState } from "react";
+import { Accessibility, X, Contrast, RotateCcw } from "lucide-react";
+import {
+  useAccessibility,
+  type TextSize,
+} from "@/contexts/AccessibilityContext";
+export function AccessibilityToggle() {
+  const { settings, setTextSize, toggleContrastMode, resetSettings } =
+    useAccessibility();
+  const [open, setOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const outside = (event: PointerEvent) => {
+      if (!root.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const keyboard = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        trigger.current?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("keydown", keyboard);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("keydown", keyboard);
+    };
+  }, [open]);
+  const options: { value: TextSize; label: string }[] = [
+    { value: "normal", label: "Standard (18px)" },
+    { value: "large", label: "Large (20px)" },
+    { value: "extra-large", label: "Extra large (22px)" },
   ];
-
-  const handleTextSizeChange = (size: TextSize) => {
-    setTextSize(size);
-  };
-
   return (
-    <div className="relative">
-      {/* Toggle Button */}
+    <div className="relative" ref={root}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg hover:bg-accent/10 transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
-        aria-label="Accessibility options"
-        title="Accessibility settings"
+        ref={trigger}
+        type="button"
+        className="icon-button"
+        aria-label="Text size and contrast"
+        title="Text size and contrast"
+        aria-expanded={open}
+        aria-controls="accessibility-options"
+        onClick={() => setOpen(!open)}
       >
-        <Accessibility className="w-5 h-5 text-foreground" />
+        <Accessibility size={20} />
       </button>
-
-      {/* Dropdown Panel */}
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-72 bg-card border border-border rounded-lg shadow-lg z-50 p-4">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-foreground">Accessibility</h3>
+      {open && (
+        <section
+          id="accessibility-options"
+          className="accessibility-panel"
+          aria-label="Accessibility settings"
+        >
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-lg">Reading settings</h2>
             <button
-              onClick={() => setIsOpen(false)}
-              className="p-1 hover:bg-accent/10 rounded transition-colors"
-              aria-label="Close accessibility panel"
+              type="button"
+              className="icon-button"
+              aria-label="Close reading settings"
+              onClick={() => {
+                setOpen(false);
+                trigger.current?.focus();
+              }}
             >
-              <X className="w-4 h-4" />
+              <X size={18} />
             </button>
           </div>
-
-          {/* Text Size Section */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-foreground mb-3">
-              Text Size
-            </label>
-            <div className="space-y-2">
-              {textSizeOptions.map((option) => (
+          <fieldset>
+            <legend className="mb-3">Text size</legend>
+            <div className="grid gap-2">
+              {options.map(option => (
                 <button
                   key={option.value}
-                  onClick={() => handleTextSizeChange(option.value)}
-                  className={`w-full px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    settings.textSize === option.value
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  }`}
+                  type="button"
+                  aria-pressed={settings.textSize === option.value}
+                  onClick={() => setTextSize(option.value)}
+                  className={`button ${settings.textSize === option.value ? "" : "button-secondary"}`}
                 >
                   {option.label}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Preview: <span className={`text-${settings.textSize === 'normal' ? 'base' : settings.textSize === 'large' ? 'lg' : 'xl'}`}>
-                Sample text
-              </span>
-            </p>
-          </div>
-
-          {/* Contrast Mode Section */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-foreground mb-3">
-              Display Mode
-            </label>
-            <button
-              onClick={toggleContrastMode}
-              className={`w-full px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
-                settings.contrastMode === 'high-contrast'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
-              }`}
-            >
-              <Contrast className="w-4 h-4" />
-              {settings.contrastMode === 'high-contrast' ? 'High Contrast On' : 'High Contrast Off'}
-            </button>
-            <p className="text-xs text-muted-foreground mt-2">
-              Increases contrast for better visibility
-            </p>
-          </div>
-
-          {/* Reset Button */}
+          </fieldset>
           <button
-            onClick={() => {
-              resetSettings();
-              setIsOpen(false);
-            }}
-            className="w-full px-3 py-2 rounded-md text-sm font-medium bg-muted text-muted-foreground hover:bg-muted/80 transition-colors flex items-center justify-center gap-2"
+            type="button"
+            className="button button-secondary w-full mt-5"
+            aria-pressed={settings.contrastMode === "high-contrast"}
+            onClick={toggleContrastMode}
           >
-            <RotateCcw className="w-4 h-4" />
-            Reset to Default
+            <Contrast size={18} />
+            {settings.contrastMode === "high-contrast"
+              ? "High contrast on"
+              : "Turn on high contrast"}
           </button>
-
-          {/* Info */}
-          <p className="text-xs text-muted-foreground mt-4 text-center">
-            Your settings are saved automatically
+          <button
+            type="button"
+            className="text-link mt-4 inline-flex items-center gap-2"
+            onClick={resetSettings}
+          >
+            <RotateCcw size={18} />
+            Reset settings
+          </button>
+          <p className="text-sm text-muted-foreground mt-4">
+            Settings are saved on this device when storage is available
           </p>
-        </div>
-      )}
-
-      {/* Overlay to close panel when clicking outside */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-        />
+        </section>
       )}
     </div>
   );
-};
+}

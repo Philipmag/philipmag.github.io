@@ -1,0 +1,21 @@
+# Optional deployment blueprint. No external service has been provisioned.
+services:
+  - type: web
+    name: digital-guardians
+    runtime: node
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: NODE_ENV
+        value: production
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: openrouter/free
+      - key: TRUST_PROXY
+        value: 1
+      - key: APP_ORIGIN
+        sync: false
