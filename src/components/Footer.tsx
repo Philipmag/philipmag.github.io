@@ -52,8 +52,11 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          © {new Date().getFullYear()} Digital Guardians · Practical support,
-          at your pace
+          <span>
+            © {new Date().getFullYear()} Digital Guardians · Practical support,
+            at your pace
+          </span>
+          <span className="design-credit">Site design · ScaffoldStudioCo</span>
         </div>
       </div>
     </footer>

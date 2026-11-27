@@ -14,6 +14,7 @@ import SectionLabel from "@/components/SectionLabel";
 import TrainingSlideshow from "@/components/TrainingSlideshow";
 import ScamAlertsFeed from "@/components/ScamAlertsFeed";
 import SEO from "@/components/SEO";
+import HeroNetwork from "@/components/HeroNetwork";
 import { trpc } from "@/lib/trpc";
 import { SITE_ASSETS } from "@/lib/siteAssets";
 import { IS_STATIC_PREVIEW } from "@/lib/runtime";
@@ -77,55 +78,57 @@ export default function Home() {
 function HeroSection() {
   return (
     <section className="hero">
-      <div className="container">
-        <div className="hero-grid">
-          <div>
-            <p className="eyebrow">
-              Online safety help in Peterborough, Ontario
-            </p>
-            <h1 className="hero-title">
-              Feel safer online,
-              <br />
-              one clear step
-              <br />
-              at a time
-            </h1>
-            <p className="hero-summary">
-              Practical, judgment-free support for older adults. Learn to spot
-              scams, protect your accounts, and feel more confident with
-              everyday technology.
-            </p>
-            <div className="hero-actions">
-              <a href="#analyzer" className="button">
-                Check a message <ArrowRight size={18} />
-              </a>
-              <Link href="/calendar" className="button button-secondary">
-                Find a workshop
-              </Link>
+      <HeroNetwork>
+        <div className="container">
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <p className="eyebrow">
+                Online safety help in Peterborough, Ontario
+              </p>
+              <h1 className="hero-title">
+                Feel safer online,
+                <br />
+                one clear step
+                <br />
+                at a time
+              </h1>
+              <p className="hero-summary">
+                Practical, judgment-free support for older adults. Learn to spot
+                scams, protect your accounts, and feel more confident with
+                everyday technology.
+              </p>
+              <div className="hero-actions">
+                <a href="#analyzer" className="button">
+                  Check a message <ArrowRight size={18} />
+                </a>
+                <Link href="/calendar" className="button button-secondary">
+                  Find a workshop
+                </Link>
+              </div>
             </div>
+            <figure className="scene">
+              <img
+                src={SITE_ASSETS.hero}
+                alt="An older adult and a friendly guide looking at a tablet together at a café table"
+                width="1200"
+                height="800"
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
+              />
+              <figcaption>
+                Friendly guidance, at your pace · Illustrative AI-generated
+                scene, not a documented participant
+              </figcaption>
+            </figure>
           </div>
-          <figure className="scene">
-            <img
-              src={SITE_ASSETS.hero}
-              alt="An older adult and a friendly guide looking at a tablet together at a café table"
-              width="1200"
-              height="800"
-              fetchPriority="high"
-              loading="eager"
-              decoding="async"
-            />
-            <figcaption>
-              Friendly guidance, at your pace · Illustrative AI-generated scene,
-              not a documented participant
-            </figcaption>
-          </figure>
+          <div className="hero-note">
+            <span>Free guidance</span>
+            <span>No account needed</span>
+            <span>Room for every question</span>
+          </div>
         </div>
-        <div className="hero-note">
-          <span>Free guidance</span>
-          <span>No account needed</span>
-          <span>Room for every question</span>
-        </div>
-      </div>
+      </HeroNetwork>
     </section>
   );
 }
@@ -228,8 +231,21 @@ function AnalyzerSection() {
         </div>
         {IS_STATIC_PREVIEW && (
           <div className="notice" role="note">
-            <strong>Design preview — live AI is not available on GitHub Pages</strong>
-            <p>This static preview includes the learning guides and downloads. To try OpenRouter-powered checks, run the standalone Node app using the <a className="text-link" href="https://github.com/Philipmag/philipmag.github.io#quick-start">GitHub setup instructions</a>. Do not paste private details here.</p>
+            <strong>
+              Design preview — live AI is not available on GitHub Pages
+            </strong>
+            <p>
+              This static preview includes the learning guides and downloads. To
+              try OpenRouter-powered checks, run the standalone Node app using
+              the{" "}
+              <a
+                className="text-link"
+                href="https://github.com/Philipmag/philipmag.github.io#quick-start"
+              >
+                GitHub setup instructions
+              </a>
+              . Do not paste private details here.
+            </p>
           </div>
         )}
         <div className="panel helper-shell">
@@ -320,7 +336,9 @@ function AnalyzerSection() {
                 type="submit"
                 className="button"
                 disabled={
-                  IS_STATIC_PREVIEW || pending || !(mode === "scam" ? message : question).trim()
+                  IS_STATIC_PREVIEW ||
+                  pending ||
+                  !(mode === "scam" ? message : question).trim()
                 }
               >
                 {pending ? (

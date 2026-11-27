@@ -6,7 +6,9 @@ Digital Guardians now has a reading-first interface and a portable React/Node ap
 
 ## What the audit changed
 
-The previous hero, analyzer and footer used cobalt gradients, coloured glows, clay surfaces and carved headlines. Ambient network animation, shimmering textareas and automatically advancing workshop photographs added motion without helping a visitor complete a task. Small privacy text competed with bright decorative elements. Repeated surreal imagery did not clearly distinguish illustration from actual participants.
+The previous hero, analyzer and footer used cobalt gradients, coloured glows, clay surfaces and carved headlines. Shimmering textareas and automatically advancing workshop photographs added motion without helping a visitor complete a task. Small privacy text competed with bright decorative elements. Repeated surreal imagery did not clearly distinguish illustration from actual participants. The first reading-first pass removed those effects and used warm paper and navy; the latest user direction restores the blue identity and explicitly asks for a live web background, without restoring the glow-heavy treatment.
+
+The current revision uses deep navy in the hero and footer, cobalt for primary actions, and ice-tinted neutral reading surfaces. One sparse, hero-bounded SVG network is the exception to Unslop's default against continuous decorative motion. This exception follows the user's explicit request, not a claim that the network is essential, a real-time feed, or evidence of live AI availability.
 
 The source also depended on platform OAuth, storage delivery and model helpers. Some service paths could suggest successful delivery or persistence without a confirmed external operation. Metadata named Barrie rather than Peterborough, and the fraud collection could be mistaken for current reporting. These were corrected or explicitly qualified.
 
@@ -16,25 +18,35 @@ The source also depended on platform OAuth, storage delivery and model helpers. 
 
 **Character:** patient, practical and neighbourly.
 
-**World:** a community café or library reading table, expressed through warm paper `#f7f4ee`, navy ink `#173653` and `#142f4a`, and the existing crest.
+**World:** a connected community café or library, expressed through deep navy `#0c2342`, cobalt `#2457c5`, ice `#eaf2ff`, neutral reading surfaces `#f6f8fb` / `#ffffff`, and the existing crest. Body ink `#162b46` and secondary text `#526176` remain readable on light content areas; navy sections use ice and `#c3d2e8` text.
 
-**Moments:** a café guidance illustration in the split hero and a library learning illustration beside the guide list.
+**Moments:** a café guidance illustration in the split hero and a library learning illustration beside the guide list. A sparse, low-contrast web at the hero's edges supplies the requested live background without drawing over copy or changing the images.
 
 **Signature:** simple step numbers and horizontal rules that connect the learning guides, helper instructions and emergency actions.
 
 ## The nine design passes
 
 1. **Spacing:** consistent panel padding, generous section spacing and a bounded reading layout replaced uneven decorative stacking.
-2. **Colour:** warm paper, off-white surfaces and navy actions replaced hue gradients, glows and coloured shadows.
+2. **Colour:** navy hero/footer anchors and cobalt actions restore the blue identity; ice-tinted neutrals keep guides and forms calm. There are no hue gradients, glows, coloured shadows or text effects.
 3. **Icons:** quiet Lucide line icons support actions without filling every title or card with decoration.
 4. **Copy:** shorter labels, patient explanations and real availability messages replaced hype and unsupported privacy guarantees. Peterborough and the correct email/phone remain consistent.
 5. **Type:** self-hosted DM Sans serves the interface; Georgia gives the hero a restrained editorial character. The default body is 18px, with persistent text-size and high-contrast controls.
 6. **Layout:** the asymmetric hero gives words and imagery clear space. Mobile stacks in reading order. Existing homepage section order and guide content remain intact.
 7. **Details:** keyboard focus, labels, main-content targets, touchable controls and visible errors remain available. Contact and calendar success depend on actual service outcomes.
 8. **Visuals:** two optimized WebP illustrations replace repeated surreal scenes. Each is explicitly captioned as AI-generated, not documented participants. The preserved workshop photographs use manual previous/next controls.
-9. **Motion:** ambient animation, hide-until-scrolled entrances and auto-advance were removed. Only direct interaction feedback remains.
+9. **Motion:** the latest request restores only a bounded hero network. Fixed nodes/edges stay still; three small traces travel slowly along existing edges using CSS transforms. No WebGL, canvas, additional package, random particle generation, pointer tracking, polling or per-frame React updates were added. Hide-until-scrolled entrances, shimmering fields, breathing glows and photo auto-advance remain absent.
 
-These changes implement the supplied Unslop method; they are not a claim of independently certified accessibility compliance. [1]
+These changes adapt the supplied Unslop method by Damir Sokolovsky ([@heydamir](https://x.com/heydamir)), licensed under **CC BY 4.0**, with the user-requested looping-motion exception above. They are not a claim of independently certified accessibility compliance. [1]
+
+## Hero motion and fallback contract
+
+`src/components/HeroNetwork.tsx` is mounted only inside the homepage hero. Its SVG is decorative (`aria-hidden`, not keyboard-focusable); essential copy, images and links remain ordinary HTML. Artwork is clipped to the hero, cannot intercept pointer events, and uses no blur or visual filters. Solid navy behind the text and image caption prevents the background's state from affecting their contrast. A native button with a 44px minimum height provides **Pause background** / **Resume background**, with an explicit accessible action label and visible keyboard focus.
+
+The initial render is static. Motion becomes eligible only after browser capability and visibility checks. Reduced-motion preference, widths at or below 900px, the site's saved high-contrast mode, OS forced colours or increased contrast all prevent animation. Narrow screens and reduced-motion mode retain static network geometry without moving traces; high-contrast/forced-colour modes omit the decorative artwork entirely. Missing media-query change support or IntersectionObserver leaves the same static fallback.
+
+IntersectionObserver pauses the CSS animations when the hero is offscreen; the Page Visibility event pauses them when the document is hidden. Neither changes a user's explicit pause preference. Animation play state preserves its current position during these temporary pauses. Observer and preference/visibility listeners are disconnected on unmount. CSS independently disables motion for narrow, reduced-motion and contrast modes, so React timing does not gate those fallbacks. The network is unrelated to the AI backend and also works as a visual enhancement in the static-preview build.
+
+The navy footer includes a discreet **Site design · ScaffoldStudioCo** credit. The crest, natural illustrations, original participant/workshop photographs and downloads were not altered or watermarked.
 
 ## Image briefs and portable assets
 
@@ -52,6 +64,8 @@ Manus OAuth, runtime plugins, storage proxy, built-in notifications and direct N
 
 ## Verification evidence
 
+The release evidence below documents the earlier standalone checkpoint, not a browser or performance measurement of this latest blue/network revision. Final full tests, production/static builds and desktop/mobile screenshots must be rerun for the revised design. The targeted revision checks are recorded separately below.
+
 A fresh export on the public GitHub history installed with `pnpm install --frozen-lockfile`, passed TypeScript and passed **145 default tests**. Production and static-preview builds succeeded. Live checks are excluded from ordinary credential-free CI.
 
 OpenRouter accepted the private credential check. A real structured completion passed. The real application analyzer returned an AI-labelled dangerous assessment for a synthetic gift-card scam in approximately 3 seconds after the budget change. The redesigned browser technology-help flow returned an AI-generated iPhone text-size guide with steps, troubleshooting and a safety reminder. One later free-router technology-help test returned a rejected completion and a labelled fallback; the live suite therefore is an availability check, not a deterministic reliability promise.
@@ -59,6 +73,14 @@ OpenRouter accepted the private credential check. A real structured completion p
 Desktop at 1440 × 1000 and mobile at 390 × 844 were visually reviewed. A redundant desktop menu control was corrected. The HTTPS development-preview origin issue was reproduced as HTTP 403 and fixed with an exact-host, development-only exception; strict production and explicit-origin behavior have regression coverage.
 
 A production Node run without AI, database or SMTP credentials served health, guide routes and local media, returned JSON 404 for unknown API paths, and returned correctly labelled no-key safety-check and quick-guide results. The compiled static preview rendered successfully; its analyzer input and submit button were disabled, and browser network entries contained no `/api/` requests. Its hashed assets, four downloads, identical `404.html` fallback and `.nojekyll` marker were checked.
+
+### Latest blue/network revision checks
+
+`pnpm exec vitest run server/designSystem.test.ts` passed **16 tests** and `pnpm check` passed. The design suite checks blue tokens, solid text/action contrast pairs, preserved section order and content, existing accessibility settings, static server rendering, source-level cleanup/fallback guards and the pure animation eligibility policy. The policy test exercises all 255 blocked combinations of its eight gates, plus the eligible state and explicit pause/resume states. These tests do not substitute for browser interaction or observer-lifecycle testing.
+
+WCAG relative-luminance calculations on the declared solid token pairs give body text/background **13.44:1**, secondary text/ice-tinted section **5.60:1**, white/cobalt action **6.47:1**, ice/navy **13.97:1**, and secondary text/navy **10.27:1**. The regression test also checks the primary hover token at or above 4.5:1. These are token calculations, not a comprehensive accessibility assessment of every rendered state.
+
+No browser, Git operation, full build, live AI request or performance profile was run for this revision. No load-time, frame-rate, CPU/GPU, conversion or certification claim is made. Final visual checks should confirm the live background on a wide desktop; keyboard pause/resume; user pause remaining set after scrolling away/back or hiding/showing the tab; static behavior at 900px and below and with reduced motion; and omitted decoration with saved high contrast, increased contrast or forced colours. Production and static-preview builds should both retain the same meaningful hero content and their existing AI availability behavior.
 
 ## Hosting and remaining limits
 

@@ -177,7 +177,7 @@ The flag is required even when a key exists. Keep this separate from ordinary CI
 
 A short walkthrough:
 
-1. Run `pnpm dev` with no OpenRouter key, MySQL, or SMTP. Read the warm-paper home page and try text-size, contrast, and keyboard navigation.
+1. Run `pnpm dev` with no OpenRouter key, MySQL, or SMTP. Read the restrained-blue home page and try text-size, contrast, keyboard navigation, and the hero animation pause control. Narrow screens and reduced-motion preferences use a static web.
 2. Paste a synthetic message such as “Urgent: send gift cards to unlock your account.” Observe the **local** safety-check label, independent-verification advice, and absence of a claimed live assessment. Ask “How can I make text larger on my phone?” for a local quick guide.
 3. Open a learning guide, answer its quiz, and inspect the original training downloads and manually controlled workshop slideshow. The generated café/library scenes are illustrations, not documented participants.
 4. Visit Contact and Calendar to see honest unavailable states rather than fake delivery or saved-record confirmations. Avoid real submissions in a demo.
@@ -186,7 +186,7 @@ A short walkthrough:
 
 ## Product and technical tradeoffs
 
-The design prioritizes patient reading over decorative effects: paper and navy, DM Sans with a system fallback, a Georgia hero headline, comfortable body text, simple numbered rules, and direct state feedback. The crest, Peterborough identity, and program contact details are preserved. Reading settings are stored locally in the browser; quiz answers are in-memory rather than account-linked progress.
+The design prioritizes patient reading: navy and deliberate cobalt accents, calm ice-blue/neutral surfaces, DM Sans with a system fallback, a Georgia hero headline, comfortable body text, simple numbered rules, and direct state feedback. At the owner's request, a lightweight live web returns to the hero without glows, shaders or layout animation. It is secondary to content, pausable, and has static accessibility/mobile fallbacks. The crest, Peterborough identity, and program contact details are preserved. Reading settings are stored locally in the browser; quiz answers are in-memory rather than account-linked progress.
 
 Typed tRPC contracts reduce client/server drift, while runtime Zod and Ajv validation handle untrusted inputs and model outputs. They do not establish semantic truth. Local guides keep the product useful when credentials or the provider are unavailable, but must remain visibly distinct from live AI. Optional MySQL avoids unnecessary setup for recruiters, while requiring real persistence for registration. SMTP acceptance avoids false contact success but does not prove inbox delivery.
 

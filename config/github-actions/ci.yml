@@ -1,14 +1,16 @@
 name: CI
 on:
   push:
-    branches: [main]
+    branches: [main, sync/digital-guardians-2026-11-25]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

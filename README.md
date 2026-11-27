@@ -15,7 +15,7 @@ The standalone application needs no Manus runtime providers, OAuth, or platform 
 - **Message check and technology help:** plain-language, structured OpenRouter responses with validation, bounded requests, and clearly labelled local fallback guidance. Neither mode verifies identities, visits suspicious links, or changes a user's device.
 - **Learning guides:** email basics, passwords, spotting scams, and safe browsing, with quizzes and immediate feedback. Guides need neither AI nor a database.
 - **Community resources:** original training downloads and a manually controlled workshop slideshow. Calendar registration and personal-training requests use optional MySQL persistence; contact delivery uses optional SMTP.
-- **Reading-first design:** warm paper and navy, the preserved Digital Guardians crest, generous text, numbered steps, keyboard focus, text-size and contrast controls, and no ambient animation or auto-advancing workshop photos. These are implementation choices, not a claim of independently certified accessibility compliance.
+- **Reading-first design:** restrained navy, cobalt and ice-blue surfaces, the preserved Digital Guardians crest, generous text, numbered steps, keyboard focus, and text-size and contrast controls. A lightweight hero web animation has a pause control and static accessibility/mobile fallbacks; original workshop photos remain manually advanced. These are implementation choices, not a claim of independently certified accessibility compliance.
 
 The café and library scenes are labelled **AI-generated illustrations**, not real participant photographs or evidence of program impact. Original workshop media and training materials were supplied by the program owner and retain their captions and content.
 
@@ -61,6 +61,8 @@ Provide a server-side `OPENROUTER_API_KEY` for that command. Live results depend
 ## Hosting boundaries
 
 **GitHub Pages is a static preview, not a Node host.** The Pages build compiles `VITE_STATIC_PREVIEW=1` and supports the design, guides, quizzes, and downloads. AI and submission buttons are disabled with clear explanations and email/phone alternatives. This repository's existing Pages custom domain is [digitalguards.ca](https://digitalguards.ca); [philipmag.github.io](https://philipmag.github.io) may redirect there. The artifact workflow publishes the compiled preview, never the raw TypeScript source. This is separate from the existing `www` site and does not deploy a live AI backend.
+
+The prepared Pages workflow is **manual-only** and defaults to build/upload without deployment. Publication requires selecting `publish: true` on `main` after review. Only its deploy job requests Pages/OIDC write permissions. The current revision remains unpublished; see [owner setup and permission status](docs/GITHUB_RELEASE.md).
 
 For live AI and submissions, deploy the full Node application on an independent Node host. The [Render blueprint](render.yaml) and [Docker instructions](docs/STANDALONE.md#docker) are unprovisioned deployment paths, not completed deployments. Railway or another suitable Node host can use the same build/start commands. There is no `VITE_API_URL` bridge from Pages to a separate API.
 
