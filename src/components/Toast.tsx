@@ -1,4 +1,10 @@
-import { useState, useEffect, createContext, useContext, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  useCallback,
+} from "react";
 import { CheckCircle, AlertTriangle, Info, X } from "lucide-react";
 
 type ToastType = "success" | "error" | "info";
@@ -24,16 +30,19 @@ let toastId = 0;
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const showToast = useCallback((message: string, type: ToastType = "success") => {
-    const id = ++toastId;
-    setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3500);
-  }, []);
+  const showToast = useCallback(
+    (message: string, type: ToastType = "success") => {
+      const id = ++toastId;
+      setToasts(prev => [...prev, { id, message, type }]);
+      setTimeout(() => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+      }, 3500);
+    },
+    []
+  );
 
   const removeToast = (id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts(prev => prev.filter(t => t.id !== id));
   };
 
   const icons = {
@@ -47,14 +56,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       {/* Toast container */}
       <div className="fixed bottom-20 right-6 z-[100] flex flex-col gap-2 pointer-events-none">
-        {toasts.map((toast) => (
+        {toasts.map(toast => (
           <div
             key={toast.id}
-            className="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-card border border-border/60 shadow-xl shadow-black/20 animate-in slide-in-from-right-5 fade-in duration-300 max-w-sm"
+            role="status"
+            className="pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl bg-card border border-border/60    max-w-sm w-[calc(100vw-48px)]"
           >
             {icons[toast.type]}
             <p className="text-sm text-foreground flex-1">{toast.message}</p>
             <button
+              aria-label="Dismiss notification"
               onClick={() => removeToast(toast.id)}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >

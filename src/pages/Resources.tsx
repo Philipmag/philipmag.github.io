@@ -1,11 +1,5 @@
-/*
- * Design: Digital Sanctuary — natural midnight palette, restrained glass, surreal editorial illustrations
- * Page: Resources — Searchable, filterable resource cards with download links
- */
-
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { motion } from "framer-motion";
 import {
   Search,
   Download,
@@ -18,7 +12,6 @@ import {
   Eye,
   Presentation,
   Filter,
-  Sparkles,
   ArrowRight,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -28,13 +21,19 @@ import SectionLabel from "@/components/SectionLabel";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 
-const RESOURCES_IMG = "/manus-storage/resource-atlas-web_801a51ff.webp";
-const PPTX_URL_1 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalGuardians_Cybersecurity_2026_3cfab393.pptx";
-const PPTX_URL_2 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/DigitalSecurity_Seniors_2026_Redesigned_436bfe4d.pptx";
-const PPTX_URL_3 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/Staying_Connected_Seniors_Guide_54b053a8.pptx";
-const PPTX_URL_4 = "https://d2xsxph8kpxj0f.cloudfront.net/110291972/eUbA5NSXSrUDToa4RxQdTu/AIforSeniors_ChatGPT_Guide_2026_Redesigned_c1ecae50.pptx";
+const PPTX_URL_1 = "/media/DigitalGuardians_Cybersecurity_2026_3cfab393.pptx";
+const PPTX_URL_2 =
+  "/media/DigitalSecurity_Seniors_2026_Redesigned_436bfe4d.pptx";
+const PPTX_URL_3 = "/media/Staying_Connected_Seniors_Guide_54b053a8.pptx";
+const PPTX_URL_4 =
+  "/media/AIforSeniors_ChatGPT_Guide_2026_Redesigned_c1ecae50.pptx";
 
-type ResourceCategory = "all" | "training" | "guides" | "scam-awareness" | "tools";
+type ResourceCategory =
+  | "all"
+  | "training"
+  | "guides"
+  | "scam-awareness"
+  | "tools";
 
 interface Resource {
   id: string;
@@ -93,7 +92,7 @@ const resources: Resource[] = [
     category: "training",
     type: "download",
     url: PPTX_URL_4,
-    icon: Sparkles,
+    icon: BookOpen,
     badge: "New",
     fileType: "PPTX",
   },
@@ -190,23 +189,25 @@ const categories: { value: ResourceCategory; label: string }[] = [
 export default function Resources() {
   return (
     <>
-    <SEO
-      title="Cybersecurity Resources for Seniors"
-      description="Free downloadable training materials, guides, and tools to help seniors stay safe online. Includes presentations, PDF guides, and scam awareness resources."
-      keywords="cybersecurity resources seniors, online safety training, scam awareness materials, digital literacy guides, free security tools"
-      canonicalPath="/resources"
-    />
-    <ResourcesContent />
+      <SEO
+        title="Cybersecurity Resources for Seniors"
+        description="Free downloadable training materials, guides, and tools to help seniors stay safe online. Includes presentations, PDF guides, and scam awareness resources."
+        keywords="cybersecurity resources seniors, online safety training, scam awareness materials, digital literacy guides, free security tools"
+        canonicalPath="/resources"
+      />
+      <ResourcesContent />
     </>
   );
 }
 
 function ResourcesContent() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(
+    () => new URLSearchParams(window.location.search).get("q") || ""
+  );
   const [activeCategory, setActiveCategory] = useState<ResourceCategory>("all");
 
   const filteredResources = useMemo(() => {
-    return resources.filter((r) => {
+    return resources.filter(r => {
       const matchesCategory =
         activeCategory === "all" || r.category === activeCategory;
       const matchesSearch =
@@ -220,44 +221,20 @@ function ResourcesContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden min-h-[50vh] flex items-center">
-          <div className="absolute inset-0 z-0">
-            <img
-              src={RESOURCES_IMG}
-              alt=""
-              className="w-full h-full object-cover opacity-20"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
-            <div className="absolute inset-0 bg-grid opacity-20" />
-          </div>
-
-          <div className="container relative z-10 py-32 md:py-40">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="max-w-2xl"
-            >
-              <div className="flex items-center gap-2 mb-6">
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                  <Sparkles className="w-3 h-3" />
-                  {resources.length} Resources Available
-                </span>
-              </div>
-              <h1 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl tracking-tight mb-4 text-foreground">
-                Cybersecurity{" "}
-                <span className="text-gradient-green">Resources</span>
-              </h1>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Explore our curated collection of guides, training materials, and
-                tools to help you stay safe online.
-              </p>
-            </motion.div>
+      <main id="main-content" className="flex-1">
+        <section className="page-heading">
+          <div className="container">
+            <SectionLabel label="The resource library" />
+            <h1>Practical guides to keep close by</h1>
+            <p className="text-muted-foreground max-w-2xl">
+              Explore our collection of learning guides, training materials and
+              tools. Read online or download a presentation to revisit later.
+            </p>
+            <p className="text-sm text-muted-foreground mt-4">
+              {resources.length} resources · Free to use
+            </p>
           </div>
         </section>
-
         {/* Search & Filter */}
         <section className="py-8 md:py-12 border-y border-border/30">
           <div className="container">
@@ -268,22 +245,23 @@ function ResourcesContent() {
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search resources..."
+                  onChange={e => setSearchQuery(e.target.value)}
+                  aria-label="Search resources"
+                  placeholder="Search resources"
                   className="w-full pl-11 pr-4 py-3 rounded-xl border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40"
                 />
               </div>
 
               {/* Category filters */}
               <div className="flex items-center gap-2 flex-wrap">
-                <Filter className="w-4 h-4 text-muted-foreground mr-1" />
-                {categories.map((cat) => (
+                {categories.map(cat => (
                   <button
                     key={cat.value}
                     onClick={() => setActiveCategory(cat.value)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    aria-pressed={activeCategory === cat.value}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       activeCategory === cat.value
-                        ? "bg-primary text-primary-foreground glow-green"
+                        ? "bg-primary text-primary-foreground "
                         : "bg-card border border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/30"
                     }`}
                   >
@@ -306,7 +284,7 @@ function ResourcesContent() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="resource-list">
                 {filteredResources.map((resource, i) => (
                   <AnimatedSection key={resource.id} delay={i * 0.05}>
                     <ResourceCard resource={resource} />
@@ -323,58 +301,25 @@ function ResourcesContent() {
 }
 
 function ResourceCard({ resource }: { resource: Resource }) {
-  const Icon = resource.icon;
-
   return (
-    <div className="group relative flex flex-col h-full p-6 rounded-2xl border border-border/50 bg-card hover:border-primary/30 transition-all duration-200 glow-card">
-      {/* Badge */}
-      {resource.badge && (
-        <span
-          className={`absolute top-4 right-4 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
-            resource.badge === "New"
-              ? "text-[rgb(100,80,200)] bg-[rgb(100,80,200)]/10 border-[rgb(100,80,200)]/20"
-              : "text-primary bg-primary/10 border-primary/20"
-          }`}
-        >
-          {resource.badge}
-        </span>
-      )}
-
-      {/* Icon */}
-      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors border border-primary/15">
-        <Icon className="w-5 h-5 text-primary" />
-      </div>
-
-      {/* Content */}
-      <h3 className="font-display font-bold text-base mb-2 text-foreground leading-snug">
-        {resource.title}
-      </h3>
-      <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-1">
-        {resource.description}
+    <article className="resource-card">
+      <p className="text-sm">
+        {resource.type === "download"
+          ? "Training presentation · PPTX"
+          : "Learning guide"}
       </p>
-
-      {/* Action */}
-      <div className="flex items-center gap-3">
-        {resource.type === "download" ? (
-          <a href={resource.url} download>
-            <Button size="sm" className="gap-2 rounded-lg font-semibold glow-green">
-              <Download className="w-3.5 h-3.5" />
-              Download {resource.fileType || "File"}
-            </Button>
-          </a>
-        ) : (
-          <Link href={resource.url}>
-            <Button
-              size="sm"
-              variant="outline"
-              className="gap-2 rounded-lg font-semibold border-border/60 hover:bg-white/5 hover:border-primary/30"
-            >
-              <ArrowRight className="w-3.5 h-3.5" />
-              Read Guide
-            </Button>
-          </Link>
-        )}
-      </div>
-    </div>
+      <h3>{resource.title}</h3>
+      <p>{resource.description}</p>
+      {resource.type === "download" ? (
+        <a href={resource.url} download className="button button-secondary">
+          <Download size={18} />
+          Download {resource.fileType || "file"}
+        </a>
+      ) : (
+        <Link href={resource.url} className="button button-secondary">
+          Read guide <ArrowRight size={18} />
+        </Link>
+      )}
+    </article>
   );
 }

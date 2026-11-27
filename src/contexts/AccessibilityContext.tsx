@@ -1,13 +1,16 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
-export type TextSize = 'normal' | 'large' | 'extra-large';
-export type ContrastMode = 'normal' | 'high-contrast';
-
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
+export type TextSize = "normal" | "large" | "extra-large";
+export type ContrastMode = "normal" | "high-contrast";
 interface AccessibilitySettings {
   textSize: TextSize;
   contrastMode: ContrastMode;
 }
-
 interface AccessibilityContextType {
   settings: AccessibilitySettings;
   setTextSize: (size: TextSize) => void;
@@ -15,68 +18,59 @@ interface AccessibilityContextType {
   toggleContrastMode: () => void;
   resetSettings: () => void;
 }
-
-const DEFAULT_SETTINGS: AccessibilitySettings = {
-  textSize: 'normal',
-  contrastMode: 'normal',
+const defaults: AccessibilitySettings = {
+  textSize: "normal",
+  contrastMode: "normal",
 };
-
-const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
-
-export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [settings, setSettings] = useState<AccessibilitySettings>(DEFAULT_SETTINGS);
-
-  // Load settings from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('accessibility-settings');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setSettings(parsed);
-        applySettings(parsed);
-      } catch (e) {
-        console.error('Failed to parse accessibility settings:', e);
-      }
+const Context = createContext<AccessibilityContextType | undefined>(undefined);
+export function parseAccessibilitySettings(
+  value: string | null
+): AccessibilitySettings {
+  try {
+    const parsed = JSON.parse(value || "null");
+    return {
+      textSize: ["normal", "large", "extra-large"].includes(parsed?.textSize)
+        ? parsed.textSize
+        : "normal",
+      contrastMode:
+        parsed?.contrastMode === "high-contrast" ? "high-contrast" : "normal",
+    };
+  } catch {
+    return { ...defaults };
+  }
+}
+export function AccessibilityProvider({ children }: { children: ReactNode }) {
+  const [settings, setSettings] = useState<AccessibilitySettings>(() => {
+    try {
+      return parseAccessibilitySettings(
+        localStorage.getItem("accessibility-settings")
+      );
+    } catch {
+      return { ...defaults };
     }
-  }, []);
-
-  const applySettings = (newSettings: AccessibilitySettings) => {
-    const root = document.documentElement;
-    
-    // Apply text size
-    root.setAttribute('data-text-size', newSettings.textSize);
-    
-    // Apply contrast mode
-    root.setAttribute('data-contrast-mode', newSettings.contrastMode);
-  };
-
-  const setTextSize = (size: TextSize) => {
-    const newSettings = { ...settings, textSize: size };
-    setSettings(newSettings);
-    applySettings(newSettings);
-    localStorage.setItem('accessibility-settings', JSON.stringify(newSettings));
-  };
-
-  const setContrastMode = (mode: ContrastMode) => {
-    const newSettings = { ...settings, contrastMode: mode };
-    setSettings(newSettings);
-    applySettings(newSettings);
-    localStorage.setItem('accessibility-settings', JSON.stringify(newSettings));
-  };
-
-  const toggleContrastMode = () => {
-    const newMode = settings.contrastMode === 'normal' ? 'high-contrast' : 'normal';
-    setContrastMode(newMode);
-  };
-
-  const resetSettings = () => {
-    setSettings(DEFAULT_SETTINGS);
-    applySettings(DEFAULT_SETTINGS);
-    localStorage.removeItem('accessibility-settings');
-  };
-
+  });
+  useEffect(() => {
+    document.documentElement.dataset.textSize = settings.textSize;
+    document.documentElement.dataset.contrastMode = settings.contrastMode;
+    try {
+      localStorage.setItem("accessibility-settings", JSON.stringify(settings));
+    } catch {
+      /* Reading controls still work without storage. */
+    }
+  }, [settings]);
+  const setTextSize = (textSize: TextSize) =>
+    setSettings(previous => ({ ...previous, textSize }));
+  const setContrastMode = (contrastMode: ContrastMode) =>
+    setSettings(previous => ({ ...previous, contrastMode }));
+  const toggleContrastMode = () =>
+    setSettings(previous => ({
+      ...previous,
+      contrastMode:
+        previous.contrastMode === "normal" ? "high-contrast" : "normal",
+    }));
+  const resetSettings = () => setSettings({ ...defaults });
   return (
-    <AccessibilityContext.Provider
+    <Context.Provider
       value={{
         settings,
         setTextSize,
@@ -86,14 +80,14 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
       }}
     >
       {children}
-    </AccessibilityContext.Provider>
+    </Context.Provider>
   );
-};
-
-export const useAccessibility = () => {
-  const context = useContext(AccessibilityContext);
-  if (!context) {
-    throw new Error('useAccessibility must be used within AccessibilityProvider');
-  }
-  return context;
-};
+}
+export function useAccessibility() {
+  const value = useContext(Context);
+  if (!value)
+    throw new Error(
+      "useAccessibility must be used within AccessibilityProvider"
+    );
+  return value;
+}

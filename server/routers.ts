@@ -1,5 +1,3 @@
-import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { scamAnalyzerRouter } from "./scamAnalyzer";
@@ -7,22 +5,14 @@ import { contactRouter } from "./contact";
 import { calendarRouter } from "./calendar";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
+  // Public compatibility no-ops: this app has no accounts, cookies, or OAuth.
   auth: router({
-    me: publicProcedure.query(opts => opts.ctx.user),
-    logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
-    }),
+    me: publicProcedure.query(() => null),
+    logout: publicProcedure.mutation(() => ({ success: true } as const)),
   }),
-
   scamAnalyzer: scamAnalyzerRouter,
   contact: contactRouter,
   calendar: calendarRouter,
 });
-
 export type AppRouter = typeof appRouter;

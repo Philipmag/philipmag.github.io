@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches: [main, sync/digital-guardians-2026-11-25]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Type check frontend and backend
+        run: pnpm check
+      - name: Mocked unit and regression tests
+        run: pnpm test
+      - name: Build the standalone Node app
+        run: pnpm build
+      - name: Build the static design preview
+        run: pnpm build:gh-pages

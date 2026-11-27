@@ -10,7 +10,8 @@ export function PageProgress() {
   useEffect(() => {
     const updateProgress = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       if (docHeight > 0) {
         setProgress((scrollTop / docHeight) * 100);
       }
@@ -21,10 +22,10 @@ export function PageProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-0.5">
+    <div aria-hidden="true" className="fixed top-0 left-0 right-0 z-[60] h-0.5">
       <div
-        className="h-full bg-gradient-to-r from-primary via-primary to-[rgb(100,80,200)] transition-[width] duration-150 ease-out"
-        style={{ width: `${progress}%` }}
+        className="h-full bg-primary origin-left"
+        style={{ transform: `scaleX(${progress / 100})` }}
       />
     </div>
   );

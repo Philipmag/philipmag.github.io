@@ -6,11 +6,13 @@ vi.mock("./db", () => ({
   getAllEvents: vi.fn(),
   getEventById: vi.fn(),
   createTrainingRequest: vi.fn(),
+  createEventSignup: vi.fn(),
+  countSignupsByEventId: vi.fn(),
 }));
 
 // Mock the notification module
-vi.mock("./_core/notification", () => ({
-  notifyOwner: vi.fn().mockResolvedValue(true),
+vi.mock("./mail", () => ({
+  sendNotification: vi.fn().mockResolvedValue({ delivered: true }),
 }));
 
 import * as db from "./db";
@@ -18,7 +20,7 @@ import { calendarRouter } from "./calendar";
 import { createCallerFactory } from "./_core/trpc";
 
 const createCaller = createCallerFactory(calendarRouter);
-const caller = createCaller({} as any);
+const caller = createCaller({ req: {} as any, res: {} as any, user: null });
 
 const mockEvent = {
   id: 1,
@@ -29,8 +31,9 @@ const mockEvent = {
   location: "Online",
   eventType: "online" as const,
   capacity: 20,
-  registrationUrl: null,
-  isFeatured: true,
+  dateConfirmed: true,
+  sessionSlot: "full-day" as const,
+  isActive: true,
   createdAt: new Date(),
 };
 
@@ -136,13 +139,13 @@ describe("calendarRouter", () => {
     });
 
     it("sends owner notification on success", async () => {
-      const { notifyOwner } = await import("./_core/notification");
+      const { sendNotification } = await import("./mail");
       vi.mocked(db.createTrainingRequest).mockResolvedValue(undefined as any);
       await caller.requestTraining({
         name: "Alice",
         email: "alice@example.com",
       });
-      expect(notifyOwner).toHaveBeenCalledWith(
+      expect(sendNotification).toHaveBeenCalledWith(
         expect.objectContaining({
           title: "New Training Request from Alice",
         })

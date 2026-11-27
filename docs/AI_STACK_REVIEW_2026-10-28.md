@@ -1,5 +1,7 @@
 # AI Stack Review: Digital Guardians AI Assistant
 
+> **Historical record — superseded on 27 November 2026.** This review describes the previous Manus/NVIDIA implementation, not the current runtime. Both integrations have been removed. See [Standalone](STANDALONE.md), [Security](SECURITY.md) and [the redesign audit](DESIGN_AUDIT.md) for the current OpenRouter-only application and verification.
+
 2026-10-28 | Scope: scam checker, technology-help assistant, model client, public API controls | Basis: code review and targeted live validation
 
 ## Summary

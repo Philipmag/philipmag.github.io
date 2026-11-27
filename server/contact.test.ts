@@ -3,8 +3,8 @@ import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
 // Mock the notification module
-vi.mock("./_core/notification", () => ({
-  notifyOwner: vi.fn().mockResolvedValue(true),
+vi.mock("./mail", () => ({
+  sendNotification: vi.fn().mockResolvedValue({ delivered: true }),
 }));
 
 function createPublicContext(): TrpcContext {

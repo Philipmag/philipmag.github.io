@@ -8,7 +8,7 @@ import {
   createEventSignup,
   countSignupsByEventId,
 } from "./db";
-import { notifyOwner } from "./_core/notification";
+import { sendNotification } from "./mail";
 
 export const calendarRouter = router({
   /** List all upcoming confirmed events + TBD events. */
@@ -85,8 +85,10 @@ export const calendarRouter = router({
           })
         : "TBD";
 
-      await notifyOwner({
+      // The confirmed DB write above is durable even when optional SMTP is unavailable.
+      await sendNotification({
         title: `New Sign-Up: ${event.title}`,
+        replyTo: input.email,
         content: `
 **Session:** ${event.title}
 **Date/Time:** ${eventTime}
@@ -134,8 +136,10 @@ Please confirm their registration by replying to their email.
           })
         : "No preference specified";
 
-      await notifyOwner({
+      // Never send success until persistence has completed; email is only a notification.
+      await sendNotification({
         title: `New Training Request from ${input.name}`,
+        replyTo: input.email,
         content: `
 **Name:** ${input.name}
 **Email:** ${input.email}

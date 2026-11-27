@@ -1,0 +1,55 @@
+name: Pages review and manual publication
+
+# No push trigger: a source update or PR merge must not publish the site.
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish the reviewed static site (main branch only)'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check && pnpm test
+      - run: pnpm build:gh-pages
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/public
+
+  deploy:
+    # A manual build without explicit publication approval uploads an artifact only.
+    if: ${{ inputs.publish == true && github.ref == 'refs/heads/main' }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Publish reviewed static site
+        id: deployment
+        uses: actions/deploy-pages@v4
